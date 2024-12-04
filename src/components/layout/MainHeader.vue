@@ -13,7 +13,7 @@ import { RouterLink } from "vue-router";
   <header class="header-content">
     <div class="logo-container">
       <RouterLink to="/">
-        <!-- <img src="@/assets/logo.png" alt="Logo" class="h-10 w-10 rounded-full" /> --> <!-- byt ut mot ny fin rentalLogga -->
+        <img src="../../assets/icons/gbg-rentals-logo.png" alt="Logo" class="h-10 w-10 rounded-full" /> 
       </RouterLink>
     </div>
     <h1 class="">GBG Rentals</h1>
@@ -47,7 +47,7 @@ header {
 header img {
   height: 100px;
   width: 100px;
-  border-radius: 50%;
+  border-radius: 10%;
 }
 
 header h1 {
