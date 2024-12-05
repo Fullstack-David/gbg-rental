@@ -1,35 +1,5 @@
 # gbg-rental
 
-This template should help get you started developing with Vue 3 in Vite.
-
-## Recommended IDE Setup
-
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
+.env
+VITE_JSONBIN_API_KEY=$2a$10$LSwX40hwz0W3xbkIo9s3fe0aFSMlHtx.X00pHhO.DE4e/.C5OIQum
+VITE_JSONBIN_BIN_URL_ITEMS=https://api.jsonbin.io/v3/b/6751759be41b4d34e4603b59
