@@ -3,6 +3,6 @@
 
 <template>
   <main>
-    Här är våran startsida
+    Landing page med featured items
   </main>
 </template>

@@ -1,23 +1,82 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '@/views/HomeView.vue'
+import { createRouter, createWebHistory } from "vue-router";
+import HomeView from "@/views/HomeView.vue";
+import ItemsView from "@/views/ItemsView.vue";
+import ItemDetailsView from "@/views/ItemDetailsView.vue";
+import MyRentalsView from "@/views/renter/MyRentalsView.vue";
+import RentalHistoryView from "@/views/renter/RentalHistoryView.vue";
+import CreateItemView from "@/views/owner/CreateitemView.vue";
+import EditItemView from "@/views/owner/EditItemView.vue";
+import MyItemsView from "@/views/owner/MyItemsView.vue";
+import LoginView from "@/views/auth/LoginView.vue";
+import RegisterView from "@/views/auth/RegisterView.vue";
+import DashboardView from "@/views/auth/DashboardView.vue";
+import NotFoundView from "@/views/NotFoundView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/',
-      name: 'landing-page',
+      path: "/",
+      name: "home",
       component: HomeView,
     },
     {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/AboutView.vue'),
+      path: "/login",
+      name: "login",
+      component: LoginView,
+    },
+    {
+      path: "/dashboard",
+      component: DashboardView,
+      children: [
+        {
+          path: "create-item",
+          name: "createItem",
+          component: CreateItemView,
+        },
+        {
+          path: "items",
+          name: "items",
+          component: ItemsView,
+        },
+        {
+          path: "items/:id",
+          name: "itemDetails",
+          component: ItemDetailsView,
+        },
+        {
+          path: "my-rentals",
+          name: "myRentals",
+          component: MyRentalsView,
+        },
+        {
+          path: "rental-history",
+          name: "rentalHistory",
+          component: RentalHistoryView,
+        },
+        {
+          path: "edit-item/:id",
+          name: "editItem",
+          component: EditItemView,
+        },
+        {
+          path: "my-items",
+          name: "myItems",
+          component: MyItemsView,
+        },
+      ],
+    },
+    {
+      path: "/register",
+      name: "registerView",
+      component: RegisterView,
+    },
+    {
+      path: "/:pathMatch(.*)*",
+      name: "notFound",
+      component: NotFoundView,
     },
   ],
-})
+});
 
-export default router
+export default router;
