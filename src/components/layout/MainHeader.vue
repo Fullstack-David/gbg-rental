@@ -13,22 +13,20 @@ import { RouterLink } from "vue-router";
   <header class="header-content">
     <div class="logo-container">
       <RouterLink to="/">
-        <img src="../../assets/icons/gbg-rentals-logo.png" alt="Logo" class="h-10 w-10 rounded-full" /> 
+        <img
+          src="../../assets/icons/gbg-rentals-logo.png"
+          alt="Logo"
+          class="h-10 w-10 rounded-full"
+        />
       </RouterLink>
     </div>
     <h1 class="">GBG Rentals</h1>
     <nav class="header-nav">
-      <!-- <RouterLink to="/">Menu</RouterLink>
-      <RouterLink to="/orderHistory">Order History</RouterLink>
-      <RouterLink to="/about">About us</RouterLink>
-      <RouterLink to="/contact">Contact</RouterLink>
-      <RouterLink to="/cart" @click="sendCartData">
-        {{ store.cart.length < 1 ? 'Cart' : `Cart (${store.cart.length})` }}
-      </RouterLink> -->
+      <RouterLink to="/login">Login</RouterLink>
+      <RouterLink to="/register">Register</RouterLink>
     </nav>
   </header>
 </template>
-
 <style scoped>
 .logo-container {
   display: flex;

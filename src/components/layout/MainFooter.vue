@@ -20,6 +20,7 @@ footer {
   text-align: center;
   padding: 20px 0;
   font-size: 14px;
+  margin-top: auto;
 }
 
 footer a {
