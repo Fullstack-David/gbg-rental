@@ -11,6 +11,7 @@ import LoginView from "@/views/auth/LoginView.vue";
 import RegisterView from "@/views/auth/RegisterView.vue";
 import DashboardView from "@/views/auth/DashboardView.vue";
 import NotFoundView from "@/views/NotFoundView.vue";
+import Cartview from "@/views/renter/Cartview.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -67,6 +68,11 @@ const router = createRouter({
               component: RentalHistoryView,
             },
           ]
+        },
+        {
+          path: "/kundvagn",
+          name: "kundvagn",
+          component: Cartview,
         },
       ],
     },

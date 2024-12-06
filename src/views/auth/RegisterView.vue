@@ -82,7 +82,7 @@ const onRegister = () => {
 };
 </script>
 
-<style>
+<style scoped>
 .register-container {
   max-width: 400px;
   margin: 0 auto;
