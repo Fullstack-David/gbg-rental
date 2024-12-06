@@ -9,26 +9,40 @@ import ItemsView from '../ItemsView.vue';
         <ul class="local-nav-ul">
           <li>
             <!-- visar alla tillgängliga produkter "items" -->
-            <button>hyra</button>
-          </li>
-          <li>
-            <!-- visar tidigare ordrar för den användaren som är inloggad -->
-            <button>order historik</button>
+             <RouterLink to="/dashboard/items">
+               <button>hyra</button>
+             </RouterLink>
           </li>
           <li>
             <!-- visar modalen för att lägga till en ny produkt "item" -->
-            <button>lägg upp ny produkt</button>
+             <RouterLink to="/dashboard/items/create">
+               <button>lägg upp ny produkt</button>
+             </RouterLink>
+          </li>
+          <li>
+            <!-- visar tidigare ordrar för den användaren som är inloggad -->
+             <RouterLink>
+               <button>order historik</button>
+             </RouterLink>
           </li>
           <li>
             <!-- listar dem produkterna som är kopplat till den användare som är inloggad -->
-            <button>mina produkter</button>
+             <RouterLink to="dashboard/rentals">
+               <button>mina produkter</button>
+             </RouterLink>
+          </li>
+          <li>
+            <!-- listar dem produkterna som är kopplat till den användare som är inloggad -->
+             <RouterLink to="dashboard/history">
+               <button>tidigare hyrt</button>
+             </RouterLink>
           </li>
         </ul>
       </div>
     </div>
     <div class="main-content-dashboard">
-      <p>huvud inne håll visas här beroende på vad man tryckt på ovan i den locala navigationen</p>
-      <ItemsView />
+      <!-- huvud inne håll visas här beroende på vad man tryckt på ovan i den locala navigationen -->
+      <RouterView></RouterView>
     </div>
   </div>
 </template>

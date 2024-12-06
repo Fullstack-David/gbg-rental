@@ -2,7 +2,7 @@
 import { useItems } from '@/composables/useItems';
 import { onMounted } from 'vue';
 
-const { items, isLoading, fetchItems, addItem, updateItem, deleteItem } = useItems()
+const { items, isLoading, fetchItems } = useItems()
 
 onMounted(() => {
     fetchItems()
@@ -10,6 +10,8 @@ onMounted(() => {
 </script>
 
 <template>
+    <!-- RouterView kommer här att visa CreateitemView.vue med url path: dashboard/items/create -->
+    <RouterView></RouterView>
     <h2 v-if="isLoading">Laddar..</h2>
     <div v-if="!isLoading">
         <h2>Alla annonser</h2>

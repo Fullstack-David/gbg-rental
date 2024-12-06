@@ -2,6 +2,6 @@
 
 <template>
   <div>
-    <p>History över hyrda items</p>
+    <p>Historik över tidigare hyrda produkter/föremål</p>
   </div>
 </template>

@@ -61,14 +61,13 @@ const router = createRouter({
           path: "rentals",
           name: "myRentals",
           component: MyRentalsView,
-          children: [
-            {
-              path: "history",
-              name: "rentalHistory",
-              component: RentalHistoryView,
-            },
-          ]
         },
+        {
+          path: "history",
+          name: "rentalHistory",
+          component: RentalHistoryView,
+        },
+
         {
           path: "/kundvagn",
           name: "kundvagn",
