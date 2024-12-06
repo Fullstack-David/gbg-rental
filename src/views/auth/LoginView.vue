@@ -1,28 +1,28 @@
 <template>
   <div class="login-container">
-    <h1>Login</h1>
+    <h1>Logga in</h1>
     <form @submit.prevent="onLogin">
       <div class="form-group">
-        <label for="email">Email</label>
+        <label for="email"> E-postadress</label>
         <input
           id="email"
           type="email"
           v-model="form.email"
-          placeholder="Email-adress..."
+          placeholder="E-postadress"
           required
         />
       </div>
       <div class="form-group">
-        <label for="password">Password</label>
+        <label for="password">Lösenord</label>
         <input
           id="password"
           type="password"
           v-model="form.password"
-          placeholder="Enter password..."
+          placeholder="Ange lösenord..."
           required
         />
       </div>
-      <button type="submit">Login</button>
+      <button type="submit">Logga in</button>
     </form>
   </div>
 </template>

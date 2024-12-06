@@ -1,57 +1,57 @@
 <template>
   <div class="register-container">
-    <h1>Register</h1>
+    <h1>Registrera</h1>
     <form @submit.prevent="onRegister">
       <!-- Full Name -->
       <div class="form-group">
-        <label for="fullName">Full Name</label>
+        <label for="fullName">Fullnamn</label>
         <input
           type="text"
           id="fullName"
           v-model="form.fullName"
-          placeholder="Enter your full name"
+          placeholder="EAnge ditt fullständiga namn"
           required
         />
       </div>
 
       <!-- Email -->
       <div class="form-group">
-        <label for="email">Email</label>
+        <label for="email">E-postadress</label>
         <input
           type="email"
           id="email"
           v-model="form.email"
-          placeholder="Enter your email"
+          placeholder="Ange din e-postadress"
           required
         />
       </div>
 
       <!-- Password -->
       <div class="form-group">
-        <label for="password">Password</label>
+        <label for="password">Lösenord</label>
         <input
           type="password"
           id="password"
           v-model="form.password"
-          placeholder="Enter a password"
+          placeholder="Ange ett lösenord"
           required
         />
       </div>
 
       <!-- Confirm Password -->
       <div class="form-group">
-        <label for="confirmPassword">Confirm Password</label>
+        <label for="confirmPassword">Bekräfta lösenord</label>
         <input
           type="password"
           id="confirmPassword"
           v-model="form.confirmPassword"
-          placeholder="Confirm your password"
+          placeholder="Bekräfta lösenord"
           required
         />
       </div>
 
       <!-- Submit Button -->
-      <button type="submit">Register</button>
+      <button type="submit">Registrera</button>
     </form>
   </div>
 </template>
