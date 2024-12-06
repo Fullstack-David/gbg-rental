@@ -36,7 +36,7 @@ import { RouterLink } from "vue-router";
   </header>
 </template>
 <style scoped>
-/* tillfällig (dashbaord-link) */
+/* tillfällig (.dashbaord-link) */
 .dashboard-link {
   color: #fff;
   text-decoration: none;
