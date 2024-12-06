@@ -22,8 +22,8 @@ import { RouterLink } from "vue-router";
     </div>
     <h1 class="">GBG Rentals</h1>
     <nav class="header-nav">
-      <RouterLink to="/login">Login</RouterLink>
-      <RouterLink to="/register">Register</RouterLink>
+      <RouterLink to="/login">Logga in</RouterLink>
+      <RouterLink to="/register">Registrera</RouterLink>
     </nav>
   </header>
 </template>
