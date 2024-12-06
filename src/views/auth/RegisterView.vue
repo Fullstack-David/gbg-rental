@@ -9,7 +9,7 @@
           type="text"
           id="fullName"
           v-model="form.fullName"
-          placeholder="EAnge ditt fullständiga namn"
+          placeholder="Ange ditt fullständiga namn"
           required
         />
       </div>
