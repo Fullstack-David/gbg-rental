@@ -30,39 +30,43 @@ const router = createRouter({
       component: DashboardView,
       children: [
         {
-          path: "create-item",
-          name: "createItem",
-          component: CreateItemView,
+          path: "my-items",
+          name: "myItems",
+          component: MyItemsView,
         },
         {
           path: "items",
           name: "items",
           component: ItemsView,
+          children: [
+            {
+              path: ":id",
+              name: "itemDetails",
+              component: ItemDetailsView,
+            },
+            {
+              path: "create",
+              name: "createItem",
+              component: CreateItemView,
+            },
+            {
+              path: "edit/:id",
+              name: "editItem",
+              component: EditItemView,
+            },
+          ]
         },
         {
-          path: "items/:id",
-          name: "itemDetails",
-          component: ItemDetailsView,
-        },
-        {
-          path: "my-rentals",
+          path: "rentals",
           name: "myRentals",
           component: MyRentalsView,
-        },
-        {
-          path: "rental-history",
-          name: "rentalHistory",
-          component: RentalHistoryView,
-        },
-        {
-          path: "edit-item/:id",
-          name: "editItem",
-          component: EditItemView,
-        },
-        {
-          path: "my-items",
-          name: "myItems",
-          component: MyItemsView,
+          children: [
+            {
+              path: "history",
+              name: "rentalHistory",
+              component: RentalHistoryView,
+            },
+          ]
         },
       ],
     },
