@@ -76,7 +76,7 @@ button {
   padding: 10px;
   border-radius: 4px;
   cursor: pointer;
-  margin-top: 8rem;
+  margin-top: 8%;
 }
 
 button:hover {
