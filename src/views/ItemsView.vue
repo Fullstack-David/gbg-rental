@@ -43,6 +43,7 @@ onMounted(() => {
 </script>
 
 <template>
+  <RouterView></RouterView>
   <h2 v-if="isLoading">Laddar..</h2>
   <div v-if="!isLoading">
     <h2>Alla annonser</h2>
