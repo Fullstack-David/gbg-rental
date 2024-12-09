@@ -1,4 +1,5 @@
 # gbg-rental
+skapa en .env fil som innehåller dessa variabler för att appen ska fungera
 
 .env
 VITE_JSONBIN_API_KEY=$2a$10$LSwX40hwz0W3xbkIo9s3fe0aFSMlHtx.X00pHhO.DE4e/.C5OIQum
