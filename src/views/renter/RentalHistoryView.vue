@@ -3,8 +3,6 @@
 <template>
   <div class="order">
     <button class="order-history">Order history</button>
-  </div>
-  <div>
     <p>Historik över tidigare hyrda produkter/föremål</p>
   </div>
 </template>
