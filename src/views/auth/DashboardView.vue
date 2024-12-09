@@ -1,5 +1,4 @@
-<script setup>
-</script>
+<script setup></script>
 <template>
   <div>
     <div class="dashboard-header">
@@ -9,25 +8,25 @@
           <li>
             <!-- visar alla tillgängliga produkter "items" -->
             <RouterLink to="/dashboard/items">
-              <button>hyra</button>
+              <button>Hyra</button>
             </RouterLink>
           </li>
           <li>
             <!-- visar modalen för att lägga till en ny produkt "item" -->
             <RouterLink to="/dashboard/create-item">
-              <button>lägg upp ny produkt</button>
+              <button>Lägg upp ny produkt</button>
             </RouterLink>
           </li>
           <li>
             <!-- listar dem produkterna som är kopplat till den användare som är inloggad -->
             <RouterLink to="/dashboard/rentals">
-              <button>mina produkter</button>
+              <button>Mina produkter</button>
             </RouterLink>
           </li>
           <li>
             <!-- listar dem produkterna som är kopplat till den användare som är inloggad -->
             <RouterLink to="/dashboard/history">
-              <button>order historik</button>
+              <button>Order historik</button>
             </RouterLink>
           </li>
         </ul>
@@ -42,13 +41,18 @@
 
 <style scoped>
 .dashboard-header {
-  background-color: #0D2136;
+  background-color: #0d2136;
   color: aliceblue;
+}
+h2 {
+  margin-left: 1rem;
+  margin-bottom: 1rem;
+  padding: 0.5rem 0;
 }
 
 .local-nav {
-  background-color: #162C46;
-  padding: .5rem;
+  background-color: #162c46;
+  padding: 0.5rem;
 }
 
 .local-nav-ul {
@@ -59,7 +63,14 @@
 
 button {
   background-color: orange;
-  border-radius: 1rem;
-  padding: 0 1rem;
+  border-radius: 5px;
+  padding: 1rem;
+  border: none;
+  font-size: 1rem;
+  color: white;
+}
+
+button:hover {
+  background-color: rgb(179, 118, 6);
 }
 </style>
