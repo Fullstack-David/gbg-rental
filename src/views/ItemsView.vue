@@ -1,13 +1,13 @@
 <script setup>
-import { useItems } from '@/composables/useItems';
-import { ref, onMounted } from 'vue';
+import { useItems } from "@/composables/useItems";
+import { ref, onMounted } from "vue";
 
 const { items, isLoading, fetchItems } = useItems();
 
 const showBookingForm = ref(false);
 const selectedItem = ref(null);
-const bookingDate = ref('');
-const bookingTime = ref('');
+const bookingDate = ref("");
+const bookingTime = ref("");
 
 const bookedItems = ref([]);
 
@@ -21,8 +21,8 @@ const openBookingForm = (item) => {
 const closeBookingForm = () => {
   showBookingForm.value = false;
   selectedItem.value = null;
-  bookingDate.value = '';
-  bookingTime.value = '';
+  bookingDate.value = "";
+  bookingTime.value = "";
 };
 
 // Funktion för att boka ett objekt med dag och tid
@@ -33,7 +33,9 @@ const bookItem = () => {
     time: bookingTime.value,
   };
   bookedItems.value.push(bookingDetails);
-  alert(`Du har bokat: ${selectedItem.value.title} den ${bookingDate.value} kl. ${bookingTime.value}`);
+  alert(
+    `Du har bokat: ${selectedItem.value.title} den ${bookingDate.value} kl. ${bookingTime.value}`,
+  );
   closeBookingForm(); // Stänger formuläret efter bokningen
 };
 
@@ -50,12 +52,13 @@ onMounted(() => {
     <div class="item-container">
       <div v-for="item in items" :key="item.id" class="item">
         <h3>{{ item.title }}</h3>
-        <img :src="item.image.url" :alt="item.image.alt">
+        <img :src="item.image.url" :alt="item.image.alt" />
         <p>{{ item.description }}</p>
         <p>Skapad: {{ item.createdAt }}</p>
         <p>Pris: {{ item.price }}:-</p>
         <p>Postad av: {{ item.owner }}</p>
-        <button @click="openBookingForm(item)">Boka</button> <!-- Booking Button -->
+        <button @click="openBookingForm(item)">Boka</button>
+        <!-- Booking Button -->
       </div>
     </div>
 
@@ -84,7 +87,8 @@ onMounted(() => {
       <h3>Dina bokningar</h3>
       <ul>
         <li v-for="(booking, index) in bookedItems" :key="index">
-          {{ booking.item.title }} - Bokad den {{ booking.date }} kl. {{ booking.time }}:- 
+          {{ booking.item.title }} - Bokad den {{ booking.date }} kl.
+          {{ booking.time }}:-
         </li>
       </ul>
     </div>
@@ -106,13 +110,24 @@ onMounted(() => {
   border-radius: 1rem;
 }
 
+img {
+  width: 100px; /* Adjust as needed */
+  height: auto; /* Maintains aspect ratio */
+  border-radius: 10px;
+  margin: 10px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 button {
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: white;
   border: none;
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
   cursor: pointer;
+  margin: 10px 0;
 }
 
 button:hover {
@@ -172,7 +187,7 @@ h3 {
 }
 
 .form-actions button:first-child {
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: white;
 }
 
