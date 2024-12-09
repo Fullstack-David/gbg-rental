@@ -3,15 +3,7 @@
 <template>
   <div class="order">
     <button class="order-history">Order history</button>
-<<<<<<< HEAD
-    <div>
-      <p>Historik över tidigare hyrda produkter/föremål</p>
-    </div>
-=======
-  </div>
-  <div>
     <p>Historik över tidigare hyrda produkter/föremål</p>
->>>>>>> main
   </div>
 </template>
 
