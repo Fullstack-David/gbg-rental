@@ -70,9 +70,6 @@ const getInputValue = () => {
 //         return 0;
 //     }
 // });
-
-
-
 </script>
 
 <template>
