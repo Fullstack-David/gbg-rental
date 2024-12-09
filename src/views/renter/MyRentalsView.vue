@@ -5,5 +5,6 @@ import RentalHistoryView from "./RentalHistoryView.vue";
   <div>
     <RentalHistoryView></RentalHistoryView>
     <p>Aktiva bokningar</p>
+    <p>Mina produkter</p>
   </div>
 </template>
