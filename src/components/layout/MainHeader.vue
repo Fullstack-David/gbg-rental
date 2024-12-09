@@ -21,36 +21,24 @@ import { RouterLink } from "vue-router";
       </RouterLink>
     </div>
     <RouterLink to="/dashboard">
-      <div class="dashboard-link">
-        <h1 class="">GBG Rentals</h1>
-        <p>(dashboard)</p>
-      </div>
+        <h1 class="no-link-style">GBG Rentals</h1>
     </RouterLink>
     <nav class="header-nav">
+      <RouterLink to="/dashboard">Dashboard</RouterLink>
       <RouterLink to="/login">Logga in</RouterLink>
       <RouterLink to="/register">Registrera</RouterLink>
-
-      <!-- fungerar inte just nu vet egentligen inte varför, renderar Cartvire.vue i App.vue sålänge -->
       <RouterLink to="/dashboard/kundvagn">Kundvagn</RouterLink>
     </nav>
   </header>
 </template>
-<style scoped>
-/* tillfällig (.dashbaord-link) */
-.dashboard-link {
-  color: #fff;
-  text-decoration: none;
-}
 
+<style scoped>
 .logo-container {
   display: flex;
 }
 
 header {
   background-color: black;
-  color: #fff;
-  width: 100%;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -68,9 +56,15 @@ header h1 {
   justify-content: center;
 }
 
+.no-link-style{
+  text-decoration: none;
+  color: #fff;
+}
+
 header .header-nav {
   display: flex;
   flex-direction: start;
+  flex-wrap: wrap;
   padding: 20px;
 }
 
