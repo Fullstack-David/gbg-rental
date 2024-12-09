@@ -1,14 +1,15 @@
 <script setup>
 import { useItems } from "@/composables/useItems";
 import { ref, onMounted } from "vue";
+import { useUsers } from "@/composables/useUser";
 
 const { items, isLoading, fetchItems } = useItems();
+const {isLoggedIn} = useUsers();
 
 const showBookingForm = ref(false);
 const selectedItem = ref(null);
 const bookingDate = ref("");
 const bookingTime = ref("");
-
 const bookedItems = ref([]);
 
 // Funktion för att öppna bokningsformuläret
@@ -61,8 +62,13 @@ onMounted(() => {
         <!-- ######################################################### -->
         <!-- En v-if på denna knappen, som kollar om man är inloggad?  -->
         <!-- ######################################################### -->
-         
-        <button @click="openBookingForm(item)">Boka</button>
+
+        <button
+          @click="openBookingForm(item)"
+          v-if="isLoggedIn"
+        >
+          Boka
+        </button>
         <!-- Booking Button -->
       </div>
     </div>

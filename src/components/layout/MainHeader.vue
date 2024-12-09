@@ -1,5 +1,7 @@
 <script setup>
 import { RouterLink } from "vue-router";
+import { useUsers } from "@/composables/useUser";
+const { isLoggedIn } = useUsers();
 // import { store } from "@/store/cart";
 
 // const emit = defineEmits(['updateCartData']);
@@ -24,10 +26,10 @@ import { RouterLink } from "vue-router";
         <h1 class="no-link-style">GBG Rentals</h1>
     </RouterLink>
     <nav class="header-nav">
-      <RouterLink to="/dashboard">Dashboard</RouterLink>
+      <RouterLink v-if="isLoggedIn" to="/dashboard">Dashboard</RouterLink>
       <RouterLink to="/login">Logga in</RouterLink>
       <RouterLink to="/register">Registrera</RouterLink>
-      <RouterLink to="/dashboard/kundvagn">Kundvagn</RouterLink>
+      <RouterLink v-if="isLoggedIn" to="/dashboard/kundvagn">Kundvagn</RouterLink>
     </nav>
   </header>
 </template>
