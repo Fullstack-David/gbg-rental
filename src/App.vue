@@ -1,23 +1,23 @@
 <script setup>
-import { RouterLink, RouterView } from "vue-router";
+import { RouterView } from "vue-router";
 import MainFooter from "./components/layout/MainFooter.vue";
 import MainHeader from "./components/layout/MainHeader.vue";
-import PublishRental from "./components/PublishRental.vue";
-import Cartview from "./views/renter/Cartview.vue";
 </script>
 
 <template>
-  <!-- <RouterLink>RouterLink</RouterLink> -->
-  <MainHeader />
-  <RouterView />
-
-  <PublishRental />
-
-  <!-- ligger under "kundvagn" i headern men länkningen fungerar inte så lägger "Cartview" här sålänge -->
-  <Cartview />
-  <!-- <RentalItem /> -->
-  <!-- denna ska inte ligga här men bara för att se vad man jobbar med -->
-  <MainFooter />
+  <div class="app-container">
+    <MainHeader />
+    <div class="main-container">
+      <RouterView />
+    </div>
+    <MainFooter />
+  </div>
 </template>
 
-<style></style>
+<style>
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+</style>
