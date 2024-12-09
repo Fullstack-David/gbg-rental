@@ -57,6 +57,11 @@ onMounted(() => {
         <p>Skapad: {{ item.createdAt }}</p>
         <p>Pris: {{ item.price }}:-</p>
         <p>Postad av: {{ item.owner }}</p>
+
+        <!-- ######################################################### -->
+        <!-- En v-if på denna knappen, som kollar om man är inloggad?  -->
+        <!-- ######################################################### -->
+         
         <button @click="openBookingForm(item)">Boka</button>
         <!-- Booking Button -->
       </div>
