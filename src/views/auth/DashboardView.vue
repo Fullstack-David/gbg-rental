@@ -1,5 +1,4 @@
 <script setup>
-import ItemsView from '../ItemsView.vue';
 </script>
 <template>
   <div>
