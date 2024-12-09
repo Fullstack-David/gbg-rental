@@ -70,9 +70,6 @@ const getInputValue = () => {
 //         return 0;
 //     }
 // });
-
-
-
 </script>
 
 <template>
@@ -132,7 +129,6 @@ const getInputValue = () => {
     font-family: Arial, sans-serif;
     color: #333;
     text-align: center;
-    /* Centrerar innehållet */
 }
 
 .modal-backdrop {
