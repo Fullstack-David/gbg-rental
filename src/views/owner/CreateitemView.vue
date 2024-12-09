@@ -121,7 +121,7 @@ const getInputValue = () => {
 </template>
 
 <style scoped>
-.pub-container {
+/* .pub-container {
     border: 2px solid #4CAF50;
     border-radius: 10px;
     padding: 1.5rem;
@@ -132,8 +132,7 @@ const getInputValue = () => {
     font-family: Arial, sans-serif;
     color: #333;
     text-align: center;
-    /* Centrerar innehållet */
-}
+} */
 
 .modal-backdrop {
     position: fixed;
