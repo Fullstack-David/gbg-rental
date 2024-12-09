@@ -36,6 +36,11 @@ const router = createRouter({
           component: MyItemsView,
         },
         {
+          path: "create-item",
+          name: "createItem",
+          component: CreateItemView,
+        },
+        {
           path: "items",
           name: "items",
           component: ItemsView,
@@ -44,11 +49,6 @@ const router = createRouter({
               path: ":id",
               name: "itemDetails",
               component: ItemDetailsView,
-            },
-            {
-              path: "create",
-              name: "createItem",
-              component: CreateItemView,
             },
             {
               path: "edit/:id",
@@ -69,7 +69,7 @@ const router = createRouter({
         },
 
         {
-          path: "/kundvagn",
+          path: "kundvagn",
           name: "kundvagn",
           component: Cartview,
         },
