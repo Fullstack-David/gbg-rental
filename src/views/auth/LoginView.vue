@@ -54,14 +54,22 @@ const onLogin = () => {
   margin: 0 auto;
   margin-top: 3rem;
   margin-bottom: 3.3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 h1 {
   margin-bottom: 3rem;
 }
+
 form {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   gap: 34px;
+  width: 100%;
 }
 .form-group {
   display: flex;
@@ -69,6 +77,7 @@ form {
   align-items: center;
   gap: 1rem;
 }
+
 button {
   background-color: #007bff;
   color: #fff;
@@ -76,7 +85,13 @@ button {
   padding: 10px;
   border-radius: 4px;
   cursor: pointer;
-  margin-top: 8%;
+  /* margin-top: 8%; */
+  width: 50%;
+  align-self: center;
+}
+
+input {
+  padding: 8px;
 }
 
 button:hover {
