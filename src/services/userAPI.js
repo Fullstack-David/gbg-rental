@@ -1,5 +1,6 @@
-import { CONFIG } from "@/constants/config";
-import bcrypt from "bcryptjs";
+
+import { CONFIG } from "@/constants/config"
+import bcryptjs from 'bcryptjs'
 
 const headers = {
   "Content-Type": "application/json",
@@ -18,9 +19,11 @@ export const userApi = {
 
   // POST
   async createUser(newUser) {
-    const salt = bcrypt.genSaltSync(10);
-    const cryptPW = bcrypt.hashSync(newUser.password, salt);
-    const cryptUser = { ...newUser, password: cryptPW };
+
+    const salt = bcryptjs.genSaltSync(10);
+    const cryptPW = bcryptjs.hashSync(newUser.password, salt)
+    const cryptUser = {...newUser, password: cryptPW}
+
 
     const currentUsers = await this.fetchUsers();
     const response = await fetch(CONFIG.USER_API_URL, {
