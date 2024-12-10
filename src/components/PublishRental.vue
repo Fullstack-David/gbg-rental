@@ -4,14 +4,19 @@ import { ref, computed } from 'vue';
 const showModal = ref(false);
 
 const productInfo = ref({
+    id: '',
     title: '',
     description: '',
     price: '',
-    rentalPeriod: {
-        startDate: '',
-        endDate: '',
-    },
+    // rentalPeriod: {
+    //     startDate: '',
+    //     endDate: '',
+    // },
     owner: '',
+    image: {
+        url: '',
+        alt: '',
+    }
 });
 
 const publishedProducts = ref([]);
@@ -41,7 +46,7 @@ const getInputValue = () => {
     publishedProducts.value.push({ ...productInfo.value });
 
     // bara kontroll console, raderas sen
-    console.log('Publicerade varor:', JSON.parse(JSON.stringify(publishedProducts.value)), `Du har hyrt ut ${productInfo.value.title} med beskrivningen: ${productInfo.value.description} för priset ${productInfo.value.price} under perioden: ${productInfo.value.rentalPeriod.startDate} - ${productInfo.value.rentalPeriod.endDate}`);
+    console.log('Publicerade varor:', JSON.parse(JSON.stringify(publishedProducts.value)), `${productInfo.value.owner} har hyrt ut ${productInfo.value.title} med beskrivningen: ${productInfo.value.description} för priset ${productInfo.value.price} under perioden: ${productInfo.value.rentalPeriod.startDate} - ${productInfo.value.rentalPeriod.endDate}`);
 
     productInfo.value = {
         title: '',
@@ -82,6 +87,9 @@ const getInputValue = () => {
         <div class="modal-content">
             <button class="close-btn" @click="showModal = false">x</button>
             <div class="info-field">
+                <!-- owner -->
+                <input class="prod-owner" type="text" placeholder="Uthyrarens namn" v-model='productInfo.owner'>
+
                 <!-- titel -->
                 <input class="prod-title" type="text" placeholder="produktens namn" v-model='productInfo.title'>
             
