@@ -58,6 +58,10 @@
 
 <script setup>
 import { reactive } from "vue";
+import { userApi } from '@/services/userAPI'
+import { useUsers } from "@/composables/useUser";
+
+const {logIn} = useUsers();
 
 const form = reactive({
   fullName: "",
@@ -78,11 +82,17 @@ const onRegister = () => {
     fullName: form.fullName,
     email: form.email,
   });
+  userApi.createUser({
+    fullName: form.fullName,
+    email: form.email,
+    password: form.password
+  })
+  logIn(form.email, form.password)
   alert("Registration successful!");
 };
 </script>
 
-<style>
+<style scoped>
 .register-container {
   max-width: 400px;
   margin: 0 auto;

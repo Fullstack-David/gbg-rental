@@ -20,13 +20,18 @@ import { RouterLink } from "vue-router";
         />
       </RouterLink>
     </div>
-    <h1 class="">GBG Rentals</h1>
+    <RouterLink to="/dashboard">
+        <h1 class="no-link-style">GBG Rentals</h1>
+    </RouterLink>
     <nav class="header-nav">
+      <RouterLink to="/dashboard">Dashboard</RouterLink>
       <RouterLink to="/login">Logga in</RouterLink>
       <RouterLink to="/register">Registrera</RouterLink>
+      <RouterLink to="/dashboard/kundvagn">Kundvagn</RouterLink>
     </nav>
   </header>
 </template>
+
 <style scoped>
 .logo-container {
   display: flex;
@@ -34,9 +39,6 @@ import { RouterLink } from "vue-router";
 
 header {
   background-color: black;
-  color: #fff;
-  width: 100%;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -54,9 +56,15 @@ header h1 {
   justify-content: center;
 }
 
+.no-link-style{
+  text-decoration: none;
+  color: #fff;
+}
+
 header .header-nav {
   display: flex;
   flex-direction: start;
+  flex-wrap: wrap;
   padding: 20px;
 }
 

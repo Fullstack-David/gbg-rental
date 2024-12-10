@@ -14,13 +14,14 @@
 
 <style scoped>
 footer {
+  margin-top: auto;
   margin-bottom: 0;
   background-color: #1a202c;
   color: #fff;
   text-align: center;
   padding: 20px 0;
   font-size: 14px;
-  margin-top: auto;
+  justify-self: end;
 }
 
 footer a {

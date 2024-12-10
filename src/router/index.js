@@ -9,8 +9,9 @@ import EditItemView from "@/views/owner/EditItemView.vue";
 import MyItemsView from "@/views/owner/MyItemsView.vue";
 import LoginView from "@/views/auth/LoginView.vue";
 import RegisterView from "@/views/auth/RegisterView.vue";
-import DashboardView from "@/views/auth/DashboardView.vue";
+import DashboardView from "@/components/layout/Dashboard.vue";
 import NotFoundView from "@/views/NotFoundView.vue";
+import Cartview from "@/views/renter/Cartview.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -35,6 +36,11 @@ const router = createRouter({
           component: MyItemsView,
         },
         {
+          path: "create-item",
+          name: "createItem",
+          component: CreateItemView,
+        },
+        {
           path: "items",
           name: "items",
           component: ItemsView,
@@ -43,11 +49,6 @@ const router = createRouter({
               path: ":id",
               name: "itemDetails",
               component: ItemDetailsView,
-            },
-            {
-              path: "create",
-              name: "createItem",
-              component: CreateItemView,
             },
             {
               path: "edit/:id",
@@ -60,13 +61,17 @@ const router = createRouter({
           path: "rentals",
           name: "myRentals",
           component: MyRentalsView,
-          children: [
-            {
-              path: "history",
-              name: "rentalHistory",
-              component: RentalHistoryView,
-            },
-          ]
+        },
+        {
+          path: "history",
+          name: "rentalHistory",
+          component: RentalHistoryView,
+        },
+
+        {
+          path: "kundvagn",
+          name: "kundvagn",
+          component: Cartview,
         },
       ],
     },
