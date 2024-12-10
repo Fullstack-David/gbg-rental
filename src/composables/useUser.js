@@ -1,38 +1,41 @@
-import { useRouter } from 'vue-router'
-import { defineStore } from 'pinia'
-import { userApi } from '@/services/userAPI'
-import bcrypt from 'bcryptjs'
+import { useRouter } from "vue-router";
+import { defineStore } from "pinia";
+import { userApi } from "@/services/userAPI";
+import bcrypt from "bcryptjs";
 
-export const useUsers = defineStore('counter', () => {
+export const useUsers = defineStore("counter", () => {
   const router = useRouter();
   const users = userApi.fetchUsers();
 
-  function logIn(email, password){
-    console.log('tjoho')
-    localStorage.setItem("user", JSON.stringify({
-      id: 1
-    }))
+  function logIn(email, password) {
+    console.log("tjoho");
+    localStorage.setItem(
+      "user",
+      JSON.stringify({
+        id: 1,
+      }),
+    );
 
     // FICK INTE HÄMTA FRÅN DATTABASEN, DETTA ÄR KODEN FÖR DET
-    // const user = users.find((user) => user.email === email);
-    // bcrypt.compare(password, user.password, (error, result) => {
-    //   if(result){
-    //     localStorage.setItem('user', {
-    //       id: user.id
-    //     })
-    //   } else console.log('Incorrect password')
-    // })
-    router.push('/');
+    const user = users.find((user) => user.email === email);
+    bcrypt.compare(password, user.password, (error, result) => {
+      if (result) {
+        localStorage.setItem("user", {
+          id: user.id,
+        });
+      } else console.log("Incorrect password");
+    });
+    router.push("/");
   }
 
-  function logOut(){
-    localStorage.removeItem('user')
-    router.push('/');
+  function logOut() {
+    localStorage.removeItem("user");
+    router.push("/");
   }
 
-  function isLoggedIn(){
-    if(localStorage.getItem('user')) return true
-    return false
+  function isLoggedIn() {
+    if (localStorage.getItem("user")) return true;
+    return false;
   }
-  return {logIn, logOut, isLoggedIn}
-})
+  return { logIn, logOut, isLoggedIn };
+});
