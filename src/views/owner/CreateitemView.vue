@@ -1,9 +1,11 @@
 <script setup>
 import { ref, computed } from 'vue';
+import { itemsApi } from '@/services/itemsApi';
 
 const showModal = ref(false);
 
 const productInfo = ref({
+    id: '',
     title: '',
     description: '',
     price: '',
@@ -12,6 +14,10 @@ const productInfo = ref({
         endDate: '',
     },
     owner: '',
+    image: {
+        url: '',
+        alt: '',
+    }
 });
 
 const publishedProducts = ref([]);
@@ -37,11 +43,22 @@ const totalSum = computed(() => {
     return rentalDays.value * productInfo.value.price;
 })
 
-const getInputValue = () => {
-    publishedProducts.value.push({ ...productInfo.value });
 
+
+const getInputValue = async () => {
+    //skapa objektet och publicera till apit
+    const updatedItem = await itemsApi.createItem({ ...productInfo.value });
+
+    //lägg till publicerad produkt i listan
+    publishedProducts.value.push(updatedItem);
+
+    //loggar alla varor
+    console.log('Alla varor:', JSON.parse(JSON.stringify(publishedProducts.value)))
     // bara kontroll console, raderas sen
-    console.log('Publicerade varor:', JSON.parse(JSON.stringify(publishedProducts.value)), `Du har hyrt ut ${productInfo.value.title} med beskrivningen: ${productInfo.value.description} för priset ${productInfo.value.price} under perioden: ${productInfo.value.rentalPeriod.startDate} - ${productInfo.value.rentalPeriod.endDate}`);
+    console.log('Publicerade varor:', JSON.parse(JSON.stringify(publishedProducts.value)),
+        `${productInfo.value.owner} har hyrt ut ${productInfo.value.title} med beskrivningen: ${productInfo.value.description} för priset ${productInfo.value.price} under perioden: ${productInfo.value.rentalPeriod.startDate} - ${productInfo.value.rentalPeriod.endDate}bildurl: ${productInfo.value.image.url} alt-text: ${productInfo.value.image.url}`);
+
+    itemsApi.createItem(productInfo.value);
 
     productInfo.value = {
         title: '',
@@ -52,67 +69,69 @@ const getInputValue = () => {
             endDate: '',
         },
         owner: '',
+        image: {
+            url: '',
+            alt: '',
+        }
     }
 
+    //återställer uthyrningsdagarna
+    rentalDays.value = 0;
     // ska den stänga eller ej? hmmm...
     showModal.value = false;
 }
 
-// hur lång uthyrningperiod, osäker på om jag ska ha denna eller den andra...
-// const rentalDays = computed(() => {
-//     const start = new Date(productInfo.value.rentalPeriod.startDate);
-//     const end = new Date(productInfo.value.rentalPeriod.endDate);
-
-//     if (start && end && end >= start) {
-//         const differenceInTime = end.getTime() - start.getTime();
-//         return differenceInTime / (1000 * 3600 * 24);
-//     } else {
-//         return 0;
-//     }
-// });
 </script>
 
 <template>
     <div class='pub-container'>
         <button @click="showModal = true">Hyr ut något</button>
         <div v-if="showModal" class="modal-backdrop" @click.self="showModal = false">
-        <div class="modal-content">
-            <button class="close-btn" @click="showModal = false">x</button>
-            <div class="info-field">
-                <!-- titel -->
-                <input class="prod-title" type="text" placeholder="produktens namn" v-model='productInfo.title'>
-            
-                <!-- pris per dag -->
-                <input class="prod-price" 
-                type="text" 
-                placeholder="Pris per dag" 
-                v-model='productInfo.price'>
+            <div class="modal-content">
+                <button class="close-btn" @click="showModal = false">x</button>
+                <div class="info-field">
+                    <!-- owner -->
+                    <input class="prod-owner" type="text" placeholder="Uthyrarens namn" v-model='productInfo.owner'>
 
-                <!--- description -->
-                <input class="prod-desc" type="text" placeholder="produktens beskrivning" v-model='productInfo.description'
-                minlength="20">
+                    <!-- titel -->
+                    <input class="prod-title" type="text" placeholder="Produktens namn" v-model='productInfo.title'>
+
+                    <!-- pris per dag -->
+                    <input class="prod-price" type="text" placeholder="Pris per dag" v-model='productInfo.price'>
+
+                    <!--- description -->
+                    <input class="prod-desc" type="text" placeholder="Produktens beskrivning"
+                        v-model='productInfo.description' minlength="20">
+
+                    <!-- Bild uppladdning -->
+                    <h3>Ladda upp bild</h3>
+                    <input type="text" placeholder="Klistra in url för din bild (endast från unsplash...)"  v-model="productInfo.image.url">
+
+                    <!-- Förhandsgranskninga av bild -->
+                    <div v-if="productInfo.image.url">
+                    <h4>Vald bild:</h4>
+                    <img :src="productInfo.image.url"  alt="Förhandsvisning" style="max-width: 300px; max-height: 300px;">
+                    <input type="text" placeholder="Beskrivning av bild" v-model="productInfo.image.alt">
+                    </div>
 
 
-    <!-- 
-            <textarea v-model='productInfo.description' placeholder="produktens beskrivning"
-            name="" id="" 
-            cols="30" rows="5"></textarea> -->
+                    <div class="date-div">
+                        <h4>Uthyrningsdatum</h4>
+                        <!-- start datum för uthyrning -->
+                        <p>Från:</p>
+                        <input class="start-date" type="date" v-model="productInfo.rentalPeriod.startDate" :min="todayDate"
+                            @change="calculateRentalDays">
 
-                <div class="date-div">
-                    <p>Uthyrningsdatum</p>
-                     <!-- start datum för uthyrning -->
-                    <p>Från:</p>
-                    <input class="start-date" type="date" v-model="productInfo.rentalPeriod.startDate" :min="todayDate" @change="calculateRentalDays">
-
-                    <!-- Slutdatum för uthyrning -->
-                    <p>Till</p>
-                    <input class="end-date" type="date" v-model="productInfo.rentalPeriod.endDate" :min="todayDate" @change="calculateRentalDays">
+                        <!-- Slutdatum för uthyrning -->
+                        <p>Till</p>
+                        <input class="end-date" type="date" v-model="productInfo.rentalPeriod.endDate" :min="todayDate"
+                            @change="calculateRentalDays">
+                    </div>
+                    <button @click="getInputValue">Publicera vara</button>
+                    <p> Antal dagar för uthyrning: {{ rentalDays }} </p>
+                    <p>Totalt pris: {{ totalSum }} KR</p>
                 </div>
-                <button @click="getInputValue">Publicera vara</button>
-                <p> Antal dagar för uthyrning: {{ rentalDays }} </p>
-                <p>Totalt pris:  {{ totalSum }} KR</p>
             </div>
-        </div>
         </div>
     </div>
 </template>
@@ -129,6 +148,7 @@ const getInputValue = () => {
     font-family: Arial, sans-serif;
     color: #333;
     text-align: center;
+    /* Centrerar innehållet */
 }
 
 .modal-backdrop {
@@ -153,6 +173,8 @@ const getInputValue = () => {
     max-width: 500px;
     position: relative;
     animation: fadeIn 0.3s ease-in-out;
+    max-height: 80vh;
+    overflow: auto;
     /* Lägger till en mjuk öppningsanimation */
 }
 
