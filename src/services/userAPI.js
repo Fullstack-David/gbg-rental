@@ -1,5 +1,11 @@
+<<<<<<< HEAD
 import { CONFIG } from "@/constants/config";
 import bcryptjs from "bcryptjs";
+=======
+
+import { CONFIG } from "@/constants/config"
+import bcryptjs from 'bcryptjs'
+>>>>>>> b59635e63d96b77c44c18ba75db20222652b1708
 
 const headers = {
   "Content-Type": "application/json",
@@ -18,9 +24,17 @@ export const userApi = {
 
   // POST
   async createUser(newUser) {
+<<<<<<< HEAD
     const salt = bcryptjs.genSaltSync(10);
     const cryptPW = bcryptjs.hashSync(newUser.password, salt);
     const cryptUser = { ...newUser, password: cryptPW };
+=======
+
+    const salt = bcryptjs.genSaltSync(10);
+    const cryptPW = bcryptjs.hashSync(newUser.password, salt)
+    const cryptUser = {...newUser, password: cryptPW}
+
+>>>>>>> b59635e63d96b77c44c18ba75db20222652b1708
 
     const currentUsers = await this.fetchUsers();
     const response = await fetch(CONFIG.USER_API_URL, {
