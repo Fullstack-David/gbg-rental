@@ -1,9 +1,12 @@
 <script setup>
+import ItemsView from './ItemsView.vue';
+
 </script>
 
 <template>
   <main>
     <h2>Välkommen till din hyres protal!</h2>
+    <ItemsView/>
   </main>
 </template>
 

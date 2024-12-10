@@ -9,7 +9,7 @@ import EditItemView from "@/views/owner/EditItemView.vue";
 import MyItemsView from "@/views/owner/MyItemsView.vue";
 import LoginView from "@/views/auth/LoginView.vue";
 import RegisterView from "@/views/auth/RegisterView.vue";
-import DashboardView from "@/views/auth/DashboardView.vue";
+import DashboardView from "@/components/layout/Dashboard.vue";
 import NotFoundView from "@/views/NotFoundView.vue";
 import Cartview from "@/views/renter/Cartview.vue";
 
