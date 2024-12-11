@@ -2,16 +2,18 @@
 import { useItems } from "@/composables/useItems";
 import { authStore } from "@/stores/authStore";
 import { ref, onMounted } from "vue";
+import { useUsers } from "@/composables/useUser";
+import { useBookings } from "@/composables/useBooking";
 
+const { bookedItems } = useBookings();
 const { items, isLoading, fetchItems } = useItems();
+const {isLoggedIn} = useUsers();
 const {isLoggedIn, logOutState, logInState } = authStore()
 
 const showBookingForm = ref(false);
 const selectedItem = ref(null);
 const bookingDate = ref("");
 const bookingTime = ref("");
-
-const bookedItems = ref([]);
 
 // Funktion för att öppna bokningsformuläret
 const openBookingForm = (item) => {
@@ -41,6 +43,8 @@ const bookItem = () => {
     time: bookingTime.value,
   };
   bookedItems.value.push(bookingDetails);
+
+  console.log(bookingDetails);
   alert(
     `Du har bokat: ${selectedItem.value.title} den ${bookingDate.value} kl. ${bookingTime.value}`,
   );
@@ -53,10 +57,10 @@ onMounted(() => {
 </script>
 
 <template>
-  <RouterView></RouterView>
+  <RouterView />
   <h2 v-if="isLoading">Laddar..</h2>
   <div v-if="!isLoading">
-    <h2>Alla annonser</h2>
+    <h2 class="header-title">Alla annonser</h2>
     <div class="item-container">
       <div v-for="item in items" :key="item.id" class="item">
         <h3>{{ item.title }}</h3>
@@ -69,8 +73,13 @@ onMounted(() => {
         <!-- ######################################################### -->
         <!-- En v-if på denna knappen, som kollar om man är inloggad?  -->
         <!-- ######################################################### -->
-         
-        <button @click="openBookingForm(item)">Boka</button>
+
+        <button
+          @click="openBookingForm(item)"
+          v-if="isLoggedIn"
+        >
+          Boka
+        </button>
         <!-- Booking Button -->
       </div>
     </div>
@@ -95,16 +104,6 @@ onMounted(() => {
         </form>
       </div>
     </div>
-
-    <div v-if="bookedItems.length > 0">
-      <h3>Dina bokningar</h3>
-      <ul>
-        <li v-for="(booking, index) in bookedItems" :key="index">
-          {{ booking.item.title }} - Bokad den {{ booking.date }} kl.
-          {{ booking.time }}:-
-        </li>
-      </ul>
-    </div>
   </div>
 </template>
 
@@ -113,6 +112,18 @@ onMounted(() => {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 1rem;
+}
+.header-title {
+  padding: 1.5rem;
+}
+
+.booking-container {
+  padding-left: 1rem;
+}
+
+li {
+  list-style-type: none;
+  margin-top: 1rem;
 }
 
 .item {
@@ -147,9 +158,9 @@ button:hover {
   background-color: #45a049;
 }
 
-h3 {
+/* h3 {
   margin-top: 2rem;
-}
+} */
 
 /*---------------------Styling för bokningsformuläret--------------------- */
 .booking-form-modal {
