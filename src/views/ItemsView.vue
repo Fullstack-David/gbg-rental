@@ -1,8 +1,10 @@
 <script setup>
 import { useItems } from "@/composables/useItems";
+import { authStore } from "@/stores/authStore";
 import { ref, onMounted } from "vue";
 
 const { items, isLoading, fetchItems } = useItems();
+const {isLoggedIn, logOutState, logInState } = authStore()
 
 const showBookingForm = ref(false);
 const selectedItem = ref(null);
@@ -13,6 +15,12 @@ const bookedItems = ref([]);
 
 // Funktion för att öppna bokningsformuläret
 const openBookingForm = (item) => {
+  if (isLoggedIn) {
+    // logOutState;
+    console.log('isLoggedIn', isLoggedIn)
+  }
+  logInState(true);
+  console.log('openBookingForm isLoggedIn?', isLoggedIn)
   selectedItem.value = item;
   showBookingForm.value = true;
 };

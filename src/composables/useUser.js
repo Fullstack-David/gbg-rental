@@ -2,10 +2,12 @@ import { useRouter } from 'vue-router'
 import { defineStore } from 'pinia'
 import { userApi } from '@/services/userAPI'
 import bcrypt from 'bcryptjs'
+import { authStore } from '@/stores/authStore'
 
 export const useUsers = defineStore('counter', () => {
   const router = useRouter();
   const users = userApi.fetchUsers();
+  const { logInState, logOutState } = authStore
 
   function logIn(email, password){
     console.log('tjoho')
@@ -13,20 +15,21 @@ export const useUsers = defineStore('counter', () => {
       id: 1
     }))
 
-    // FICK INTE HÄMTA FRÅN DATTABASEN, DETTA ÄR KODEN FÖR DET
-    // const user = users.find((user) => user.email === email);
-    // bcrypt.compare(password, user.password, (error, result) => {
-    //   if(result){
-    //     localStorage.setItem('user', {
-    //       id: user.id
-    //     })
-    //   } else console.log('Incorrect password')
-    // })
+    const user = users.find((user) => user.email === email);
+    bcrypt.compare(password, user.password, (error, result) => {
+      if(result){
+        localStorage.setItem('user', {
+          id: user.id
+        })
+        logInState; // VET INTE OM DETTA FUNGERAR /Jens
+      } else console.log('Incorrect password')
+    })
     router.push('/');
   }
 
   function logOut(){
-    localStorage.removeItem('user')
+    localStorage.removeItem('user');
+    logOutState; // VET INTE OM DETTA FUNGERAR /Jens
     router.push('/');
   }
 
