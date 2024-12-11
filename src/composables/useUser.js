@@ -7,7 +7,7 @@ import { ref } from 'vue'
 export const useUsers = defineStore("counter", () => {
   const router = useRouter();
   const users = userApi.fetchUsers();
-  const isLoggedIn = ref(false)
+  const isLoggedInState = ref(false)
 
   function logIn(email, password) {
     console.log("tjoho");
@@ -32,7 +32,7 @@ export const useUsers = defineStore("counter", () => {
 
   function logOut(){
     localStorage.removeItem('user')
-    isLoggedIn.value = false
+    isLoggedInState.value = false
     router.push('/');
   }
 

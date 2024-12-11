@@ -12,7 +12,6 @@ const showBookingForm = ref(false);
 const selectedItem = ref(null);
 const bookingDate = ref("");
 const bookingTime = ref("");
-const bookedItems = ref([]);
 
 // Funktion för att öppna bokningsformuläret
 const openBookingForm = (item) => {
