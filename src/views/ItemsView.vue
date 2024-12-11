@@ -1,10 +1,12 @@
 <script setup>
 import { useItems } from "@/composables/useItems";
 import { ref, onMounted } from "vue";
+import { useUsers } from "@/composables/useUser";
 import { useBookings } from "@/composables/useBooking";
 
 const { bookedItems } = useBookings();
 const { items, isLoading, fetchItems } = useItems();
+const {isLoggedIn} = useUsers();
 
 const showBookingForm = ref(false);
 const selectedItem = ref(null);
@@ -64,7 +66,12 @@ onMounted(() => {
         <!-- En v-if på denna knappen, som kollar om man är inloggad?  -->
         <!-- ######################################################### -->
 
-        <button @click="openBookingForm(item)">Boka</button>
+        <button
+          @click="openBookingForm(item)"
+          v-if="isLoggedIn"
+        >
+          Boka
+        </button>
         <!-- Booking Button -->
       </div>
     </div>

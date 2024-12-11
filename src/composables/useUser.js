@@ -1,14 +1,15 @@
-import { useRouter } from "vue-router";
-import { defineStore } from "pinia";
-import { userApi } from "@/services/userAPI";
-import bcrypt from "bcryptjs";
+import { useRouter } from 'vue-router'
+import { defineStore } from 'pinia'
+import { userApi } from '@/services/userAPI'
+import bcryptjs from 'bcryptjs'
+import { ref } from 'vue'
 
 export const useUsers = defineStore("counter", () => {
   const router = useRouter();
-  const users = userApi.fetchUsers();
+  const isLoggedInState = ref(false)
 
-  function logIn(email, password) {
-    console.log("tjoho");
+  async function logIn(email, password) {
+    const users = await userApi.fetchUsers();
     localStorage.setItem(
       "user",
       JSON.stringify({
@@ -16,21 +17,21 @@ export const useUsers = defineStore("counter", () => {
       }),
     );
 
-    // FICK INTE HÄMTA FRÅN DATTABASEN, DETTA ÄR KODEN FÖR DET
     const user = users.find((user) => user.email === email);
-    bcrypt.compare(password, user.password, (error, result) => {
+    bcryptjs.compare(password, user.password, (error, result) => {
       if (result) {
-        localStorage.setItem("user", {
-          id: user.id,
-        });
+        localStorage.setItem("user", 
+          user.id,
+        );
       } else console.log("Incorrect password");
     });
     router.push("/");
   }
 
   function logOut() {
-    localStorage.removeItem("user");
-    router.push("/");
+    localStorage.removeItem('user')
+    isLoggedInState.value = false
+    router.push('/');
   }
 
   function isLoggedIn() {
