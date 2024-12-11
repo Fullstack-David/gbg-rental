@@ -2,6 +2,7 @@
 import { reactive } from "vue";
 import { userApi } from '@/services/userAPI'
 import { useUsers } from "@/composables/useUser";
+import { v4 as uuid} from 'uuid'
 
 const { logIn } = useUsers();
 
@@ -25,7 +26,8 @@ const onRegister = () => {
     email: form.email,
   });
   userApi.createUser({
-    fullName: form.fullName,
+    id: uuid(),
+    name: form.fullName,
     email: form.email,
     password: form.password
   })
@@ -36,11 +38,11 @@ const onRegister = () => {
 
 <template>
   <div class="register-container">
-    <h1>Registrera</h1>
+    <h2>Registrera</h2>
     <form @submit.prevent="onRegister">
       <!-- Full Name -->
       <div class="form-group">
-        <label for="fullName">Fullnamn</label>
+        <label for="fullName">Namn</label>
         <input type="text" id="fullName" v-model="form.fullName" placeholder="Ange ditt fullständiga namn" required />
       </div>
 
