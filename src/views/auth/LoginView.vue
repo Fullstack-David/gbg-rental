@@ -1,49 +1,38 @@
+        <script setup>
+        import { reactive } from "vue";
+        import { useUsers } from "@/composables/useUser";
+
+        const { logIn } = useUsers();
+
+        const form = reactive({
+          email: "",
+          password: "",
+        });
+
+        const onLogin = () => {
+          console.log("User logged in:", form);
+          // Lägg till logik för att hantera inloggning (ex. API-anrop)
+          logIn(form.email, form.email.password)
+        };
+</script>
+
 <template>
   <div class="login-container">
     <h1>Logga in</h1>
     <form @submit.prevent="onLogin">
       <div class="form-group">
         <label for="email"> E-postadress</label>
-        <input
-          id="email"
-          type="email"
-          v-model="form.email"
-          placeholder="E-postadress"
-          required
-        />
+        <input id="email" type="email" v-model="form.email" placeholder="E-postadress" required />
       </div>
       <div class="form-group">
         <label for="password">Lösenord</label>
-        <input
-          id="password"
-          type="password"
-          v-model="form.password"
-          placeholder="Ange lösenord..."
-          required
-        />
+        <input id="password" type="password" v-model="form.password" placeholder="Ange lösenord..." required />
       </div>
       <button type="submit">Logga in</button>
     </form>
   </div>
 </template>
 
-<script setup>
-import { reactive } from "vue";
-import { useUsers } from "@/composables/useUser";
-
-const {logIn} = useUsers();
-
-const form = reactive({
-  email: "",
-  password: "",
-});
-
-const onLogin = () => {
-  console.log("User logged in:", form);
-  // Lägg till logik för att hantera inloggning (ex. API-anrop)
-  logIn(form.email, form.email.password)
-};
-</script>
 
 <style scoped>
 .login-container {
@@ -59,20 +48,24 @@ const onLogin = () => {
   margin-top: 3rem;
   margin-bottom: 3.3rem;
 }
+
 h1 {
   margin-bottom: 3rem;
 }
+
 form {
   display: flex;
   flex-direction: column;
   gap: 34px;
 }
+
 .form-group {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 1rem;
 }
+
 button {
   background-color: #007bff;
   color: #fff;
