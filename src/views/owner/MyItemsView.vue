@@ -2,6 +2,6 @@
 
 <template>
   <div>
-    <p>Lista över egna items</p>
+    <p>Lista över dina egna items</p>
   </div>
 </template>
