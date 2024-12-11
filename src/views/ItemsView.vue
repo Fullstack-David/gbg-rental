@@ -1,14 +1,14 @@
 <script setup>
 import { useItems } from "@/composables/useItems";
-import { authStore } from "@/stores/authStore";
+// import { authStore } from "@/stores/authStore";
 import { ref, onMounted } from "vue";
-import { useUsers } from "@/composables/useUser";
+// import { useUsers } from "@/composables/useUser";
 import { useBookings } from "@/composables/useBooking";
 
 const { bookedItems } = useBookings();
 const { items, isLoading, fetchItems } = useItems();
-const {isLoggedIn} = useUsers();
-const {isLoggedIn, logOutState, logInState } = authStore()
+// const {isLoggedIn} = useUsers();
+// const {isLoggedIn, logOutState, logInState } = authStore()
 
 const showBookingForm = ref(false);
 const selectedItem = ref(null);

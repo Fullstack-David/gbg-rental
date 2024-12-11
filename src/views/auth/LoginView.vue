@@ -10,8 +10,6 @@ const form = reactive({
 });
 
 const onLogin = () => {
-
-
   // console.log("User logged in:", form);
   // Lägg till logik för att hantera inloggning (ex. API-anrop)
   logIn(form.email, form.password)

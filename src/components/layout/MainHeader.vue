@@ -22,8 +22,8 @@ const { isLoggedIn } = useUsers();
         />
       </RouterLink>
     </div>
-    <RouterLink to="/dashboard">
-        <h1 class="no-link-style">GBG Rentals</h1>
+    <RouterLink class="no-link-style" to="/dashboard">
+        <h1>GBG Rentals</h1>
     </RouterLink>
     <nav class="header-nav">
       <RouterLink v-if="isLoggedIn" to="/dashboard">Dashboard</RouterLink>
@@ -49,12 +49,6 @@ header img {
   height: 100px;
   width: 100px;
   border-radius: 10%;
-}
-
-header h1 {
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .no-link-style{
