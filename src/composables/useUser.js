@@ -20,9 +20,9 @@ export const useUsers = defineStore("counter", () => {
     const user = users.find((user) => user.email === email);
     bcryptjs.compare(password, user.password, (error, result) => {
       if (result) {
-        localStorage.setItem("user", {
-          id: user.id,
-        });
+        localStorage.setItem("user", 
+          user.id,
+        );
       } else console.log("Incorrect password");
     });
     router.push("/");
