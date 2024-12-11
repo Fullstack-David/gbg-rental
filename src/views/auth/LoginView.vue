@@ -1,38 +1,8 @@
-<template>
-  <div class="login-container">
-    <h2>Logga in</h2>
-    <form @submit.prevent="onLogin">
-      <div class="form-group">
-        <label for="email"> E-postadress</label>
-        <input
-          id="email"
-          type="email"
-          v-model="form.email"
-          placeholder="E-postadress"
-          required
-        />
-      </div>
-      <div class="form-group">
-        <label for="password">Lösenord</label>
-        <input
-          id="password"
-          type="password"
-          v-model="form.password"
-      wo  placeholder="Ange lösenord..."
-          required
-        />
-      </div>
-      <button type="submit">Logga in</button>
-      <p>Inget konto, <RouterLink class="create-account-button" to="/register"><span>Registrera här!</span></RouterLink></p>
-    </form>
-  </div>
-</template>
-
 <script setup>
 import { reactive } from "vue";
 import { useUsers } from "@/composables/useUser";
 
-const {logIn} = useUsers();
+const { logIn } = useUsers();
 
 const form = reactive({
   email: "",
@@ -40,11 +10,32 @@ const form = reactive({
 });
 
 const onLogin = () => {
-  console.log("User logged in:", form);
+
+
+  // console.log("User logged in:", form);
   // Lägg till logik för att hantera inloggning (ex. API-anrop)
   logIn(form.email, form.email.password)
 };
 </script>
+
+<template>
+  <div class="login-container">
+    <h2>Logga in</h2>
+    <form @submit.prevent="onLogin">
+      <div class="form-group">
+        <label for="email"> E-postadress</label>
+        <input id="email" type="email" v-model="form.email" placeholder="E-postadress" required />
+      </div>
+      <div class="form-group">
+        <label for="password">Lösenord</label>
+        <input id="password" type="password" v-model="form.password" wo placeholder="Ange lösenord..." required />
+      </div>
+      <button type="submit">Logga in</button>
+      <p>Inget konto, <RouterLink class="create-account-button" to="/register"><span>Registrera här!</span></RouterLink>
+      </p>
+    </form>
+  </div>
+</template>
 
 <style scoped>
 .login-container {
@@ -124,6 +115,7 @@ button:active {
   color: blue;
   text-decoration: none;
 }
+
 .create-account-button:hover {
   cursor: pointer;
   color: #007bff;
