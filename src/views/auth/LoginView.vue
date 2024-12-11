@@ -1,6 +1,6 @@
 <template>
   <div class="login-container">
-    <h1>Logga in</h1>
+    <h2>Logga in</h2>
     <form @submit.prevent="onLogin">
       <div class="form-group">
         <label for="email"> E-postadress</label>
@@ -23,6 +23,7 @@
         />
       </div>
       <button type="submit">Logga in</button>
+      <p>Inget konto, <RouterLink class="create-account-button" to="/register"><span>Registrera här!</span></RouterLink></p>
     </form>
   </div>
 </template>
@@ -60,7 +61,7 @@ const onLogin = () => {
   align-items: center;
 }
 
-h1 {
+h2 {
   margin-bottom: 2rem;
   font-size: 1.8rem;
   color: #333;
@@ -117,5 +118,15 @@ button:hover {
 
 button:active {
   transform: scale(0.98);
+}
+
+.create-account-button {
+  color: blue;
+  text-decoration: none;
+}
+.create-account-button:hover {
+  cursor: pointer;
+  color: #007bff;
+  border-bottom: 2px solid #007bff;
 }
 </style>

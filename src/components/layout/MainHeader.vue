@@ -28,7 +28,6 @@ const { isLoggedIn } = useUsers();
     <nav class="header-nav">
       <RouterLink v-if="isLoggedIn" to="/dashboard">Dashboard</RouterLink>
       <RouterLink to="/login">Logga in</RouterLink>
-      <RouterLink to="/register">Registrera</RouterLink>
       <RouterLink v-if="isLoggedIn" to="/dashboard/kundvagn">Kundvagn</RouterLink>
     </nav>
   </header>
