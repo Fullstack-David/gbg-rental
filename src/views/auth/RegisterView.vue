@@ -1,67 +1,10 @@
-<template>
-  <div class="register-container">
-    <h1>Registrera</h1>
-    <form @submit.prevent="onRegister">
-      <!-- Full Name -->
-      <div class="form-group">
-        <label for="fullName">Fullnamn</label>
-        <input
-          type="text"
-          id="fullName"
-          v-model="form.fullName"
-          placeholder="Ange ditt fullständiga namn"
-          required
-        />
-      </div>
-
-      <!-- Email -->
-      <div class="form-group">
-        <label for="email">E-postadress</label>
-        <input
-          type="email"
-          id="email"
-          v-model="form.email"
-          placeholder="Ange din e-postadress"
-          required
-        />
-      </div>
-
-      <!-- Password -->
-      <div class="form-group">
-        <label for="password">Lösenord</label>
-        <input
-          type="password"
-          id="password"
-          v-model="form.password"
-          placeholder="Ange ett lösenord"
-          required
-        />
-      </div>
-
-      <!-- Confirm Password -->
-      <div class="form-group">
-        <label for="confirmPassword">Bekräfta lösenord</label>
-        <input
-          type="password"
-          id="confirmPassword"
-          v-model="form.confirmPassword"
-          placeholder="Bekräfta lösenord"
-          required
-        />
-      </div>
-
-      <!-- Submit Button -->
-      <button type="submit">Registrera</button>
-    </form>
-  </div>
-</template>
-
 <script setup>
 import { reactive } from "vue";
 import { userApi } from '@/services/userAPI'
 import { useUsers } from "@/composables/useUser";
+import { v4 as uuid} from 'uuid'
 
-const {logIn} = useUsers();
+const { logIn } = useUsers();
 
 const form = reactive({
   fullName: "",
@@ -83,7 +26,8 @@ const onRegister = () => {
     email: form.email,
   });
   userApi.createUser({
-    fullName: form.fullName,
+    id: uuid(),
+    name: form.fullName,
     email: form.email,
     password: form.password
   })
@@ -91,6 +35,41 @@ const onRegister = () => {
   alert("Registration successful!");
 };
 </script>
+
+<template>
+  <div class="register-container">
+    <h2>Registrera</h2>
+    <form @submit.prevent="onRegister">
+      <!-- Full Name -->
+      <div class="form-group">
+        <label for="fullName">Namn</label>
+        <input type="text" id="fullName" v-model="form.fullName" placeholder="Ange ditt fullständiga namn" required />
+      </div>
+
+      <!-- Email -->
+      <div class="form-group">
+        <label for="email">E-postadress</label>
+        <input type="email" id="email" v-model="form.email" placeholder="Ange din e-postadress" required />
+      </div>
+
+      <!-- Password -->
+      <div class="form-group">
+        <label for="password">Lösenord</label>
+        <input type="password" id="password" v-model="form.password" placeholder="Ange ett lösenord" required />
+      </div>
+
+      <!-- Confirm Password -->
+      <div class="form-group">
+        <label for="confirmPassword">Bekräfta lösenord</label>
+        <input type="password" id="confirmPassword" v-model="form.confirmPassword" placeholder="Bekräfta lösenord" required />
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit">Registrera</button>
+    </form>
+  </div>
+</template>
+
 
 <style scoped>
 .register-container {

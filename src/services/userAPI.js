@@ -11,7 +11,6 @@ export const userApi = {
   // GET
   async fetchUsers() {
     const response = await fetch(CONFIG.USER_API_URL, { headers });
-    // console.log(response)
     const data = await response.json();
     return data.record.users;
   },
@@ -34,37 +33,37 @@ export const userApi = {
     return data.record.users;
   },
 
-  // PUT
-  async updateUser(id, updatedUser) {
-    const currentUsers = await this.fetchUsers();
-    const updatedUsers = currentUsers.map((user) =>
-      user.id === id ? { ...user, ...updatedUser } : user,
-    );
+  // PUT ############## används inte ännu ############## 
+  // async updateUser(id, updatedUser) {
+  //   const currentUsers = await this.fetchUsers()
+  //   const updatedUsers = currentUsers.map((user) =>
+  //     user.id === id ? { ...user, ...updatedUser } : user,
+  //   )
 
-    const response = await fetch(CONFIG.USER_API_URL, {
-      method: "PUT",
-      headers,
-      body: JSON.stringify({
-        users: updatedUsers,
-      }),
-    });
-    const data = await response.json();
-    return data.record.Users;
-  },
+  //   const response = await fetch(CONFIG.USER_API_URL, {
+  //     method: 'PUT',
+  //     headers,
+  //     body: JSON.stringify({
+  //       users: updatedUsers,
+  //     }),
+  //   })
+  //   const data = await response.json()
+  //   return data.record.Users
+  // },
 
-  // DELETE
-  async deleteUser(id) {
-    const currentUsers = await this.fetchUsers();
-    const filteredUsers = currentUsers.filter((user) => user.id !== id);
+  // DELETE ############## används inte ännu ##############
+  // async deleteUser(id) {
+  //   const currentUsers = await this.fetchUsers()
+  //   const filteredUsers = currentUsers.filter((user) => user.id !== id)
 
-    const response = await fetch(CONFIG.USER_API_URL, {
-      method: "PUT",
-      headers,
-      body: JSON.stringify({
-        Users: filteredUsers,
-      }),
-    });
-    const data = await response.json();
-    return data.record.Users;
-  },
-};
+  //   const response = await fetch(CONFIG.USER_API_URL, {
+  //     method: 'PUT',
+  //     headers,
+  //     body: JSON.stringify({
+  //       Users: filteredUsers,
+  //     }),
+  //   })
+  //   const data = await response.json()
+  //   return data.record.Users
+  // },
+}
