@@ -10,8 +10,6 @@ export const useUsers = defineStore("counter", () => {
   const store = authStore();
 
   async function logIn(email, password) {
-    console.log('useUser logIn()')
-    console.log('useUser logIn() store.isLoggedIn: ', store.isLoggedIn)
     const users = await userApi.fetchUsers();
     localStorage.setItem(
       "user",
