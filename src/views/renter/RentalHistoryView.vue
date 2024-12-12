@@ -18,6 +18,9 @@ const { bookedItems } = useBookings();
       </li>
     </ul>
   </div>
+  <div v-else="bookedItems.length > 0">
+    <p class="message">Du har inte lagt några ordrar</p>
+  </div>
   <RouterView />
 </template>
 
@@ -85,6 +88,10 @@ const { bookedItems } = useBookings();
 .booking-date-time {
   font-size: 0.9rem;
   color: #777;
+}
+
+.message {
+  margin: 1rem;
 }
 
 @media (max-width: 600px) {
