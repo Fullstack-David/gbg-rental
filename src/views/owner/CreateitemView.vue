@@ -1,8 +1,10 @@
 <script setup>
 import { ref, computed } from 'vue';
 import { itemsApi } from '@/services/itemsApi';
+import { v4 as uuidv4 } from 'uuid';
 
 const showModal = ref(false);
+const loading = ref(false)
 
 const productInfo = ref({
     id: '',
@@ -46,6 +48,8 @@ const totalSum = computed(() => {
 
 
 const getInputValue = async () => {
+    productInfo.value.id = uuidv4();
+
     //skapa objektet och publicera till apit
     const updatedItem = await itemsApi.createItem({ ...productInfo.value });
 
@@ -56,11 +60,10 @@ const getInputValue = async () => {
     console.log('Alla varor:', JSON.parse(JSON.stringify(publishedProducts.value)))
     // bara kontroll console, raderas sen
     console.log('Publicerade varor:', JSON.parse(JSON.stringify(publishedProducts.value)),
-        `${productInfo.value.owner} har hyrt ut ${productInfo.value.title} med beskrivningen: ${productInfo.value.description} för priset ${productInfo.value.price} under perioden: ${productInfo.value.rentalPeriod.startDate} - ${productInfo.value.rentalPeriod.endDate}bildurl: ${productInfo.value.image.url} alt-text: ${productInfo.value.image.url}`);
-
-    itemsApi.createItem(productInfo.value);
+        `Annonsid: ${productInfo.value.id} ${productInfo.value.owner} har hyrt ut ${productInfo.value.title} med beskrivningen: ${productInfo.value.description} för priset ${productInfo.value.price} under perioden: ${productInfo.value.rentalPeriod.startDate} - ${productInfo.value.rentalPeriod.endDate}bildurl: ${productInfo.value.image.url} alt-text: ${productInfo.value.image.url}`);
 
     productInfo.value = {
+        id: '',
         title: '',
         description: '',
         price: '',
@@ -105,7 +108,7 @@ const getInputValue = async () => {
 
                     <!-- Bild uppladdning -->
                     <h3>Ladda upp bild</h3>
-                    <input type="text" placeholder="Klistra in url för din bild (endast från unsplash...)"  v-model="productInfo.image.url">
+                    <input type="text" placeholder="Klistra in url för din bild"  v-model="productInfo.image.url">
 
                     <!-- Förhandsgranskninga av bild -->
                     <div v-if="productInfo.image.url">
