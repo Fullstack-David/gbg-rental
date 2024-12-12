@@ -1,7 +1,7 @@
 <script setup>
 import { reactive } from "vue";
 import { userApi } from '@/services/userAPI'
-import { useUsers } from "@/composables/useUser";
+import { useUsers } from "@/composables/useAuth";
 import { v4 as uuid} from 'uuid'
 
 const { logIn } = useUsers();

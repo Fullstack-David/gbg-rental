@@ -1,5 +1,5 @@
 <script setup>
-import { useUsers } from "@/composables/useUser";
+import { useUsers } from "@/composables/useAuth";
 import { authStore } from "@/stores/authStore";
 import { RouterLink } from "vue-router";
 const store = authStore();
