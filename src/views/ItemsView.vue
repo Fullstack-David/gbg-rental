@@ -92,12 +92,8 @@ onMounted(() => {
         <!-- En v-if på denna knappen, som kollar om man är inloggad?  -->
         <!-- ######################################################### -->
         
-        <button
-          @click="openBookingForm(item)"
-          v-if="isLoggedIn"
-        >
-          Boka
-        </button>
+        <button @click="openBookingForm(item)">Boka</button>
+        
         <!-- Booking Button -->
         <button class="dlt-btn" @click="deleteItem(item.id)" >Ta bort annons</button>
       </div>
