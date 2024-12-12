@@ -1,13 +1,15 @@
 <script setup>
 import { useItems } from "@/composables/useItems";
+// import { authStore } from "@/stores/authStore";
 import { ref, onMounted } from "vue";
-import { useUsers } from "@/composables/useUser";
+// import { useUsers } from "@/composables/useUser";
 import { useBookings } from "@/composables/useBooking";
 import { itemsApi } from '@/services/itemsApi';
 
 const { bookedItems } = useBookings();
 const { items, isLoading, fetchItems } = useItems();
-const {isLoggedIn} = useUsers();
+// const {isLoggedIn} = useUsers();
+// const {isLoggedIn, logOutState, logInState } = authStore()
 
 const showBookingForm = ref(false);
 const selectedItem = ref(null);
@@ -16,6 +18,12 @@ const bookingTime = ref("");
 
 // Funktion för att öppna bokningsformuläret
 const openBookingForm = (item) => {
+  if (isLoggedIn) {
+    // logOutState;
+    console.log('isLoggedIn', isLoggedIn)
+  }
+  logInState(true);
+  console.log('openBookingForm isLoggedIn?', isLoggedIn)
   selectedItem.value = item;
   showBookingForm.value = true;
 };
@@ -83,13 +91,9 @@ onMounted(() => {
         <!-- ######################################################### -->
         <!-- En v-if på denna knappen, som kollar om man är inloggad?  -->
         <!-- ######################################################### -->
-
-        <button
-          @click="openBookingForm(item)"
-          v-if="isLoggedIn"
-        >
-          Boka
-        </button>
+        
+        <button @click="openBookingForm(item)">Boka</button>
+        
         <!-- Booking Button -->
         <button class="dlt-btn" @click="deleteItem(item.id)" >Ta bort annons</button>
       </div>

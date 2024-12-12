@@ -1,34 +1,28 @@
 <script setup>
-import { RouterLink } from "vue-router";
 import { useUsers } from "@/composables/useUser";
-const { isLoggedIn } = useUsers();
-// import { store } from "@/store/cart";
-
-// const emit = defineEmits(['updateCartData']);
-
-// const sendCartData = () => {
-//   emit('updateCartData', store.cart.length);
-// }
+import { authStore } from "@/stores/authStore";
+import { RouterLink } from "vue-router";
+const store = authStore();
+const { logOut } = useUsers();
 </script>
 
 <template>
   <header class="header-content">
     <div class="logo-container">
       <RouterLink to="/">
-        <img
-          src="../../assets/icons/gbg-rentals-logo.png"
-          alt="Logo"
-          class="h-10 w-10 rounded-full"
-        />
+        <img src="../../assets/icons/gbg-rentals-logo.png" alt="Logo" class="h-10 w-10 rounded-full" />
       </RouterLink>
     </div>
-    <RouterLink to="/dashboard">
-        <h1 class="no-link-style">GBG Rentals</h1>
+    <RouterLink class="no-link-style" to="/dashboard">
+      <h1>GBG Rentals</h1>
     </RouterLink>
-    <nav class="header-nav">
-      <RouterLink v-if="isLoggedIn" to="/dashboard">Dashboard</RouterLink>
+    <nav v-if="!store.isLoggedIn" class="header-nav">
       <RouterLink to="/login">Logga in</RouterLink>
-      <RouterLink v-if="isLoggedIn" to="/dashboard/kundvagn">Kundvagn</RouterLink>
+    </nav>
+    <nav v-if="store.isLoggedIn" class="header-nav">
+      <RouterLink to="/dashboard">Dashboard</RouterLink>
+      <RouterLink @click="logOut" to="/login">Logga ut</RouterLink>
+      <RouterLink to="/dashboard/kundvagn">Kundvagn</RouterLink>
     </nav>
   </header>
 </template>
@@ -51,13 +45,7 @@ header img {
   border-radius: 10%;
 }
 
-header h1 {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.no-link-style{
+.no-link-style {
   text-decoration: none;
   color: #fff;
 }
