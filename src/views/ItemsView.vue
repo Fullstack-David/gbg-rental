@@ -4,6 +4,7 @@ import { useItems } from "@/composables/useItems";
 import { ref, onMounted } from "vue";
 // import { useUsers } from "@/composables/useUser";
 import { useBookings } from "@/composables/useBooking";
+import { itemsApi } from '@/services/itemsApi';
 
 const { bookedItems } = useBookings();
 const { items, isLoading, fetchItems } = useItems();
@@ -51,6 +52,23 @@ const bookItem = () => {
   closeBookingForm(); // Stänger formuläret efter bokningen
 };
 
+// Ta bort en annons
+const deleteItem = async (id) => {
+  try {
+    const confirmed = confirm('Är du säker på att du vill ta bort denna annons?');
+    if (!confirmed) return;
+
+    const updatedItems = await itemsApi.deleteItem(id);
+
+    items.value = updatedItems
+
+    alert('Annonsen har tagits bort');
+  } catch (error) {
+    console.error('kunde inte ta bort annonsen:', error);
+    alert('Ett fel inträffade, försök igen senare')
+  }
+}
+
 onMounted(() => {
   fetchItems();
 });
@@ -81,6 +99,7 @@ onMounted(() => {
           Boka
         </button>
         <!-- Booking Button -->
+        <button class="dlt-btn" @click="deleteItem(item.id)" >Ta bort annons</button>
       </div>
     </div>
 
@@ -156,6 +175,34 @@ button {
 
 button:hover {
   background-color: #45a049;
+}
+
+.dlt-btn {
+  background-color: #a82828;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  margin: 10px 0;
+}
+
+.dlt-btn:hover {
+  background-color: #7a0e0e;
+}
+
+.dlt-btn {
+  background-color: #a82828;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  margin: 10px 0;
+}
+
+.dlt-btn:hover {
+  background-color: #7a0e0e;
 }
 
 /* h3 {
