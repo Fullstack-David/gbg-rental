@@ -104,7 +104,7 @@ const getInputValue = async () => {
 
                     <!--- description -->
                     <input class="prod-desc" type="text" placeholder="Produktens beskrivning"
-                        v-model='productInfo.description' minlength="20">
+                        v-model='productInfo.description' minlength="21">
 
                     <!-- Bild uppladdning -->
                     <h3>Ladda upp bild</h3>

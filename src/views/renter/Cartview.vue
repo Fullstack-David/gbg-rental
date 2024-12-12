@@ -7,64 +7,76 @@
 
 <template>
     <div class="cart-container">
-        <h2>Kundvagn</h2>
-        <div class="cart-items" > <!-- v-for="item in store.cart" :key="item.id" -->
+        <h2 class="cart-title">Kundvagn</h2>
+        <div class="cart-items">
+            <!-- v-for="item in store.cart" :key="item.id" -->
             <div class="cart-item">
-                <p class="item-name"> </p> <!-- {{ item.name }} -->
-                <p class="item-price"> SEK</p> <!-- {{ item.price }} -->
+                <p class="item-name">Produktnamn</p> <!-- {{ item.name }} -->
+                <p class="item-price">SEK </p> <!-- {{ item.price }} -->
                 <!-- <button class="remove-btn" @click="store.removeFromCart(item.id)">Ta bort</button> -->
                 <button class="remove-btn">Ta bort</button>
             </div>
         </div>
 
         <div class="total">
-            <p class="total-price">Totalpris:  SEK</p><!-- {{ store.sumOfCart }} -->
-            <button class="order-btn" >Skicka in min beställning</button> <!-- @click="postOrder(store.cart)" -->
+            <p class="total-price">Totalpris: SEK </p> <!-- {{ store.sumOfCart }} -->
+            <button class="order-btn">Skicka in min beställning</button> <!-- @click="postOrder(store.cart)" -->
         </div> 
-        <!-- <div v-if="orderConfirmed">
-            <Order :order="orderConfirmation"/>
-        </div> -->
     </div>
 </template>
 
-
 <style scoped>
 .cart-container {
-    max-width: 600px;
+    max-width: 700px;
     margin: 0 auto;
-    padding: 20px;
-    font-family: Arial, sans-serif;
+    padding: 30px;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background-color: #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
 }
 
-h2 {
+.cart-title {
     text-align: center;
     color: #333;
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 20px;
 }
 
 .cart-items {
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 }
 
 .cart-item {
     background-color: #f9f9f9;
-    padding: 15px;
+    padding: 20px;
     border: 1px solid #ddd;
-    border-radius: 8px;
+    border-radius: 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
+    transition: background-color 0.3s ease;
+}
+
+.cart-item:hover {
+    background-color: #f1f1f1;
 }
 
 .item-name {
-    font-size: 18px;
-    font-weight: bold;
+    font-size: 1.1rem;
+    font-weight: 600;
     color: #333;
+    flex: 2;
 }
 
 .item-price {
-    font-size: 16px;
-    color: #666;
+    font-size: 1.1rem;
+    color: #555;
+    flex: 1;
+    text-align: right;
 }
 
 .remove-btn {
@@ -73,7 +85,9 @@ h2 {
     border: none;
     padding: 8px 16px;
     cursor: pointer;
-    border-radius: 4px;
+    border-radius: 5px;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
 }
 
 .remove-btn:hover {
@@ -86,20 +100,28 @@ h2 {
 }
 
 .total-price {
-    font-size: 18px;
+    font-size: 1.2rem;
     font-weight: bold;
     color: #333;
+    margin-bottom: 15px;
 }
 
 .order-btn {
     background-color: #4caf50;
     color: white;
     border: none;
-    padding: 10px 20px;
+    padding: 12px 25px;
     cursor: pointer;
-    border-radius: 4px;
-    font-size: 16px;
-    margin-top: 10px;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    max-width: 350px;
+    margin: 0 auto;
+}
+
+.order-btn:hover {
+    background-color: #45a049;
 }
 
 .order-btn:disabled {
@@ -107,17 +129,15 @@ h2 {
     cursor: not-allowed;
 }
 
-.order-btn:hover {
-    background-color: #45a049;
+.loading, .error-message {
+    text-align: center;
 }
 
 .loading {
-    text-align: center;
     color: #00796b;
 }
 
 .error-message {
     color: red;
-    text-align: center;
 }
 </style>

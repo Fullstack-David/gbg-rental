@@ -1,67 +1,10 @@
-<template>
-  <div class="register-container">
-    <h1>Registrera</h1>
-    <form @submit.prevent="onRegister">
-      <!-- Full Name -->
-      <div class="form-group">
-        <label for="fullName">Fullnamn</label>
-        <input
-          type="text"
-          id="fullName"
-          v-model="form.fullName"
-          placeholder="Ange ditt fullständiga namn"
-          required
-        />
-      </div>
-
-      <!-- Email -->
-      <div class="form-group">
-        <label for="email">E-postadress</label>
-        <input
-          type="email"
-          id="email"
-          v-model="form.email"
-          placeholder="Ange din e-postadress"
-          required
-        />
-      </div>
-
-      <!-- Password -->
-      <div class="form-group">
-        <label for="password">Lösenord</label>
-        <input
-          type="password"
-          id="password"
-          v-model="form.password"
-          placeholder="Ange ett lösenord"
-          required
-        />
-      </div>
-
-      <!-- Confirm Password -->
-      <div class="form-group">
-        <label for="confirmPassword">Bekräfta lösenord</label>
-        <input
-          type="password"
-          id="confirmPassword"
-          v-model="form.confirmPassword"
-          placeholder="Bekräfta lösenord"
-          required
-        />
-      </div>
-
-      <!-- Submit Button -->
-      <button type="submit">Registrera</button>
-    </form>
-  </div>
-</template>
-
 <script setup>
 import { reactive } from "vue";
 import { userApi } from '@/services/userAPI'
 import { useUsers } from "@/composables/useUser";
+import { v4 as uuid} from 'uuid'
 
-const {logIn} = useUsers();
+const { logIn } = useUsers();
 
 const form = reactive({
   fullName: "",
@@ -83,7 +26,8 @@ const onRegister = () => {
     email: form.email,
   });
   userApi.createUser({
-    fullName: form.fullName,
+    id: uuid(),
+    name: form.fullName,
     email: form.email,
     password: form.password
   })
@@ -92,49 +36,112 @@ const onRegister = () => {
 };
 </script>
 
+<template>
+  <div class="register-container">
+    <h2>Registrera</h2>
+    <form @submit.prevent="onRegister">
+      <!-- Full Name -->
+      <div class="form-group">
+        <label for="fullName">Namn</label>
+        <input type="text" id="fullName" v-model="form.fullName" placeholder="Ange ditt fullständiga namn" required />
+      </div>
+
+      <!-- Email -->
+      <div class="form-group">
+        <label for="email">E-postadress</label>
+        <input type="email" id="email" v-model="form.email" placeholder="Ange din e-postadress" required />
+      </div>
+
+      <!-- Password -->
+      <div class="form-group">
+        <label for="password">Lösenord</label>
+        <input type="password" id="password" v-model="form.password" placeholder="Ange ett lösenord" required />
+      </div>
+
+      <!-- Confirm Password -->
+      <div class="form-group">
+        <label for="confirmPassword">Bekräfta lösenord</label>
+        <input type="password" id="confirmPassword" v-model="form.confirmPassword" placeholder="Bekräfta lösenord" required />
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit">Registrera</button>
+    </form>
+  </div>
+</template>
+
+
 <style scoped>
 .register-container {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
   max-width: 400px;
-  margin: 0 auto;
-  padding: 20px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  background-color: #f9f9f9;
-  margin-top: 3rem;
-  margin-bottom: 6rem;
+  text-align: center;
+  margin: 4rem auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .register-container h1 {
-  text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 2rem;
+  font-size: 1.8rem;
+  color: #333;
 }
 
-.form-group label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
-}
-
-.form-group input {
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
   width: 100%;
-  padding: 8px;
-  box-sizing: border-box;
 }
+
 .form-group {
-  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+label {
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  color: #555;
+}
+
+input {
+  padding: 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+  width: 100%;
+  outline: none;
+}
+
+input:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
 button {
-  width: 100%;
-  padding: 10px;
   background-color: #007bff;
-  color: white;
+  color: #fff;
   border: none;
-  border-radius: 4px;
+  padding: 0.8rem;
+  border-radius: 5px;
   cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
 }
 
 button:hover {
   background-color: #0056b3;
+}
+
+button:active {
+  transform: scale(0.98);
 }
 </style>
