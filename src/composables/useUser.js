@@ -40,7 +40,7 @@ export const useUsers = defineStore("counter", () => {
   function logOut() {
     console.log('useUser logOut()')
     console.log('useUser logOut() store.isLoggedIn: ', store.isLoggedIn)
-    // localStorage.removeItem('user');
+    localStorage.removeItem('user');
     router.push('/');
     // store.logOutState();
     store.isLoggedIn = false // ???!!?!

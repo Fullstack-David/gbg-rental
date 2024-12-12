@@ -16,12 +16,12 @@ const { logOut } = useUsers();
     <RouterLink class="no-link-style" to="/dashboard">
       <h1>GBG Rentals</h1>
     </RouterLink>
-    <nav v-if="store.isLoggedIn" class="header-nav">
+    <nav v-if="!store.isLoggedIn" class="header-nav">
       <RouterLink to="/dashboard">Dashboard</RouterLink>
       <RouterLink to="/login">Logga in</RouterLink>
       <RouterLink to="/dashboard/kundvagn">Kundvagn</RouterLink>
     </nav>
-    <nav v-if="!store.isLoggedIn" class="header-nav">
+    <nav v-if="store.isLoggedIn" class="header-nav">
       <RouterLink @click="logOut" to="/login">Logga ut</RouterLink>
     </nav>
   </header>

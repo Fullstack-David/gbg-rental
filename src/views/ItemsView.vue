@@ -73,7 +73,7 @@ onMounted(() => {
         <!-- ######################################################### -->
         <!-- En v-if på denna knappen, som kollar om man är inloggad?  -->
         <!-- ######################################################### -->
-
+        
         <button
           @click="openBookingForm(item)"
           v-if="isLoggedIn"
