@@ -5,20 +5,15 @@ import bcryptjs from 'bcryptjs'
 import { authStore } from '@/stores/authStore'
 import { onMounted } from 'vue'
 
-export const useUsers = defineStore("counter", () => {
+export const useUsers = defineStore("logInOut", () => {
   const router = useRouter();
   const store = authStore();
 
   async function logIn(email, password) {
     const users = await userApi.fetchUsers();
-    localStorage.setItem(
-      "user",
-      JSON.stringify({
-        id: 1,
-      }),
-    );
 
     const user = users.find((user) => user.email === email);
+    // if (!user) rendera felmeddelande till användaren
     bcryptjs.compare(password, user.password, (error, result) => {
       if (result) {
         localStorage.setItem("user",
@@ -26,6 +21,7 @@ export const useUsers = defineStore("counter", () => {
         );
       } else {
         console.log("Incorrect password");
+        // rendera för användaren att man skrivit fel lösen
       }
     });
 
