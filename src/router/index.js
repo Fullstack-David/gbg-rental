@@ -63,7 +63,6 @@ const router = createRouter({
       name: "rentalHistory",
       component: RentalHistoryView,
     },
-
     {
       path: "/kundvagn",
       name: "kundvagn",
