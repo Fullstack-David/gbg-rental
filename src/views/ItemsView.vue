@@ -10,8 +10,8 @@ const showBookingForm = ref(false);
 const selectedItem = ref(null);
 
 // Funktion för att öppna bokningsformuläret
-const openBookingForm = (item) => {
-  selectedItem.value = item;
+const openBookingForm = async (item) => {
+  selectedItem.value = await item;
   showBookingForm.value = true;
 };
 
@@ -61,9 +61,13 @@ onMounted(() => {
         <button class="dlt-btn" @click="deleteItem(item.id)">Ta bort annons</button>
       </div>
     </div>
-
-    <BookingFormView v-if="showBookingForm" :selectedItem="selectedItem" :showBookingForm="showBookingForm" />
-
+    <BookingFormView 
+    v-if="showBookingForm" 
+    :selectedItem="selectedItem" 
+    :showBookingForm="showBookingForm" 
+    @showBookingForm="showBookingForm = $event" 
+    @selectedItem="selectedItem = $event" 
+    />
   </div>
 </template>
 

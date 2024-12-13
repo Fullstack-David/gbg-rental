@@ -1,8 +1,10 @@
 <script setup>
 import { useBookings } from '@/composables/useBooking';
-import { defineProps, ref } from 'vue';
+import { defineProps, defineEmits, ref } from 'vue';
 
-const props = defineProps ({
+const emit = defineEmits(['update:showBookingForm', 'update:selectedItem']);
+
+const props = defineProps({
   selectedItem: Object,
   showBookingForm: Boolean
 });
@@ -14,7 +16,7 @@ const bookingTime = ref("");
 // Funktion för att boka ett objekt med dag och tid
 const bookItem = () => {
   const bookingDetails = {
-    item: selectedItem.value,
+    item: props.selectedItem,
     date: bookingDate.value,
     time: bookingTime.value,
   };
@@ -22,19 +24,18 @@ const bookItem = () => {
 
   console.log(bookingDetails);
   alert(
-    `Du har bokat: ${selectedItem.value.title} den ${bookingDate.value} kl. ${bookingTime.value}`,
+    `Du har bokat: ${props.selectedItem.title} den ${bookingDate.value} kl. ${bookingTime.value}`,
   );
-  closeBookingForm(); // Stänger formuläret efter bokningen
+  closeBookingForm();
 };
 
 // Funktion för att stänga bokningsformuläret
 const closeBookingForm = () => {
-  showBookingForm.value = false;
-  selectedItem.value = null;
+  emit('showBookingForm', false);
+  emit('selectedItem', null);
   bookingDate.value = "";
   bookingTime.value = "";
 };
-
 </script>
 
 <template>
