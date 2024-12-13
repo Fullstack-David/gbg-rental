@@ -18,6 +18,9 @@ const { bookedItems } = useBookings();
       </li>
     </ul>
   </div>
+  <div v-else="bookedItems.length > 0">
+    <p class="message">Du har inte lagt några ordrar</p>
+  </div>
   <RouterView />
 </template>
 
