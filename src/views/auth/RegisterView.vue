@@ -27,7 +27,6 @@ const onRegister = async () => {
       email: form.email,
       password: form.password
     })
-    console.log('form.password: ', form.password)
     await logIn(form.email, form.password)
     alert("Registration successful!");
   }
@@ -36,7 +35,6 @@ const onRegister = async () => {
     console.error("Registration error:", error);
     alert("Registration failed!");
   }
-
 };
 </script>
 
