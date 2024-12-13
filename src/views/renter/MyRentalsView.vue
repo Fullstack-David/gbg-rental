@@ -2,7 +2,7 @@
 </script>
 
 <template>
-  <div>
+  <div class="message">
     <p>Aktiva bokningar</p>
     <p>Mina produkter</p>
   </div>

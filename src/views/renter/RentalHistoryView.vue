@@ -90,10 +90,6 @@ const { bookedItems } = useBookings();
   color: #777;
 }
 
-.message {
-  margin: 1rem;
-}
-
 @media (max-width: 600px) {
   .booking-container {
     width: 100%;

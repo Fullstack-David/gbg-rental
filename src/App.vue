@@ -20,4 +20,8 @@ import MainHeader from "./components/layout/MainHeader.vue";
   flex-direction: column;
   height: 100vh;
 }
+
+.message {
+  margin: 1rem;
+}
 </style>
