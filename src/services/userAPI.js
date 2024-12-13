@@ -15,6 +15,13 @@ export const userApi = {
     return data.record.users;
   },
 
+  // get user by id
+  async fetchUserById(id) {
+    const allUsers = await this.fetchUsers();
+    const user = allUsers.filter((user) => user.id === id);
+    return user[0];
+  },
+
   // POST
   async createUser(newUser) {
     const salt = bcryptjs.genSaltSync(10);
@@ -33,7 +40,7 @@ export const userApi = {
     return data.record.users;
   },
 
-  // PUT ############## används inte ännu ############## 
+  // PUT ############## används inte ännu ##############
   // async updateUser(id, updatedUser) {
   //   const currentUsers = await this.fetchUsers()
   //   const updatedUsers = currentUsers.map((user) =>
@@ -66,4 +73,4 @@ export const userApi = {
   //   const data = await response.json()
   //   return data.record.Users
   // },
-}
+};
