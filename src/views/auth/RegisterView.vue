@@ -2,7 +2,7 @@
 import { reactive } from "vue";
 import { userApi } from '@/services/userAPI'
 import { useUsers } from "@/composables/useAuth";
-import { v4 as uuid} from 'uuid'
+import { v4 as uuid } from 'uuid'
 
 const { logIn } = useUsers();
 
@@ -13,26 +13,30 @@ const form = reactive({
   confirmPassword: "",
 });
 
-const onRegister = () => {
+const onRegister = async () => {
   // Simpla valideringar
   if (form.password !== form.confirmPassword) {
     alert("Passwords do not match!");
     return;
   }
 
-  // Simulera registreringsprocess (ersätt med API-anrop)
-  console.log("User registered:", {
-    fullName: form.fullName,
-    email: form.email,
-  });
-  userApi.createUser({
-    id: uuid(),
-    name: form.fullName,
-    email: form.email,
-    password: form.password
-  })
-  logIn(form.email, form.password)
-  alert("Registration successful!");
+  try {
+    await userApi.createUser({
+      id: uuid(),
+      name: form.fullName,
+      email: form.email,
+      password: form.password
+    })
+    console.log('form.password: ', form.password)
+    await logIn(form.email, form.password)
+    alert("Registration successful!");
+  }
+
+  catch (error) {
+    console.error("Registration error:", error);
+    alert("Registration failed!");
+  }
+
 };
 </script>
 
