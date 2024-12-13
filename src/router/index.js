@@ -9,7 +9,6 @@ import EditItemView from "@/views/owner/EditItemView.vue";
 import MyItemsView from "@/views/owner/MyItemsView.vue";
 import LoginView from "@/views/auth/LoginView.vue";
 import RegisterView from "@/views/auth/RegisterView.vue";
-import DashboardView from "@/components/layout/Dashboard.vue";
 import NotFoundView from "@/views/NotFoundView.vue";
 import Cartview from "@/views/renter/Cartview.vue";
 
@@ -26,54 +25,49 @@ const router = createRouter({
       name: "login",
       component: LoginView,
     },
+
     {
-      path: "/dashboard",
-      component: DashboardView,
+      path: "/my-items",
+      name: "myItems",
+      component: MyItemsView,
+    },
+    {
+      path: "/create-item",
+      name: "createItem",
+      component: CreateItemView,
+    },
+    {
+      path: "/items",
+      name: "items",
+      component: ItemsView,
       children: [
         {
-          path: "my-items",
-          name: "myItems",
-          component: MyItemsView,
+          path: ":id",
+          name: "itemDetails",
+          component: ItemDetailsView,
         },
         {
-          path: "create-item",
-          name: "createItem",
-          component: CreateItemView,
-        },
-        {
-          path: "items",
-          name: "items",
-          component: ItemsView,
-          children: [
-            {
-              path: ":id",
-              name: "itemDetails",
-              component: ItemDetailsView,
-            },
-            {
-              path: "edit/:id",
-              name: "editItem",
-              component: EditItemView,
-            },
-          ]
-        },
-        {
-          path: "rentals",
-          name: "myRentals",
-          component: MyRentalsView,
-        },
-        {
-          path: "history",
-          name: "rentalHistory",
-          component: RentalHistoryView,
-        },
-
-        {
-          path: "kundvagn",
-          name: "kundvagn",
-          component: Cartview,
+          path: "edit/:id",
+          name: "editItem",
+          component: EditItemView,
         },
       ],
+    },
+    {
+      path: "/rentals",
+      name: "myRentals",
+      component: MyRentalsView,
+    },
+    {
+      path: "/history",
+      name: "rentalHistory",
+      component: RentalHistoryView,
+    },
+
+    {
+      path: "/kundvagn",
+      name: "kundvagn",
+      component: Cartview,
     },
     {
       path: "/register",

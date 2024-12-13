@@ -1,7 +1,9 @@
 <script setup>
 import { useUsers } from "@/composables/useAuth";
-import { authStore } from "@/stores/authStore";
 import { RouterLink } from "vue-router";
+import DashboardView from "@/views/owner/DashboardView.vue";
+
+import { authStore } from "@/stores/authStore";
 const store = authStore();
 const { logOut } = useUsers();
 </script>
@@ -10,7 +12,11 @@ const { logOut } = useUsers();
   <header class="header-content">
     <div class="logo-container">
       <RouterLink to="/">
-        <img src="../../assets/icons/gbg-rentals-logo.png" alt="Logo" class="h-10 w-10 rounded-full" />
+        <img
+          src="../../assets/icons/gbg-rentals-logo.png"
+          alt="Logo"
+          class="h-10 w-10 rounded-full"
+        />
       </RouterLink>
     </div>
     <RouterLink class="no-link-style" to="/dashboard">
@@ -20,11 +26,11 @@ const { logOut } = useUsers();
       <RouterLink to="/login">Logga in</RouterLink>
     </nav>
     <nav v-if="store.isLoggedIn" class="header-nav">
-      <RouterLink to="/dashboard">Dashboard</RouterLink>
       <RouterLink @click="logOut" to="/login">Logga ut</RouterLink>
       <RouterLink to="/dashboard/kundvagn">Kundvagn</RouterLink>
     </nav>
   </header>
+  <DashboardView v-if="store.isLoggedIn" />
 </template>
 
 <style scoped>
