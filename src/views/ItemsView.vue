@@ -1,8 +1,8 @@
 <script setup>
 import { useItems } from "@/composables/useItems";
 import { ref, onMounted } from "vue";
-import { itemsApi } from '@/services/itemsApi';
-import BookingFormView from "./renter/BookingFormView.vue";
+import { useBookings } from "@/composables/useBooking";
+import { itemsApi } from "@/services/itemsApi";
 
 const { items, isLoading, fetchItems } = useItems();
 
@@ -18,19 +18,21 @@ const openBookingForm = async (item) => {
 // Ta bort en annons
 const deleteItem = async (id) => {
   try {
-    const confirmed = confirm('Är du säker på att du vill ta bort denna annons?');
+    const confirmed = confirm(
+      "Är du säker på att du vill ta bort denna annons?",
+    );
     if (!confirmed) return;
 
     const updatedItems = await itemsApi.deleteItem(id);
 
-    items.value = updatedItems
+    items.value = updatedItems;
 
-    alert('Annonsen har tagits bort');
+    alert("Annonsen har tagits bort");
   } catch (error) {
-    console.error('kunde inte ta bort annonsen:', error);
-    alert('Ett fel inträffade, försök igen senare')
+    console.error("kunde inte ta bort annonsen:", error);
+    alert("Ett fel inträffade, försök igen senare");
   }
-}
+};
 
 onMounted(() => {
   fetchItems();
@@ -39,6 +41,7 @@ onMounted(() => {
 
 <template>
   <RouterView />
+  <h2 v-if="isLoading">Laddar...</h2>
   <h2 v-if="isLoading" class="message">Laddar..</h2>
   <div v-if="!isLoading">
     <h2 class="header-title">Alla annonser</h2>
@@ -47,28 +50,46 @@ onMounted(() => {
         <h3>{{ item.title }}</h3>
         <img :src="item.image.url" :alt="item.image.alt" />
         <p>{{ item.description }}</p>
-        <p>Skapad: {{ item.createdAt }}</p>
-        <p>Pris: {{ item.price }}:-</p>
-        <p>Postad av: {{ item.owner }}</p>
+        <p><strong>Skapad:</strong> {{ item.createdAt }}</p>
+        <p><strong>Pris:</strong> {{ item.price }}:-</p>
+        <p><strong>Postad av:</strong> {{ item.owner }}</p>
 
         <!-- ######################################################### -->
         <!-- En v-if på denna knappen, som kollar om man är inloggad?  -->
         <!-- ######################################################### -->
 
+        <div class="add-delete-btn">
+          <button class="add-btn" @click="openBookingForm(item)">Boka</button>
+
+          <!-- Booking Button -->
+          <button class="dlt-btn" @click="deleteItem(item.id)">
+            Ta bort annons
+          </button>
+        </div>
+
         <button @click="openBookingForm(item)">Boka</button>
 
         <!-- Booking Button -->
-        <button class="dlt-btn" @click="deleteItem(item.id)">Ta bort annons</button>
+        <button class="dlt-btn" @click="deleteItem(item.id)">
+          Ta bort annons
+        </button>
       </div>
     </div>
-    <BookingFormView 
-    v-if="showBookingForm" 
-    :selectedItem="selectedItem" 
-    :showBookingForm="showBookingForm" 
-    @showBookingForm="showBookingForm = $event" 
-    @selectedItem="selectedItem = $event" 
+    <BookingFormView
+      v-if="showBookingForm"
+      :selectedItem="selectedItem"
+      :showBookingForm="showBookingForm"
+      @showBookingForm="showBookingForm = $event"
+      @selectedItem="selectedItem = $event"
     />
   </div>
+  <BookingFormView
+    v-if="showBookingForm"
+    :selectedItem="selectedItem"
+    :showBookingForm="showBookingForm"
+    @showBookingForm="showBookingForm = $event"
+    @selectedItem="selectedItem = $event"
+  />
 </template>
 
 <style scoped>
@@ -92,14 +113,19 @@ li {
 }
 
 .item {
-  border: 2px solid black;
-  width: 1fr;
-  margin: 1rem;
-  padding: 0 1rem;
+  border: 2px solid;
   border-radius: 1rem;
+  width: 1fr;
+  margin: 10px;
+  padding: 10px;
+  gap: 10px;
 }
-
+p {
+  padding: 8px 0;
+}
 img {
+  width: 100%; /* Adjust as needed */
+  height: auto; /* Maintains aspect ratio */
   width: 100px;
   /* Adjust as needed */
   height: auto;
@@ -111,7 +137,11 @@ img {
   align-items: center;
 }
 
-button {
+.add-delete-btn button {
+  margin-left: 5px;
+}
+
+.add-btn {
   background-color: #4caf50;
   color: white;
   border: none;
@@ -121,7 +151,7 @@ button {
   margin: 10px 0;
 }
 
-button:hover {
+.add-btn:hover {
   background-color: #45a049;
 }
 
@@ -137,6 +167,68 @@ button:hover {
 
 .dlt-btn:hover {
   background-color: #7a0e0e;
+}
+
+/*---------------------Styling för bokningsformuläret--------------------- */
+.booking-form-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.booking-form-container {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 1rem;
+  width: 300px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.form-actions button {
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+.form-actions button:first-child {
+  background-color: #4caf50;
+  color: white;
+}
+
+.form-actions button:last-child {
+  background-color: #f44336;
+  color: white;
+}
+
+.form-actions button:hover {
+  opacity: 0.8;
 }
 
 .dlt-btn {
