@@ -1,7 +1,8 @@
-import { defineProps } from "vue";
+import { defineStore } from "pinia";
+
 import { ref } from "vue";
 
-export const useModalStore = defineProps("modal", () => {
+export const useModalStore = defineStore("modal", () => {
   const showModal = ref(false);
 
   function openModal() {

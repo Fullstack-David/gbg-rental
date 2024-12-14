@@ -2,7 +2,7 @@
 import { reactive } from "vue";
 import { useUsers } from "@/composables/useAuth";
 
-const { logIn } = useUsers();
+const { logIn, errorMessage } = useUsers();
 
 const form = reactive({
   email: "",
@@ -12,7 +12,7 @@ const form = reactive({
 const onLogin = () => {
   // console.log("User logged in:", form);
   // Lägg till logik för att hantera inloggning (ex. API-anrop)
-  logIn(form.email, form.password)
+  logIn(form.email, form.password);
 };
 </script>
 
@@ -22,20 +22,42 @@ const onLogin = () => {
     <form @submit.prevent="onLogin">
       <div class="form-group">
         <label for="email"> E-postadress</label>
-        <input id="email" type="email" v-model="form.email" placeholder="E-postadress" required />
+        <input
+          id="email"
+          type="email"
+          v-model="form.email"
+          placeholder="E-postadress"
+          required
+        />
       </div>
       <div class="form-group">
         <label for="password">Lösenord</label>
-        <input id="password" type="password" v-model="form.password" wo placeholder="Ange lösenord..." required />
+        <input
+          id="password"
+          type="password"
+          v-model="form.password"
+          placeholder="Ange lösenord..."
+          required
+        />
       </div>
       <button type="submit">Logga in</button>
-      <p>Inget konto, <RouterLink class="create-account-button" to="/register"><span>Registrera här!</span></RouterLink>
+      <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
+      <p>
+        Inget konto,
+        <RouterLink class="create-account-button" to="/register"
+          ><span>Registrera här!</span></RouterLink
+        >
       </p>
     </form>
   </div>
 </template>
 
 <style scoped>
+.error {
+  color: red;
+  font-weight: bold;
+}
+
 .login-container {
   background: #fff;
   padding: 2rem;

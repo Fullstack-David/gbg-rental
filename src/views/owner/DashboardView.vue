@@ -1,4 +1,8 @@
-<script setup></script>
+<script setup>
+import { useModalStore } from "@/composables/useModal";
+
+const { openModal } = useModalStore();
+</script>
 <template>
   <div class="local-nav">
     <ul class="local-nav-ul">
@@ -11,7 +15,7 @@
       <li>
         <!-- visar modalen för att lägga till en ny produkt "item" -->
         <RouterLink to="/create-item">
-          <button>Lägg upp ny produkt</button>
+          <button @click="openModal">Lägg upp ny produkt</button>
         </RouterLink>
       </li>
       <li>

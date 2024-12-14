@@ -3,7 +3,10 @@ import { ref, computed } from "vue";
 import { itemsApi } from "@/services/itemsApi";
 import { v4 as uuidv4 } from "uuid";
 
-const showModal = ref(false);
+import { useModalStore } from "@/composables/useModal";
+
+const modalStore = useModalStore();
+const { closeModal } = useModalStore();
 
 const productInfo = ref({
   id: "",
@@ -88,106 +91,106 @@ const getInputValue = async () => {
   //återställer uthyrningsdagarna
   rentalDays.value = 0;
   // ska den stänga eller ej? hmmm...
-  showModal.value = false;
+  modalStore.showModal = false;
 };
 </script>
 
 <template>
-  <div class="pub-container">
-    <button @click="showModal = true">Hyr ut något</button>
-    <div
-      v-if="showModal"
-      class="modal-backdrop"
-      @click.self="showModal = false"
-    >
-      <div class="modal-content">
-        <button class="close-btn" @click="showModal = false">x</button>
-        <div class="info-field">
-          <!-- owner -->
-          <input
+  <!-- <div class="pub-container"> -->
+  <!-- <button @click="openModal">Hyr ut något</button> -->
+  <div
+    class="modal-backdrop"
+    v-if="modalStore.showModal"
+    @click.self="modalStore.closeModal"
+  >
+    <div class="modal-content">
+      <button class="close-btn" @click="closeModal">x</button>
+      <div class="info-field">
+        <!-- owner -->
+        <!-- <input
             class="prod-owner"
             type="text"
             placeholder="Uthyrarens namn"
             v-model="productInfo.owner"
-          />
+          /> -->
 
-          <!-- titel -->
+        <!-- titel -->
+        <input
+          class="prod-title"
+          type="text"
+          placeholder="Produktens namn"
+          v-model="productInfo.title"
+        />
+
+        <!-- pris per dag -->
+        <input
+          class="prod-price"
+          type="text"
+          placeholder="Pris per dag"
+          v-model="productInfo.price"
+        />
+
+        <!--- description -->
+        <input
+          class="prod-desc"
+          type="text"
+          placeholder="Produktens beskrivning"
+          v-model="productInfo.description"
+          minlength="21"
+        />
+
+        <!-- Bild uppladdning -->
+        <h3>Ladda upp bild</h3>
+        <input
+          type="text"
+          placeholder="Klistra in url för din bild"
+          v-model="productInfo.image.url"
+        />
+
+        <!-- Förhandsgranskninga av bild -->
+        <div v-if="productInfo.image.url">
+          <h4>Vald bild:</h4>
+          <img
+            :src="productInfo.image.url"
+            alt="Förhandsvisning"
+            style="max-width: 300px; max-height: 300px"
+          />
           <input
-            class="prod-title"
             type="text"
-            placeholder="Produktens namn"
-            v-model="productInfo.title"
+            placeholder="Beskrivning av bild"
+            v-model="productInfo.image.alt"
           />
-
-          <!-- pris per dag -->
-          <input
-            class="prod-price"
-            type="text"
-            placeholder="Pris per dag"
-            v-model="productInfo.price"
-          />
-
-          <!--- description -->
-          <input
-            class="prod-desc"
-            type="text"
-            placeholder="Produktens beskrivning"
-            v-model="productInfo.description"
-            minlength="21"
-          />
-
-          <!-- Bild uppladdning -->
-          <h3>Ladda upp bild</h3>
-          <input
-            type="text"
-            placeholder="Klistra in url för din bild"
-            v-model="productInfo.image.url"
-          />
-
-          <!-- Förhandsgranskninga av bild -->
-          <div v-if="productInfo.image.url">
-            <h4>Vald bild:</h4>
-            <img
-              :src="productInfo.image.url"
-              alt="Förhandsvisning"
-              style="max-width: 300px; max-height: 300px"
-            />
-            <input
-              type="text"
-              placeholder="Beskrivning av bild"
-              v-model="productInfo.image.alt"
-            />
-          </div>
-
-          <div class="date-div">
-            <h4>Uthyrningsdatum</h4>
-            <!-- start datum för uthyrning -->
-            <p>Från:</p>
-            <input
-              class="start-date"
-              type="date"
-              v-model="productInfo.rentalPeriod.startDate"
-              :min="todayDate"
-              @change="calculateRentalDays"
-            />
-
-            <!-- Slutdatum för uthyrning -->
-            <p>Till</p>
-            <input
-              class="end-date"
-              type="date"
-              v-model="productInfo.rentalPeriod.endDate"
-              :min="todayDate"
-              @change="calculateRentalDays"
-            />
-          </div>
-          <button @click="getInputValue">Publicera vara</button>
-          <p>Antal dagar för uthyrning: {{ rentalDays }}</p>
-          <p>Totalt pris: {{ totalSum }} KR</p>
         </div>
+
+        <div class="date-div">
+          <h4>Uthyrningsdatum</h4>
+          <!-- start datum för uthyrning -->
+          <p>Från:</p>
+          <input
+            class="start-date"
+            type="date"
+            v-model="productInfo.rentalPeriod.startDate"
+            :min="todayDate"
+            @change="calculateRentalDays"
+          />
+
+          <!-- Slutdatum för uthyrning -->
+          <p>Till</p>
+          <input
+            class="end-date"
+            type="date"
+            v-model="productInfo.rentalPeriod.endDate"
+            :min="todayDate"
+            @change="calculateRentalDays"
+          />
+        </div>
+        <button @click="getInputValue">Publicera vara</button>
+        <p>Antal dagar för uthyrning: {{ rentalDays }}</p>
+        <p>Totalt pris: {{ totalSum }} KR</p>
       </div>
     </div>
   </div>
+  <!-- </div> -->
 </template>
 
 <style scoped>
@@ -265,6 +268,7 @@ const getInputValue = async () => {
 input[type="text"],
 input[type="date"],
 textarea {
+  color: grey;
   border: 1px solid #ccc;
   border-radius: 5px;
   padding: 0.75rem;
