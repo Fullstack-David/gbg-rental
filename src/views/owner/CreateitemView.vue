@@ -107,12 +107,12 @@ const getInputValue = async () => {
       <button class="close-btn" @click="closeModal">x</button>
       <div class="info-field">
         <!-- owner -->
-        <!-- <input
-            class="prod-owner"
-            type="text"
-            placeholder="Uthyrarens namn"
-            v-model="productInfo.owner"
-          /> -->
+        <input
+          class="prod-owner"
+          type="text"
+          placeholder="Uthyrarens namn"
+          v-model="productInfo.owner"
+        />
 
         <!-- titel -->
         <input
