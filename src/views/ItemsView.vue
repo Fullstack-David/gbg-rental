@@ -66,13 +66,6 @@ onMounted(() => {
             Ta bort annons
           </button>
         </div>
-
-        <button @click="openBookingForm(item)">Boka</button>
-
-        <!-- Booking Button -->
-        <button class="dlt-btn" @click="deleteItem(item.id)">
-          Ta bort annons
-        </button>
       </div>
     </div>
     <BookingFormView
@@ -126,7 +119,6 @@ p {
 img {
   width: 100%; /* Adjust as needed */
   height: auto; /* Maintains aspect ratio */
-  width: 100px;
   /* Adjust as needed */
   height: auto;
   /* Maintains aspect ratio */
