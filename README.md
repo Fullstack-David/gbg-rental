@@ -21,3 +21,4 @@ Alla ordrar visas för alla användare i historiken
 Ordrar sparas inte (Spara på användarobjektet och hämta från item-ref eller spara i egen JSONBin och hämta efter användar id?)
 
 
+Uppdatera bookingFormView OCH useBooking(ändra namn till useOrders?) att använda sig av "orders" i JSON bin
