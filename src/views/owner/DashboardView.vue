@@ -1,6 +1,5 @@
 <script setup>
 import { useModalStore } from "@/composables/useModal";
-
 const { openModal } = useModalStore();
 </script>
 <template>
