@@ -1,16 +1,20 @@
 <script setup>
 import { useItems } from "@/composables/useItems";
 import { ref, onMounted } from "vue";
-import { useBookings } from "@/composables/useBooking";
 import { itemsApi } from "@/services/itemsApi";
 import BookingFormView from "./renter/BookingFormView.vue";
 import { authStore } from "@/stores/authStore";
+import moment from "moment";
 
 const store = authStore()
 const { items, isLoading, fetchItems } = useItems();
 
 const showBookingForm = ref(false);
 const selectedItem = ref(null);
+
+// function formatDate(date) {
+//   return new Date(date).toLocaleString();
+// }
 
 // Funktion för att öppna bokningsformuläret
 const openBookingForm = async (item) => {
@@ -45,7 +49,6 @@ onMounted(() => {
 <template>
   <RouterView />
   <h2 v-if="isLoading">Laddar...</h2>
-  <h2 v-if="isLoading" class="message">Laddar..</h2>
   <div v-if="!isLoading">
     <h2 class="header-title">Alla annonser</h2>
     <div class="item-container">
@@ -53,8 +56,11 @@ onMounted(() => {
         <h3>{{ item.title }}</h3>
         <img :src="item.image.url" :alt="item.image.alt" />
         <p>{{ item.description }}</p>
-        <p><strong>Skapad:</strong> {{ item.createdAt }}</p>
-        <p><strong>Pris:</strong> {{ item.price }}:-</p>
+        <p>
+          <strong>Skapad:</strong>
+          {{ moment(item.createdAt).format("YYYY-MM-DD") }}
+        </p>
+        <p><strong>Pris:</strong> {{ item.price }} kr</p>
         <p><strong>Postad av:</strong> {{ item.owner }}</p>
 
         <div v-if="store.isLoggedIn" class="add-delete-btn">

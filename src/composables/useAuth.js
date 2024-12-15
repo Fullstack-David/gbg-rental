@@ -3,12 +3,13 @@ import { defineStore } from "pinia";
 import { userApi } from "@/services/userAPI";
 import bcryptjs from "bcryptjs";
 import { authStore } from "@/stores/authStore";
-import { onMounted, ref } from "vue";
+import { ref, onMounted } from "vue";
 
 export const useUsers = defineStore("logInOut", () => {
   const router = useRouter();
   const store = authStore();
   const errorMessage = ref('');
+
 
   async function logIn(email, password) {
     errorMessage.value = ""
@@ -19,11 +20,7 @@ export const useUsers = defineStore("logInOut", () => {
     // if (!user) {
       //   errorMessage.value = `Ingen användare hittades med detta e-post. ${email}`;
     //   console.log("Denna email adress finns inte i databasen", email);
-    // } else {
-      //   errorMessage.value = "";
-      //   console.log("Användaren hittat", email);
-      
-      // }
+    // } 
 
     bcryptjs.compare(password, user.password, (error, result) => {
       if (result) {
