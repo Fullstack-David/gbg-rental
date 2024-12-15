@@ -3,6 +3,7 @@ import { useItems } from "@/composables/useItems";
 import { ref, onMounted } from "vue";
 import { useBookings } from "@/composables/useBooking";
 import { itemsApi } from "@/services/itemsApi";
+import BookingFormView from "./renter/BookingFormView.vue";
 
 const { items, isLoading, fetchItems } = useItems();
 
@@ -68,13 +69,13 @@ onMounted(() => {
         </div>
       </div>
     </div>
-    <BookingFormView
+    <!-- <BookingFormView
       v-if="showBookingForm"
       :selectedItem="selectedItem"
       :showBookingForm="showBookingForm"
       @showBookingForm="showBookingForm = $event"
       @selectedItem="selectedItem = $event"
-    />
+    /> -->
   </div>
   <BookingFormView
     v-if="showBookingForm"
