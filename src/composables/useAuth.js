@@ -8,35 +8,33 @@ import { onMounted, ref } from "vue";
 export const useUsers = defineStore("logInOut", () => {
   const router = useRouter();
   const store = authStore();
-  const errorMessage = ref("");
+  const errorMessage = ref('');
 
   async function logIn(email, password) {
+    errorMessage.value = ""
     const users = await userApi.fetchUsers();
-
     const user = users.find((user) => user.email === email);
-
     // if (!user) rendera felmeddelande till användaren
     // Funkar delvis!!!
     // if (!user) {
-    //   errorMessage.value = `Ingen användare hittades med detta e-post. ${email}`;
+      //   errorMessage.value = `Ingen användare hittades med detta e-post. ${email}`;
     //   console.log("Denna email adress finns inte i databasen", email);
     // } else {
-    //   errorMessage.value = "";
-    //   console.log("Användaren hittat", email);
-    // }
+      //   errorMessage.value = "";
+      //   console.log("Användaren hittat", email);
+      
+      // }
 
     bcryptjs.compare(password, user.password, (error, result) => {
-      console.log("Password:", password);
       if (result) {
         localStorage.setItem("user", user.id);
+        router.push("/");
+        store.isLoggedIn = true;
       } else {
         // rendera för användaren att man skrivit fel lösen
         errorMessage.value = "Fel lösenord";
       }
     });
-
-    router.push("/");
-    store.isLoggedIn = true;
   }
 
   function logOut() {

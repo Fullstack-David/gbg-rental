@@ -10,9 +10,13 @@ const headers = {
 export const userApi = {
   // GET
   async fetchUsers() {
-    const response = await fetch(CONFIG.USER_API_URL, { headers });
-    const data = await response.json();
-    return data.record.users;
+    try{
+      const response = await fetch(CONFIG.USER_API_URL, { headers });
+      const data = await response.json();
+      return data.record.users;
+    } catch(error) {
+      console.log(error)
+    }
   },
 
   // get user by id
