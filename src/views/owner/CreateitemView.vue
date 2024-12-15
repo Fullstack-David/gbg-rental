@@ -2,7 +2,6 @@
 import { ref, computed } from "vue";
 import { itemsApi } from "@/services/itemsApi";
 import { v4 as uuidv4 } from "uuid";
-
 import { useModalStore } from "@/composables/useModal";
 
 const modalStore = useModalStore();
@@ -90,7 +89,6 @@ const getInputValue = async () => {
 
   //återställer uthyrningsdagarna
   rentalDays.value = 0;
-  // ska den stänga eller ej? hmmm...
   modalStore.showModal = false;
 };
 </script>

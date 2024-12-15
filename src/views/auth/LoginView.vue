@@ -2,7 +2,10 @@
 import { reactive } from "vue";
 import { useUsers } from "@/composables/useAuth";
 
-const { logIn, errorMessage } = useUsers();
+// const { logIn, errorMessage } = useUsers();
+
+const useAuth = useUsers();
+const { logIn } = useAuth;
 
 const form = reactive({
   email: "",
@@ -41,7 +44,9 @@ const onLogin = () => {
         />
       </div>
       <button type="submit">Logga in</button>
-      <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
+      <p v-if="useAuth.errorMessage" class="error">
+        {{ useAuth.errorMessage }}
+      </p>
       <p>
         Inget konto,
         <RouterLink class="create-account-button" to="/register"

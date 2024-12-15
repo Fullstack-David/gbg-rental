@@ -3,7 +3,7 @@ import { defineStore } from "pinia";
 import { userApi } from "@/services/userAPI";
 import bcryptjs from "bcryptjs";
 import { authStore } from "@/stores/authStore";
-import { onMounted, ref } from "vue";
+import { ref, onMounted } from "vue";
 
 export const useUsers = defineStore("logInOut", () => {
   const router = useRouter();
