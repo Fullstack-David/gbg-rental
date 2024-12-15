@@ -57,7 +57,7 @@ onMounted(() => {
           <strong>Skapad:</strong>
           {{ moment(item.createdAt).format("YYYY-MM-DD") }}
         </p>
-        <p><strong>Pris:</strong> {{ item.price }}: kr</p>
+        <p><strong>Pris:</strong> {{ item.price }} kr</p>
         <p><strong>Postad av:</strong> {{ item.owner }}</p>
 
         <!-- ######################################################### -->
