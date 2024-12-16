@@ -1,10 +1,10 @@
 <script setup>
 import { ref } from "vue";
-import ItemsView from "./ItemsView.vue";
 import { authStore } from "@/stores/authStore";
-const store = authStore();
 import { userApi } from "@/services/userAPI";
+import ItemsView from "./ItemsView.vue";
 
+const store = authStore();
 const user = ref([]);
 
 if (store.isLoggedIn) {
@@ -16,17 +16,14 @@ if (store.isLoggedIn) {
 
   getUserById(userId);
 }
-
-// skapa en funktion där första bokstaven blir stor i userName
-// .charAt(0).toUpperCase()
 </script>
 
 <template>
   <main>
     <h2>
       Välkommen
-      {{ store.isLoggedIn ? user?.name : "" }}
-      till din hyres protal
+      {{ store.isLoggedIn ? user.name.charAt(0).toUpperCase() + user.name.slice(1) : "" }}
+      till din hyresprotal
     </h2>
     <ItemsView />
   </main>

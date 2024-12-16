@@ -2,8 +2,11 @@
 import { useItems } from "@/composables/useItems";
 import { ref, onMounted } from "vue";
 import { itemsApi } from "@/services/itemsApi";
+import BookingFormView from "./renter/BookingFormView.vue";
+import { authStore } from "@/stores/authStore";
 import moment from "moment";
 
+const store = authStore()
 const { items, isLoading, fetchItems } = useItems();
 
 const showBookingForm = ref(false);
@@ -60,11 +63,7 @@ onMounted(() => {
         <p><strong>Pris:</strong> {{ item.price }} kr</p>
         <p><strong>Postad av:</strong> {{ item.owner }}</p>
 
-        <!-- ######################################################### -->
-        <!-- En v-if på denna knappen, som kollar om man är inloggad?  -->
-        <!-- ######################################################### -->
-
-        <div class="add-delete-btn">
+        <div v-if="store.isLoggedIn" class="add-delete-btn">
           <button class="add-btn" @click="openBookingForm(item)">Boka</button>
 
           <!-- Booking Button -->
@@ -74,13 +73,13 @@ onMounted(() => {
         </div>
       </div>
     </div>
-    <BookingFormView
+    <!-- <BookingFormView
       v-if="showBookingForm"
       :selectedItem="selectedItem"
       :showBookingForm="showBookingForm"
       @showBookingForm="showBookingForm = $event"
       @selectedItem="selectedItem = $event"
-    />
+    /> -->
   </div>
   <BookingFormView
     v-if="showBookingForm"
