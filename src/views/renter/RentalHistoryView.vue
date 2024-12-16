@@ -1,16 +1,23 @@
 <script setup>
 import { useOrder } from "@/composables/useOrder";
-const { orders } = useOrder();
+import { onMounted } from "vue";
+const { orders, fetchOrders } = useOrder();
+
+onMounted(() => {
+  fetchOrders();
+})
 </script>
 
 <template>
   <div v-if="orders.length > 0" class="booking-container">
     <h3 class="header">Dina bokningar</h3>
     <ul class="booking-list">
+      {{ console.log(orders) }}
       <li v-for="(order, index) in orders" :key="index" class="booking-item">
         <span class="check-icon">✅</span>
         <div class="booking-details">
-          <p class="booking-title">{{ order.item.title }}</p>
+          <!-- DENNA strular för nu då i tydligen inte kommitt överens om hur order.item ska se ut -->
+          <!-- <p class="booking-title">{{ order.item.title }}</p> -->
           <p class="booking-date-time">
             Bokad datum: {{ order.date }} klockan: {{ order.time }}
           </p>
@@ -18,7 +25,7 @@ const { orders } = useOrder();
       </li>
     </ul>
   </div>
-  <div v-else="orders.length > 0">
+  <div v-else>
     <p class="message">Du har inte lagt några ordrar</p>
   </div>
   <RouterView />

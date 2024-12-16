@@ -62,24 +62,12 @@ onMounted(() => {
         </p>
         <p><strong>Pris:</strong> {{ item.price }} kr</p>
         <p><strong>Postad av:</strong> {{ item.owner }}</p>
-
         <div v-if="store.isLoggedIn" class="add-delete-btn">
           <button class="add-btn" @click="openBookingForm(item)">Boka</button>
-
-          <!-- Booking Button -->
-          <button class="dlt-btn" @click="deleteItem(item.id)">
-            Ta bort annons
-          </button>
+          <button class="dlt-btn" @click="deleteItem(item.id)">Ta bort annons</button>
         </div>
       </div>
     </div>
-    <!-- <BookingFormView
-      v-if="showBookingForm"
-      :selectedItem="selectedItem"
-      :showBookingForm="showBookingForm"
-      @showBookingForm="showBookingForm = $event"
-      @selectedItem="selectedItem = $event"
-    /> -->
   </div>
   <BookingFormView
     v-if="showBookingForm"
