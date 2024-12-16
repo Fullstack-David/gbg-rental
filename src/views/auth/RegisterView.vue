@@ -1,10 +1,10 @@
 <script setup>
 import { reactive } from "vue";
 import { userApi } from '@/services/userAPI'
-import { useUsers } from "@/composables/useAuth";
+import { useAuth } from "@/composables/useAuth";
 import { v4 as uuid } from 'uuid'
 
-const { logIn } = useUsers();
+const { logIn } = useAuth();
 
 const form = reactive({
   fullName: "",

@@ -1,15 +1,15 @@
 <script setup>
 import { useItems } from "@/composables/useItems";
+import { useAuth } from "@/composables/useAuth";
 import { ref, onMounted } from "vue";
 import { itemsApi } from "@/services/itemsApi";
 import BookingFormView from "./renter/BookingFormView.vue";
-import { authStore } from "@/stores/authStore";
 import { userApi } from "@/services/userAPI";
 
 import moment from "moment";
 
-const store = authStore();
 const { items, isLoading, fetchItems } = useItems();
+const { isLoggedIn } = useAuth();
 
 const showBookingForm = ref(false);
 const selectedItem = ref(null);
@@ -17,7 +17,7 @@ const selectedItem = ref(null);
 // HomeView.vue
 const user = ref([]);
 
-if (store.isLoggedIn) {
+if (isLoggedIn) {
   const userId = localStorage.getItem("user");
   async function getUserById(userId) {
     user.value = await userApi.fetchUserById(userId);
@@ -63,7 +63,7 @@ onMounted(() => {
 <template>
   <h2 class="welcome-message">
     Välkommen
-    {{ store.isLoggedIn ? user?.name : "" }}
+    {{ isLoggedIn ? user?.name : "" }}
     till din hyresprotal
   </h2>
   <RouterView />
@@ -81,7 +81,7 @@ onMounted(() => {
         </p>
         <p><strong>Pris:</strong> {{ item.price }} kr</p>
         <p><strong>Postad av:</strong> {{ item.owner }}</p>
-        <div v-if="store.isLoggedIn" class="add-delete-btn">
+        <div v-if="isLoggedIn" class="add-delete-btn">
           <button class="add-btn" @click="openBookingForm(item)">Boka</button>
           <button class="dlt-btn" @click="deleteItem(item.id)">
             Ta bort annons

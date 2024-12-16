@@ -2,12 +2,11 @@ import { useRouter } from "vue-router";
 import { defineStore } from "pinia";
 import { userApi } from "@/services/userAPI";
 import bcryptjs from "bcryptjs";
-import { authStore } from "@/stores/authStore";
 import { ref, onMounted } from "vue";
 
-export const useUsers = defineStore("logInOut", () => {
+export const useAuth = defineStore("logInOut", () => {
+  const isLoggedIn = ref(false);
   const router = useRouter();
-  const store = authStore();
   const errorMessage = ref("");
 
   async function logIn(email, password) {
@@ -23,7 +22,7 @@ export const useUsers = defineStore("logInOut", () => {
       if (result) {
         localStorage.setItem("user", user.id);
         router.push("/");
-        store.isLoggedIn = true;
+        isLoggedIn.value = true;
       } else {
         errorMessage.value = "Fel lösenord";
       }
@@ -32,19 +31,19 @@ export const useUsers = defineStore("logInOut", () => {
 
   function logOut() {
     localStorage.removeItem("user");
-    store.isLoggedIn = false;
+    isLoggedIn.value = false;
     router.push("/");
   }
 
   // Körs onMount() för att se om man tidigare vart inloggad, fungerar som att man spara sin session så att man slipper logga in helatiden
-  function isLoggedIn() {
+  function checkLogin() {
     localStorage.getItem("user")
-      ? (store.isLoggedIn = true)
-      : (store.isLoggedIn = false);
+      ? (isLoggedIn.value = true)
+      : (isLoggedIn.value = false);
   }
 
   onMounted(() => {
-    isLoggedIn();
+    checkLogin();
   });
 
   return { logIn, logOut, isLoggedIn, errorMessage };

@@ -1,11 +1,8 @@
 <script setup>
-import { useUsers } from "@/composables/useAuth";
 import { RouterLink } from "vue-router";
 import DashboardView from "@/views/owner/DashboardView.vue";
-
-import { authStore } from "@/stores/authStore";
-const store = authStore();
-const { logOut } = useUsers();
+import { useAuth } from "@/composables/useAuth";
+const {isLoggedIn, logOut} = useAuth();
 </script>
 
 <template>
@@ -22,14 +19,14 @@ const { logOut } = useUsers();
     <RouterLink class="no-link-style" to="/">
       <h1>GBG Rentals</h1>
     </RouterLink>
-    <nav v-if="!store.isLoggedIn" class="header-nav">
+    <nav v-if="!isLoggedIn" class="header-nav">
       <RouterLink to="/login">Logga in</RouterLink>
     </nav>
-    <nav v-if="store.isLoggedIn" class="header-nav">
+    <nav v-else class="header-nav">
       <RouterLink @click="logOut" to="/login">Logga ut</RouterLink>
     </nav>
   </header>
-  <DashboardView v-if="store.isLoggedIn" />
+  <DashboardView v-if="isLoggedIn" />
 </template>
 
 <style scoped>
