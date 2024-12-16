@@ -12,10 +12,6 @@ const { items, isLoading, fetchItems } = useItems();
 const showBookingForm = ref(false);
 const selectedItem = ref(null);
 
-// function formatDate(date) {
-//   return new Date(date).toLocaleString();
-// }
-
 // Funktion för att öppna bokningsformuläret
 const openBookingForm = async (item) => {
   selectedItem.value = await item;
