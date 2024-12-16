@@ -1,10 +1,9 @@
 import { createRouter, createWebHistory } from "vue-router";
-import HomeView from "@/views/HomeView.vue";
 import ItemsView from "@/views/ItemsView.vue";
 import ItemDetailsView from "@/views/ItemDetailsView.vue";
 import MyRentalsView from "@/views/renter/MyRentalsView.vue";
 import RentalHistoryView from "@/views/renter/RentalHistoryView.vue";
-import CreateItemView from "@/views/owner/CreateItemView.vue";
+import CreateItemView from "@/views/owner/CreateitemView.vue";
 import EditItemView from "@/views/owner/EditItemView.vue";
 import MyItemsView from "@/views/owner/MyItemsView.vue";
 import LoginView from "@/views/auth/LoginView.vue";
@@ -17,8 +16,8 @@ const router = createRouter({
   routes: [
     {
       path: "/",
-      name: "home",
-      component: HomeView,
+      name: "landing-page",
+      component: ItemsView,
     },
     {
       path: "/login",
