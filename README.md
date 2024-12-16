@@ -8,6 +8,12 @@ VITE_JSONBIN_BIN_URL_ITEMS=https://api.jsonbin.io/v3/b/675193d5e41b4d34e4604981
 VITE_JSONBIN_BIN_URL_USERS=https://api.jsonbin.io/v3/b/6756e4dde41b4d34e4626570
 VITE_JSONBIN_BIN_URL_ORDERS=https://api.jsonbin.io/v3/b/675193d5e41b4d34e4604981
 
+Om ni inte pallar göra ett eget konto kan ni logga in med jens@gmail.com lösen 123
+
+
+
+DEV:
+
 [ ] Bort med "ta bort annons" från startsidan och lägg istället till den under "mina produkter"
 [ ] är man inte inloggad så ska "boka" knappen finnas på startsidan, klickar man på "boka" så ska man länkas till logginsidan.
 [ ] Nu har vi två navbars, en med produktgrejer och en med logga ut, slå ihop dessa?

@@ -7,7 +7,7 @@ const { openModal } = useModalStore();
     <ul class="local-nav-ul">
       <li>
         <!-- visar alla tillgängliga produkter "items" -->
-        <RouterLink to="/items">
+        <RouterLink to="/">
           <button>Hyra</button>
         </RouterLink>
       </li>
@@ -19,7 +19,7 @@ const { openModal } = useModalStore();
       </li>
       <li>
         <!-- listar dem produkterna som är kopplat till den användare som är inloggad -->
-        <RouterLink to="/rentals">
+        <RouterLink to="/my-items">
           <button>Mina produkter</button>
         </RouterLink>
       </li>
