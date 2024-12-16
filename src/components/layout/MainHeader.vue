@@ -19,7 +19,7 @@ const { logOut } = useUsers();
         />
       </RouterLink>
     </div>
-    <RouterLink class="no-link-style" to="/dashboard">
+    <RouterLink class="no-link-style" to="/">
       <h1>GBG Rentals</h1>
     </RouterLink>
     <nav v-if="!store.isLoggedIn" class="header-nav">
