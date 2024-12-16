@@ -1,11 +1,13 @@
 <script setup>
 import { ref, computed } from "vue";
 import { itemsApi } from "@/services/itemsApi";
+import { useItems } from "@/composables/useItems";
 import { v4 as uuidv4 } from "uuid";
 import { useModalStore } from "@/composables/useModal";
 
 const modalStore = useModalStore();
 const { closeModal } = useModalStore();
+const { isLoading, addItem, items } = useItems();
 
 const productInfo = ref({
   id: "",
@@ -23,7 +25,7 @@ const productInfo = ref({
   },
 });
 
-const publishedProducts = ref([]);
+// const publishedProducts = ref([]);
 const todayDate = new Date().toISOString().split("T")[0];
 
 function differenceInTime(startDate, endDate) {
@@ -51,25 +53,18 @@ const totalSum = computed(() => {
 });
 
 const getInputValue = async () => {
+  isLoading.value = true;
   productInfo.value.id = uuidv4();
 
   //skapa objektet och publicera till apit
-  const updatedItem = await itemsApi.createItem({ ...productInfo.value });
+  const updatedItem = await addItem({ ...productInfo.value });
 
-  //lägg till publicerad produkt i listan
-  publishedProducts.value.push(updatedItem);
 
   //loggar alla varor
   console.log(
-    "Alla varor:",
-    JSON.parse(JSON.stringify(publishedProducts.value)),
+    "Alla varor:", JSON.parse(JSON.stringify(items.value)),
   );
-  // bara kontroll console, raderas sen
-  console.log(
-    "Publicerade varor:",
-    JSON.parse(JSON.stringify(publishedProducts.value)),
-    `Annonsid: ${productInfo.value.id} ${productInfo.value.owner} har hyrt ut ${productInfo.value.title} med beskrivningen: ${productInfo.value.description} för priset ${productInfo.value.price} under perioden: ${productInfo.value.rentalPeriod.startDate} - ${productInfo.value.rentalPeriod.endDate}bildurl: ${productInfo.value.image.url} alt-text: ${productInfo.value.image.url}`,
-  );
+  
 
   productInfo.value = {
     id: "",
@@ -90,13 +85,15 @@ const getInputValue = async () => {
   //återställer uthyrningsdagarna
   rentalDays.value = 0;
   modalStore.showModal = false;
+  isLoading.value = false;
 };
 </script>
 
 <template>
   <!-- <div class="pub-container"> -->
   <!-- <button @click="openModal">Hyr ut något</button> -->
-  <div
+  <div v-if="isLoading"> Laddar upp produkt...</div>
+  <div v-else
     class="modal-backdrop"
     v-if="modalStore.showModal"
     @click.self="modalStore.closeModal"

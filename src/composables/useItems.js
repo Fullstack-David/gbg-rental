@@ -16,18 +16,33 @@ export function useItems() {
     }
   }
 
-  async function addItem(title) {
+  async function addItem(item) {
+    isLoading.value = true;
+
     const newItem = {
       id: `item${Date.now()}`,
-      title,
+      title: '',
+      description: "",
+      price: "",
+      rentalPeriod: {
+        startDate: "",
+        endDate: "",
+      },
+      owner: "",
+      image: {
+        url: "",
+        alt: "",
+      }
     }
 
     try {
-      items.value = await itemsApi.createItem(newItem)
+      items.value = await itemsApi.createItem(item)
       return true
     } catch (error) {
       console.error('Error adding item:', error)
       return false
+    } finally {
+      isLoading.value = false;
     }
   }
 
