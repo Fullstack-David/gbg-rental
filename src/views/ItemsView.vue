@@ -2,9 +2,9 @@
 import { useItems } from "@/composables/useItems";
 import { useAuth } from "@/composables/useAuth";
 import { ref, onMounted } from "vue";
-import { itemsApi } from "@/services/itemsApi";
+// import { itemsApi } from "@/services/binApi";
 import BookingFormView from "./renter/BookingFormView.vue";
-import { userApi } from "@/services/userAPI";
+import { useUser } from "@/composables/useUsers";
 
 import moment from "moment";
 
@@ -14,21 +14,36 @@ const { isLoggedIn } = useAuth();
 const showBookingForm = ref(false);
 const selectedItem = ref(null);
 
-// HomeView.vue
 const user = ref([]);
 
-if (isLoggedIn) {
-  const userId = localStorage.getItem("user");
-  async function getUserById(userId) {
-    user.value = await userApi.fetchUserById(userId);
-  }
-  getUserById(userId);
-}
-// end HomeView.vue
 
-// function formatDate(date) {
-//   return new Date(date).toLocaleString();
+
+
+
+
+
+
+
+// if (isLoggedIn) {
+//   const userId = localStorage.getItem("user");
+//   async function getUserById(userId) {
+//     user.value = await userApi.fetchUserById(userId);
+//   }
+//   getUserById(userId);
 // }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // Funktion för att öppna bokningsformuläret
 const openBookingForm = async (item) => {
@@ -36,24 +51,27 @@ const openBookingForm = async (item) => {
   showBookingForm.value = true;
 };
 
+
+
+// FLYTTA DENNA TILL MY-ITEMS OCH ANVÄND USEITEM FÖR GUDS SKULL
 // Ta bort en annons
-const deleteItem = async (id) => {
-  try {
-    const confirmed = confirm(
-      "Är du säker på att du vill ta bort denna annons?",
-    );
-    if (!confirmed) return;
+// const deleteItem = async (id) => {
+//   try {
+//     const confirmed = confirm(
+//       "Är du säker på att du vill ta bort denna annons?",
+//     );
+//     if (!confirmed) return;
 
-    const updatedItems = await itemsApi.deleteItem(id);
+//     const updatedItems = await itemsApi.deleteItem(id);
 
-    items.value = updatedItems;
+//     items.value = updatedItems;
 
-    alert("Annonsen har tagits bort");
-  } catch (error) {
-    console.error("kunde inte ta bort annonsen:", error);
-    alert("Ett fel inträffade, försök igen senare");
-  }
-};
+//     alert("Annonsen har tagits bort");
+//   } catch (error) {
+//     console.error("kunde inte ta bort annonsen:", error);
+//     alert("Ett fel inträffade, försök igen senare");
+//   }
+// };
 
 onMounted(() => {
   fetchItems();

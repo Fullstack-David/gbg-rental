@@ -6,18 +6,18 @@ const headers = {
   'X-Access-Key': CONFIG.JSONBIN_API_KEY,
 }
 
-export const itemsApi = {
+export const binApi = {
   // GET
-  async fetchItems() {
-    const response = await fetch(CONFIG.ITEMS_API_URL, { headers })
+  async getApi(url) {
+    const response = await fetch(url, { headers })
     const data = await response.json()
-    return data.record.items
+    return data.record
   },
 
   // POST
-  async createItem(newItem) {
+  async postApi(url, newItem) {
     const currentItems = await this.fetchItems()
-    const response = await fetch(CONFIG.ITEMS_API_URL, {
+    const response = await fetch(url, {
       method: 'PUT',
       headers,
       body: JSON.stringify({
@@ -25,17 +25,17 @@ export const itemsApi = {
       }),
     })
     const data = await response.json()
-    return data.record.items
+    return data.record
   },
 
   // PUT
-  async updateItem(id, updatedItem) {
+  async updateApi(url, id, updatedItem) {
     const currentItems = await this.fetchItems()
     const updatedItems = currentItems.map((item) =>
       item.id === id ? { ...item, ...updatedItem } : item,
     )
 
-    const response = await fetch(CONFIG.ITEMS_API_URL, {
+    const response = await fetch(url, {
       method: 'PUT',
       headers,
       body: JSON.stringify({
@@ -43,15 +43,15 @@ export const itemsApi = {
       }),
     })
     const data = await response.json()
-    return data.record.items
+    return data.record
   },
 
   // DELETE
-  async deleteItem(id) {
+  async deleteApi(url, id) {
     const currentItems = await this.fetchItems()
     const filteredItems = currentItems.filter((item) => item.id !== id)
 
-    const response = await fetch(CONFIG.ITEMS_API_URL, {
+    const response = await fetch(url, {
       method: 'PUT',
       headers,
       body: JSON.stringify({
@@ -59,6 +59,6 @@ export const itemsApi = {
       }),
     })
     const data = await response.json()
-    return data.record.items
+    return data.record
   },
 }

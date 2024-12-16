@@ -1,8 +1,11 @@
 import { useRouter } from "vue-router";
 import { defineStore } from "pinia";
-import { userApi } from "@/services/userAPI";
+import { binApi } from "@/services/binApi";
 import bcryptjs from "bcryptjs";
 import { ref, onMounted } from "vue";
+import { CONFIG } from "@/constants/config"
+
+const url = CONFIG.USER_API_URL;
 
 export const useAuth = defineStore("logInOut", () => {
   const isLoggedIn = ref(false);
@@ -11,22 +14,27 @@ export const useAuth = defineStore("logInOut", () => {
 
   async function logIn(email, password) {
     errorMessage.value = "";
-    const users = await userApi.fetchUsers();
-    const user = users.find((user) => user.email === email);
-    if (!user) {
-      errorMessage.value = "Ingen användare hittades med detta e-post.";
-      return;
-    }
-
-    bcryptjs.compare(password, user.password, (error, result) => {
-      if (result) {
-        localStorage.setItem("user", user.id);
-        router.push("/");
-        isLoggedIn.value = true;
-      } else {
-        errorMessage.value = "Fel lösenord";
+    try{
+      const response = await binApi.getApi(url);
+      const user = response.users.find((user) => user.email === email);
+      if (!user) {
+        errorMessage.value = "Ingen användare hittades med detta e-post.";
+        return;
       }
-    });
+
+      bcryptjs.compare(password, user.password, (error, result) => {
+        if (result) {
+          localStorage.setItem("user", user.id);
+          router.push("/");
+          isLoggedIn.value = true;
+        } else {
+          errorMessage.value = "Fel lösenord";
+        }
+      });
+    } catch(error){
+      console.log(error)
+      errorMessage.value = 'NÅGOT GICK FEL, försök igen imorgon'
+    }
   }
 
   function logOut() {
@@ -40,6 +48,10 @@ export const useAuth = defineStore("logInOut", () => {
     localStorage.getItem("user")
       ? (isLoggedIn.value = true)
       : (isLoggedIn.value = false);
+  }
+
+  function getLoggedInUser(){
+    return localStorage.getItem("user")
   }
 
   onMounted(() => {

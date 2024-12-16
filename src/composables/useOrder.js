@@ -1,6 +1,9 @@
 import { ref } from 'vue'
-import { orderApi } from '@/services/orderApi'
+import { binApi } from '@/services/binApi';
 import { v4 as uuid } from 'uuid'
+import { CONFIG } from "@/constants/config"
+
+const url = CONFIG.ORDERS_API_URL;
 
 export function useOrder(){
   const orders = ref([])
@@ -9,7 +12,8 @@ export function useOrder(){
   async function fetchOrders() {
     isLoading.value = true
     try {
-      orders.value = await orderApi.fetchOrders()
+      const response = await binApi.getApi(url)
+      orders.value = response.orders
     } catch (error) {
       console.error('Error fetching orders:', error)
     } finally {
@@ -23,7 +27,9 @@ export function useOrder(){
       ...order,
     }
     try {
-      orders.value = await orderApi.createOrder(newOrder)
+      const response = await binApi.postApi(url, newOrder)
+      orders.value = response.orders
+
       return true
     } catch (error) {
       console.error('Error adding order:', error)
@@ -33,7 +39,8 @@ export function useOrder(){
 
   async function updateOrder(id, order) {
     try {
-      orders.value = await orderApi.updateOrder(id, order)
+      const response = await binApi.updateApi(url, id, order)
+      orders.value = response.orders
       return true
     } catch (error) {
       console.error('Error updating order:', error)
@@ -43,7 +50,8 @@ export function useOrder(){
 
   async function deleteOrder(id) {
     try {
-      orders.value = await orderApi.deleteOrder(id)
+      const response = await binApi.deleteApi(url, id)
+      orders.value = response.orders
       return true
     } catch (error) {
       console.error('Error deleting order:', error)

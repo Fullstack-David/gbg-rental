@@ -20,6 +20,10 @@ const bookItem = () => {
     item: props.selectedItem,
     date: bookingDate.value,
     time: bookingTime.value,
+    rentalPeriod: {
+      startDate: "",
+      endDate: "",
+    },
   };
   addOrder(newOrder)
   alert(

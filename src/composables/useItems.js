@@ -1,7 +1,9 @@
 import { ref } from 'vue'
-import { itemsApi } from '@/services/itemsApi'
+import { binApi } from '@/services/binApi'
 import { v4 as uuid } from 'uuid'
+import { CONFIG } from "@/constants/config"
 
+const url = CONFIG.ITEMS_API_URL;
 
 export function useItems() {
   const items = ref([])
@@ -10,7 +12,8 @@ export function useItems() {
   async function fetchItems() {
     isLoading.value = true
     try {
-      items.value = await itemsApi.fetchItems()
+      const response = await binApi.getApi(url)
+      items.value = await response.items
     } catch (error) {
       console.error('Error fetching items:', error)
     } finally {
@@ -18,14 +21,15 @@ export function useItems() {
     }
   }
 
-  async function addItem(title) {
+  async function addItem(item) {
     const newItem = {
       id: uuid(),
-      title,
+      ...item,
     }
 
     try {
-      items.value = await itemsApi.createItem(newItem)
+      const response = await binApi.postApi(url, newItem)
+      items.value = await response.items
       return true
     } catch (error) {
       console.error('Error adding item:', error)
@@ -33,9 +37,10 @@ export function useItems() {
     }
   }
 
-  async function updateItem(id, title) {
+  async function updateItem(id, newItem) {
     try {
-      items.value = await itemsApi.updateItem(id, { title })
+      const response = await binApi.updateApi(url, id, newItem)
+      items.value = await response.items
       return true
     } catch (error) {
       console.error('Error updating item:', error)
@@ -43,9 +48,10 @@ export function useItems() {
     }
   }
 
-  async function deleteItem(id) {
+  async function deleteItem(url, id) {
     try {
-      items.value = await itemsApi.deleteItem(id)
+      const response = await binApi.deleteApi(url, id)
+      items.value = await response.items
       return true
     } catch (error) {
       console.error('Error deleting item:', error)
