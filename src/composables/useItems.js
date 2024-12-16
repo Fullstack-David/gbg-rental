@@ -1,5 +1,7 @@
 import { ref } from 'vue'
 import { itemsApi } from '@/services/itemsApi'
+import { v4 as uuid } from 'uuid'
+
 
 export function useItems() {
   const items = ref([])
@@ -20,8 +22,8 @@ export function useItems() {
     isLoading.value = true;
 
     const newItem = {
-      id: `item${Date.now()}`,
-      title: '',
+      id: uuid(),
+      title: "",
       description: "",
       price: "",
       rentalPeriod: {

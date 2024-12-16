@@ -2,8 +2,6 @@
 import { reactive } from "vue";
 import { useUsers } from "@/composables/useAuth";
 
-// const { logIn, errorMessage } = useUsers();
-
 const useAuth = useUsers();
 const { logIn } = useAuth;
 
