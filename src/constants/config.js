@@ -1,5 +1,6 @@
 export const CONFIG = {
   JSONBIN_API_KEY: import.meta.env.VITE_JSONBIN_API_KEY,
   ITEMS_API_URL: import.meta.env.VITE_JSONBIN_BIN_URL_ITEMS,
-  USER_API_URL: import.meta.env.VITE_JSONBIN_BIN_URL_USERS
+  USER_API_URL: import.meta.env.VITE_JSONBIN_BIN_URL_USERS,
+  ORDERS_API_URL: import.meta.env.VITE_JSONBIN_BIN_URL_ORDERS,
 }
