@@ -22,7 +22,6 @@ export function useOrder(){
       id: uuid(),
       ...order,
     }
-
     try {
       orders.value = await orderApi.createOrder(newOrder)
       return true

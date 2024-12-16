@@ -2,6 +2,7 @@
 import { useOrder } from '@/composables/useOrder';
 import { defineProps, defineEmits, ref } from 'vue';
 
+// Denna rad ger varningar i konsolen, vänligen fixa :-)
 const emit = defineEmits(['update:showBookingForm', 'update:selectedItem']);
 
 const props = defineProps({
@@ -21,8 +22,6 @@ const bookItem = () => {
     time: bookingTime.value,
   };
   addOrder(newOrder)
-
-  console.log(newOrder);
   alert(
     `Du har bokat: ${props.selectedItem.title} den ${bookingDate.value} kl. ${bookingTime.value}`,
   );
