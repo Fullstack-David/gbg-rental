@@ -33,3 +33,8 @@ DEV:
 [ ] Check för att man inte ska kunna registrera samma email flera gånger
 [ ] Det finns både /items och /-routen visar identiska grejer, ta bort en a dem.
 [ ] Fixa private routes för att inte kunna komma åt my-items m.m. om man inte är inloggad(https://router.vuejs.org/guide/advanced/navigation-guards.html)
+
+Slå ihop services till en fil och skicka med URL från composable-filerna
+Flytta ut isLogged in + localstorage-logiken till en store
+Lägga till computes för state-variabler
+(Logik för att skicka anvvändaren till sidan deen avr på innan log in)
