@@ -1,5 +1,5 @@
 <script setup>
-import { useBookings } from '@/composables/useBooking';
+import { useBookings } from '@/composables/useOrder';
 import { defineProps, defineEmits, ref } from 'vue';
 
 const emit = defineEmits(['update:showBookingForm', 'update:selectedItem']);

@@ -1,5 +1,5 @@
 <script setup>
-import { useBookings } from "@/composables/useBooking";
+import { useBookings } from "@/composables/useOrder";
 const { bookedItems } = useBookings();
 </script>
 
