@@ -16,7 +16,7 @@ onMounted(() => {
       <li v-for="(order, index) in orders" :key="index" class="booking-item">
         <span class="check-icon">✅</span>
         <div class="booking-details">
-          <!-- DENNA strular för nu då i tydligen inte kommitt överens om hur order.item ska se ut -->
+          <!-- DENNA strular för nu då i tydligen inte kommit överens om hur order.item ska se ut -->
           <!-- <p class="booking-title">{{ order.item.title }}</p> -->
           <p class="booking-date-time">
             Bokad datum: {{ order.date }} klockan: {{ order.time }}

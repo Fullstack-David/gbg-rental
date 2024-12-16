@@ -49,7 +49,7 @@ onMounted(() => {
 <template>
   <RouterView />
   <h2 v-if="isLoading">Laddar...</h2>
-  <div v-if="!isLoading">
+  <div v-else>
     <h2 class="header-title">Alla annonser</h2>
     <div class="item-container">
       <div v-for="item in items" :key="item.id" class="item">
