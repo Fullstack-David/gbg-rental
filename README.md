@@ -22,3 +22,5 @@ Alla ordrar visas för alla användare i historiken
 Ordrar sparas inte (Spara på användarobjektet och hämta från item-ref eller spara i egen JSONBin och hämta efter användar id?)
 
 Komma överens om vi ska spara hela item-objekt i orders eller om i nöjer oss med ID för att sedan hämta informationen från items
+
+Check för att man inte ska kunna registrera samma email flera gånger
