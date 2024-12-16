@@ -92,7 +92,11 @@ const getInputValue = async () => {
 <template>
   <!-- <div class="pub-container"> -->
   <!-- <button @click="openModal">Hyr ut något</button> -->
-  <div v-if="isLoading"> Laddar upp produkt...</div>
+  <div v-if="isLoading" class="loading-overlay"> 
+    <div class="spinner">
+      <!-- <p>Laddar upp produkt...</p> -->
+    </div>
+  </div>
   <div v-else
     class="modal-backdrop"
     v-if="modalStore.showModal"
@@ -202,6 +206,38 @@ const getInputValue = async () => {
   text-align: center;
   /* Centrerar innehållet */
 }
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.8); /* Svag vit bakgrund */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999; /* Högre än modalen för att vara ovanpå */
+}
+
+.spinner {
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-top: 4px solid #4caf50; /* Grön färg för spinnern */
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 
 .modal-backdrop {
   position: fixed;
