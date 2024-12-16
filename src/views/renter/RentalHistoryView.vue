@@ -1,31 +1,35 @@
 <script setup>
-import { useBookings } from "@/composables/useBooking";
-const { bookedItems } = useBookings();
+import { useOrder } from "@/composables/useOrder";
+import { onMounted } from "vue";
+const { orders, fetchOrders } = useOrder();
+
+onMounted(() => {
+  fetchOrders();
+});
 </script>
 
 <template>
-  <div v-if="bookedItems.length < 1">
-    <p class="message">Du har inte lagt några ordrar</p>
-  </div>
-  <div v-else class="booking-container">
+  <div v-if="orders.length > 0" class="booking-container">
     <h3 class="header">Dina bokningar</h3>
     <ul class="booking-list">
-      <li
-        v-for="(booking, index) in bookedItems"
-        :key="index"
-        class="booking-item"
-      >
+      {{
+        console.log(orders)
+      }}
+      <li v-for="(order, index) in orders" :key="index" class="booking-item">
         <span class="check-icon">✅</span>
         <div class="booking-details">
-          <p class="booking-title">{{ booking.item.title }}</p>
+          <!-- DENNA strular för nu då i tydligen inte kommit överens om hur order.item ska se ut -->
+          <!-- <p class="booking-title">{{ order.item.title }}</p> -->
           <p class="booking-date-time">
-            Bokad datum: {{ booking.date }} klockan: {{ booking.time }}
+            Bokad datum: {{ order.date }} klockan: {{ order.time }}
           </p>
         </div>
       </li>
     </ul>
   </div>
-
+  <div v-else>
+    <p class="message">Du har inte lagt några ordrar</p>
+  </div>
   <RouterView />
 </template>
 

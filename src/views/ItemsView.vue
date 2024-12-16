@@ -45,7 +45,7 @@ onMounted(() => {
 <template>
   <RouterView />
   <h2 v-if="isLoading">Laddar...</h2>
-  <div v-if="!isLoading">
+  <div v-else>
     <h2 class="header-title">Alla annonser</h2>
     <div class="item-container">
       <div v-for="item in items" :key="item.id" class="item">
@@ -58,24 +58,12 @@ onMounted(() => {
         </p>
         <p><strong>Pris:</strong> {{ item.price }} kr</p>
         <p><strong>Postad av:</strong> {{ item.owner }}</p>
-
         <div v-if="store.isLoggedIn" class="add-delete-btn">
           <button class="add-btn" @click="openBookingForm(item)">Boka</button>
-
-          <!-- Booking Button -->
-          <button class="dlt-btn" @click="deleteItem(item.id)">
-            Ta bort annons
-          </button>
+          <button class="dlt-btn" @click="deleteItem(item.id)">Ta bort annons</button>
         </div>
       </div>
     </div>
-    <!-- <BookingFormView
-      v-if="showBookingForm"
-      :selectedItem="selectedItem"
-      :showBookingForm="showBookingForm"
-      @showBookingForm="showBookingForm = $event"
-      @selectedItem="selectedItem = $event"
-    /> -->
   </div>
   <BookingFormView
     v-if="showBookingForm"
