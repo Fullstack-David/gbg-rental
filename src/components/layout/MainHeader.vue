@@ -27,7 +27,6 @@ const { logOut } = useUsers();
     </nav>
     <nav v-if="store.isLoggedIn" class="header-nav">
       <RouterLink @click="logOut" to="/login">Logga ut</RouterLink>
-      <RouterLink to="/kundvagn">Kundvagn</RouterLink>
     </nav>
   </header>
   <DashboardView v-if="store.isLoggedIn" />
