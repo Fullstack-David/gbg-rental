@@ -1,5 +1,5 @@
 <script setup>
-import { useBookings } from '@/composables/useOrder';
+import { useOrder } from '@/composables/useOrder';
 import { defineProps, defineEmits, ref } from 'vue';
 
 const emit = defineEmits(['update:showBookingForm', 'update:selectedItem']);
@@ -9,18 +9,18 @@ const props = defineProps({
   showBookingForm: Boolean
 });
 
-const { bookedItems } = useBookings();
+const { addOrder } = useBookings();
 const bookingDate = ref("");
 const bookingTime = ref("");
 
 // Funktion för att boka ett objekt med dag och tid
 const bookItem = () => {
-  const bookingDetails = {
+  const newOrder = {
     item: props.selectedItem,
     date: bookingDate.value,
     time: bookingTime.value,
   };
-  bookedItems.value.push(bookingDetails);
+  orders.value.push(bookingDetails);
 
   console.log(bookingDetails);
   alert(

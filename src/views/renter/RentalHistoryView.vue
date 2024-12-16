@@ -1,24 +1,24 @@
 <script setup>
-import { useBookings } from "@/composables/useOrder";
-const { bookedItems } = useBookings();
+import { useOrder } from "@/composables/useOrder";
+const { orders } = useOrder();
 </script>
 
 <template>
-  <div v-if="bookedItems.length > 0" class="booking-container">
+  <div v-if="orders.length > 0" class="booking-container">
     <h3 class="header">Dina bokningar</h3>
     <ul class="booking-list">
-      <li v-for="(booking, index) in bookedItems" :key="index" class="booking-item">
+      <li v-for="(order, index) in orders" :key="index" class="booking-item">
         <span class="check-icon">✅</span>
         <div class="booking-details">
-          <p class="booking-title">{{ booking.item.title }}</p>
+          <p class="booking-title">{{ order.item.title }}</p>
           <p class="booking-date-time">
-            Bokad datum: {{ booking.date }} klockan: {{ booking.time }}
+            Bokad datum: {{ order.date }} klockan: {{ order.time }}
           </p>
         </div>
       </li>
     </ul>
   </div>
-  <div v-else="bookedItems.length > 0">
+  <div v-else="orders.length > 0">
     <p class="message">Du har inte lagt några ordrar</p>
   </div>
   <RouterView />
