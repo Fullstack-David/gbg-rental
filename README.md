@@ -10,7 +10,6 @@ VITE_JSONBIN_BIN_URL_ORDERS=https://api.jsonbin.io/v3/b/675193d5e41b4d34e4604981
 
 Om ni inte pallar göra ett eget konto kan ni logga in med jens@gmail.com lösen 123
 
-
 DEV:
 ✓ X
 [ ] Bort med "ta bort annons" från startsidan och lägg istället till den under "mina produkter"
@@ -37,4 +36,3 @@ Slå ihop services till en fil och skicka med URL från composable-filerna
 Flytta ut isLogged in + localstorage-logiken till en store
 Lägga till computes för state-variabler
 (Logik för att skicka anvvändaren till sidan deen avr på innan log in)
-Trunc:a beskrivningarna på items

@@ -79,7 +79,7 @@ header nav a:hover {
 
 @media (max-width: 768px) {
   .header-content {
-    flex-direction: column;
+    display: flex;
     align-items: center;
   }
 
@@ -98,6 +98,11 @@ header nav a:hover {
   .header-nav a {
     font-size: 16px;
     /* Anpassa länkstorleken */
+  }
+
+  .logo-container img {
+    width: 50px;
+    height: 50px;
   }
 }
 </style>

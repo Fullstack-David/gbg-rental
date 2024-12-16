@@ -1,7 +1,6 @@
 <script setup>
 import { reactive } from "vue";
 import { useUsers } from "@/composables/useAuth";
-
 const useAuth = useUsers();
 const { logIn } = useAuth;
 

@@ -8,7 +8,7 @@ import { userApi } from "@/services/userAPI";
 
 import moment from "moment";
 
-const store = authStore()
+const store = authStore();
 const { items, isLoading, fetchItems } = useItems();
 
 const showBookingForm = ref(false);
@@ -25,7 +25,6 @@ if (store.isLoggedIn) {
   getUserById(userId);
 }
 // end HomeView.vue
-
 
 // function formatDate(date) {
 //   return new Date(date).toLocaleString();
@@ -75,7 +74,7 @@ onMounted(() => {
       <div v-for="item in items" :key="item.id" class="item">
         <h4>{{ item.title }}</h4>
         <img :src="item.image.url" :alt="item.image.alt" />
-        <p>{{ item.description }}</p>
+        <p>{{ item.description }}...</p>
         <p>
           <strong>Skapad:</strong>
           {{ moment(item.createdAt).format("YYYY-MM-DD") }}
@@ -84,12 +83,20 @@ onMounted(() => {
         <p><strong>Postad av:</strong> {{ item.owner }}</p>
         <div v-if="store.isLoggedIn" class="add-delete-btn">
           <button class="add-btn" @click="openBookingForm(item)">Boka</button>
-          <button class="dlt-btn" @click="deleteItem(item.id)">Ta bort annons</button>
+          <button class="dlt-btn" @click="deleteItem(item.id)">
+            Ta bort annons
+          </button>
         </div>
       </div>
     </div>
   </div>
-  <BookingFormView v-if="showBookingForm" :selectedItem="selectedItem" :showBookingForm="showBookingForm" @showBookingForm="showBookingForm = $event" @selectedItem="selectedItem = $event" />
+  <BookingFormView
+    v-if="showBookingForm"
+    :selectedItem="selectedItem"
+    :showBookingForm="showBookingForm"
+    @showBookingForm="showBookingForm = $event"
+    @selectedItem="selectedItem = $event"
+  />
 </template>
 
 <style scoped>
