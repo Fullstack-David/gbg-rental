@@ -9,7 +9,7 @@ const props = defineProps({
   showBookingForm: Boolean
 });
 
-const { addOrder } = useBookings();
+const { addOrder } = useOrder();
 const bookingDate = ref("");
 const bookingTime = ref("");
 
@@ -20,9 +20,9 @@ const bookItem = () => {
     date: bookingDate.value,
     time: bookingTime.value,
   };
-  orders.value.push(bookingDetails);
+  addOrder(newOrder)
 
-  console.log(bookingDetails);
+  console.log(newOrder);
   alert(
     `Du har bokat: ${props.selectedItem.title} den ${bookingDate.value} kl. ${bookingTime.value}`,
   );

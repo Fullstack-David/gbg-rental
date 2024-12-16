@@ -1,5 +1,7 @@
 import { ref } from 'vue'
 import { itemsApi } from '@/services/itemsApi'
+import { v4 as uuid } from 'uuid'
+
 
 export function useItems() {
   const items = ref([])
@@ -18,7 +20,7 @@ export function useItems() {
 
   async function addItem(title) {
     const newItem = {
-      id: `item${Date.now()}`,
+      id: uuid(),
       title,
     }
 

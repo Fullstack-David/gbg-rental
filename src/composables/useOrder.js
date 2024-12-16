@@ -1,5 +1,6 @@
 import { ref } from 'vue'
 import { orderApi } from '@/services/orderApi'
+import { v4 as uuid } from 'uuid'
 
 export function useOrder(){
   const orders = ref([])

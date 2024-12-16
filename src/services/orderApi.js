@@ -1,5 +1,6 @@
 import { CONFIG } from "@/constants/config"
 
+
 const headers = {
   'Content-Type': 'application/json',
   'X-Master-Key': CONFIG.JSONBIN_API_KEY,
