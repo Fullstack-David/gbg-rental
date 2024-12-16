@@ -22,7 +22,11 @@ if (store.isLoggedIn) {
   <main>
     <h2>
       Välkommen
-      {{ store.isLoggedIn ? user.name.charAt(0).toUpperCase() + user.name.slice(1) : "" }}
+      {{
+        store.isLoggedIn
+          ? user.name.charAt(0).toUpperCase() + user.name.slice(1)
+          : ""
+      }}
       till din hyresprotal
     </h2>
     <ItemsView />

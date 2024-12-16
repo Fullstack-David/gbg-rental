@@ -6,7 +6,7 @@ import BookingFormView from "./renter/BookingFormView.vue";
 import { authStore } from "@/stores/authStore";
 import moment from "moment";
 
-const store = authStore()
+const store = authStore();
 const { items, isLoading, fetchItems } = useItems();
 
 const showBookingForm = ref(false);
@@ -55,7 +55,7 @@ onMounted(() => {
       <div v-for="item in items" :key="item.id" class="item">
         <h3>{{ item.title }}</h3>
         <img :src="item.image.url" :alt="item.image.alt" />
-        <p>{{ item.description }}</p>
+        <p>{{ item.description }}...</p>
         <p>
           <strong>Skapad:</strong>
           {{ moment(item.createdAt).format("YYYY-MM-DD") }}

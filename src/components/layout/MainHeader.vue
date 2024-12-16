@@ -27,7 +27,7 @@ const { logOut } = useUsers();
     </nav>
     <nav v-if="store.isLoggedIn" class="header-nav">
       <RouterLink @click="logOut" to="/login">Logga ut</RouterLink>
-      <RouterLink to="/kundvagn">Kundvagn</RouterLink>
+      <!-- <RouterLink to="/kundvagn">Kundvagn</RouterLink> -->
     </nav>
   </header>
   <DashboardView v-if="store.isLoggedIn" />
@@ -80,7 +80,7 @@ header nav a:hover {
 
 @media (max-width: 768px) {
   .header-content {
-    flex-direction: column;
+    display: flex;
     align-items: center;
   }
 
@@ -99,6 +99,11 @@ header nav a:hover {
   .header-nav a {
     font-size: 16px;
     /* Anpassa länkstorleken */
+  }
+
+  .logo-container img {
+    width: 50px;
+    height: 50px;
   }
 }
 </style>

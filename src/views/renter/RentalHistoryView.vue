@@ -4,10 +4,17 @@ const { bookedItems } = useBookings();
 </script>
 
 <template>
-  <div v-if="bookedItems.length > 0" class="booking-container">
+  <div v-if="bookedItems.length < 1">
+    <p class="message">Du har inte lagt några ordrar</p>
+  </div>
+  <div v-else class="booking-container">
     <h3 class="header">Dina bokningar</h3>
     <ul class="booking-list">
-      <li v-for="(booking, index) in bookedItems" :key="index" class="booking-item">
+      <li
+        v-for="(booking, index) in bookedItems"
+        :key="index"
+        class="booking-item"
+      >
         <span class="check-icon">✅</span>
         <div class="booking-details">
           <p class="booking-title">{{ booking.item.title }}</p>
@@ -18,9 +25,7 @@ const { bookedItems } = useBookings();
       </li>
     </ul>
   </div>
-  <div v-else="bookedItems.length > 0">
-    <p class="message">Du har inte lagt några ordrar</p>
-  </div>
+
   <RouterView />
 </template>
 
