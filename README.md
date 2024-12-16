@@ -24,3 +24,4 @@ Ordrar sparas inte (Spara på användarobjektet och hämta från item-ref eller 
 Komma överens om vi ska spara hela item-objekt i orders eller om i nöjer oss med ID för att sedan hämta informationen från items
 
 Check för att man inte ska kunna registrera samma email flera gånger
+Det finns både /items och /-routen visar identiska grejer, ta bort en a dem.
