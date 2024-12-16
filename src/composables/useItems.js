@@ -16,6 +16,11 @@ export function useItems() {
     }
   }
 
+  //gör en computed property för att filtrera items istället för en fetch-funktion
+//(user_id)
+//await itemsApi
+//filter funktion, user id= id för item:t (user_id)
+
   async function addItem(title) {
     const newItem = {
       id: `item${Date.now()}`,
