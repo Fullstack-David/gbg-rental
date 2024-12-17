@@ -1,6 +1,6 @@
 <script setup>
 import { useOrder } from '@/composables/useOrder';
-import { defineProps, defineEmits, ref } from 'vue';
+import { ref } from 'vue';
 
 // Denna rad ger varningar i konsolen, vänligen fixa :-)
 const emit = defineEmits(['update:showBookingForm', 'update:selectedItem']);

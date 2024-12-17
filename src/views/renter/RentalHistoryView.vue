@@ -5,19 +5,21 @@ const { orders, fetchOrders } = useOrder();
 
 onMounted(() => {
   fetchOrders();
-})
+});
 </script>
 
 <template>
   <div v-if="orders.length > 0" class="booking-container">
     <h3 class="header">Dina bokningar</h3>
     <ul class="booking-list">
-      {{ console.log(orders) }}
+      {{
+        console.log(orders)
+      }}
       <li v-for="(order, index) in orders" :key="index" class="booking-item">
         <span class="check-icon">✅</span>
         <div class="booking-details">
           <!-- DENNA strular för nu då i tydligen inte kommit överens om hur order.item ska se ut -->
-          <!-- <p class="booking-title">{{ order.item.title }}</p> -->
+          <p class="booking-title">{{ order.item.title }}</p>
           <p class="booking-date-time">
             Bokad datum: {{ order.date }} klockan: {{ order.time }}
           </p>
