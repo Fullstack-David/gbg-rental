@@ -2,59 +2,71 @@
 import { useModalStore } from "@/composables/useModal";
 const { openModal } = useModalStore();
 </script>
+
 <template>
-  <div class="local-nav">
-    <ul class="local-nav-ul">
-      <li>
-        <!-- visar alla tillgängliga produkter "items" -->
+  <nav class="local-nav">
+    <ul class="local-nav__list">
+      <li class="local-nav__item">
         <RouterLink to="/">
-          <button>Hyra</button>
+          <button class="local-nav__button">Hyra</button>
         </RouterLink>
       </li>
-      <li>
-        <!-- visar modalen för att lägga till en ny produkt "item" -->
+      <li class="local-nav__item">
         <RouterLink to="/create-item">
-          <button @click="openModal">Lägg upp ny produkt</button>
+          <button class="local-nav__button" @click="openModal">
+            Lägg upp ny produkt
+          </button>
         </RouterLink>
       </li>
-      <li>
-        <!-- listar dem produkterna som är kopplat till den användare som är inloggad -->
+      <li class="local-nav__item">
         <RouterLink to="/my-items">
-          <button>Mina produkter</button>
+          <button class="local-nav__button">Mina produkter</button>
         </RouterLink>
       </li>
-      <li>
-        <!-- listar dem produkterna som är kopplat till den användare som är inloggad -->
+      <li class="local-nav__item">
         <RouterLink to="/history">
-          <button>Order historik</button>
+          <button class="local-nav__button">Orderhistorik</button>
         </RouterLink>
       </li>
     </ul>
-  </div>
+  </nav>
 </template>
 
 <style scoped>
 .local-nav {
-  background-color: #162c46;
-  padding: 0.5rem;
+  background-color: #1f1f1f;
+  padding: 0.75rem 1rem;
 }
 
-.local-nav-ul {
+.local-nav__list {
   display: flex;
-  gap: 0.5rem;
+  gap: 1rem;
   list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
-button {
-  background-color: orange;
-  border-radius: 5px;
-  padding: 1rem;
+.local-nav__item {
+  display: inline-block;
+}
+
+.local-nav__button {
+  background-color: #ff7b00;
   border: none;
-  font-size: 1rem;
+  border-radius: 6px;
   color: white;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 0.75rem 1.5rem;
+  transition: background-color 0.3s ease;
 }
 
-button:hover {
-  background-color: rgb(179, 118, 6);
+.local-nav__button:hover {
+  background-color: #e07000; 
+}
+
+.local-nav__button:focus {
+  outline: 2px solid #ffb366; 
 }
 </style>

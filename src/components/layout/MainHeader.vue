@@ -89,7 +89,7 @@ header h1 {
 }
 
 .header-nav a {
-  background-color: #f0a500;
+  background-color: #ff7b00;
   color: white;
   padding: 8px 15px;
   border-radius: 6px;
