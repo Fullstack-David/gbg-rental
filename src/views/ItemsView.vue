@@ -1,19 +1,49 @@
 <script setup>
 import { useItems } from "@/composables/useItems";
+import { useAuth } from "@/composables/useAuth";
 import { ref, onMounted } from "vue";
-import { itemsApi } from "@/services/itemsApi";
+// import { itemsApi } from "@/services/binApi";
 import BookingFormView from "./renter/BookingFormView.vue";
-import { authStore } from "@/stores/authStore";
+import { useUser } from "@/composables/useUsers";
 
-const store = authStore()
+import moment from "moment";
+
 const { items, isLoading, fetchItems } = useItems();
+const { isLoggedIn } = useAuth();
 
 const showBookingForm = ref(false);
 const selectedItem = ref(null);
 
-// function formatDate(date) {
-//   return new Date(date).toLocaleString();
+const user = ref([]);
+
+
+
+
+
+
+
+
+
+// if (isLoggedIn) {
+//   const userId = localStorage.getItem("user");
+//   async function getUserById(userId) {
+//     user.value = await userApi.fetchUserById(userId);
+//   }
+//   getUserById(userId);
 // }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // Funktion för att öppna bokningsformuläret
 const openBookingForm = async (item) => {
@@ -21,24 +51,27 @@ const openBookingForm = async (item) => {
   showBookingForm.value = true;
 };
 
+
+
+// FLYTTA DENNA TILL MY-ITEMS OCH ANVÄND USEITEM FÖR GUDS SKULL
 // Ta bort en annons
-const deleteItem = async (id) => {
-  try {
-    const confirmed = confirm(
-      "Är du säker på att du vill ta bort denna annons?",
-    );
-    if (!confirmed) return;
+// const deleteItem = async (id) => {
+//   try {
+//     const confirmed = confirm(
+//       "Är du säker på att du vill ta bort denna annons?",
+//     );
+//     if (!confirmed) return;
 
-    const updatedItems = await itemsApi.deleteItem(id);
+//     const updatedItems = await itemsApi.deleteItem(id);
 
-    items.value = updatedItems;
+//     items.value = updatedItems;
 
-    alert("Annonsen har tagits bort");
-  } catch (error) {
-    console.error("kunde inte ta bort annonsen:", error);
-    alert("Ett fel inträffade, försök igen senare");
-  }
-};
+//     alert("Annonsen har tagits bort");
+//   } catch (error) {
+//     console.error("kunde inte ta bort annonsen:", error);
+//     alert("Ett fel inträffade, försök igen senare");
+//   }
+// };
 
 onMounted(() => {
   fetchItems();
@@ -46,39 +79,34 @@ onMounted(() => {
 </script>
 
 <template>
+  <h2 class="welcome-message">
+    Välkommen
+    {{ isLoggedIn ? user?.name : "" }}
+    till din hyresprotal
+  </h2>
   <RouterView />
-  <h2 v-if="isLoading">Laddar...</h2>
-  <div v-if="!isLoading">
+  <h3 v-if="isLoading">Laddar...</h3>
+  <div v-else>
     <h2 class="header-title">Alla annonser</h2>
     <div class="item-container">
       <div v-for="item in items" :key="item.id" class="item">
-        <h3>{{ item.title }}</h3>
+        <h4>{{ item.title }}</h4>
         <img :src="item.image.url" :alt="item.image.alt" />
-        <p>{{ item.description }}</p>
+        <p>{{ item.description }}...</p>
         <p>
           <strong>Skapad:</strong>
           {{ moment(item.createdAt).format("YYYY-MM-DD") }}
         </p>
         <p><strong>Pris:</strong> {{ item.price }} kr</p>
         <p><strong>Postad av:</strong> {{ item.owner }}</p>
-
-        <div v-if="store.isLoggedIn" class="add-delete-btn">
+        <div v-if="isLoggedIn" class="add-delete-btn">
           <button class="add-btn" @click="openBookingForm(item)">Boka</button>
-
-          <!-- Booking Button -->
           <button class="dlt-btn" @click="deleteItem(item.id)">
             Ta bort annons
           </button>
         </div>
       </div>
     </div>
-    <!-- <BookingFormView
-      v-if="showBookingForm"
-      :selectedItem="selectedItem"
-      :showBookingForm="showBookingForm"
-      @showBookingForm="showBookingForm = $event"
-      @selectedItem="selectedItem = $event"
-    /> -->
   </div>
   <BookingFormView
     v-if="showBookingForm"
@@ -90,6 +118,11 @@ onMounted(() => {
 </template>
 
 <style scoped>
+.welcome-message {
+  text-align: center;
+  margin: 1rem;
+}
+
 .item-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -117,12 +150,16 @@ li {
   padding: 10px;
   gap: 10px;
 }
+
 p {
   padding: 8px 0;
 }
+
 img {
-  width: 100%; /* Adjust as needed */
-  height: auto; /* Maintains aspect ratio */
+  width: 100%;
+  /* Adjust as needed */
+  height: auto;
+  /* Maintains aspect ratio */
   /* Adjust as needed */
   height: auto;
   /* Maintains aspect ratio */

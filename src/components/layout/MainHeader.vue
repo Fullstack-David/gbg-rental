@@ -1,11 +1,8 @@
 <script setup>
-import { useUsers } from "@/composables/useAuth";
 import { RouterLink } from "vue-router";
 import DashboardView from "@/views/owner/DashboardView.vue";
-
-import { authStore } from "@/stores/authStore";
-const store = authStore();
-const { logOut } = useUsers();
+import { useAuth } from "@/composables/useAuth";
+const store = useAuth();
 </script>
 
 <template>
@@ -19,15 +16,14 @@ const { logOut } = useUsers();
         />
       </RouterLink>
     </div>
-    <RouterLink class="no-link-style" to="/dashboard">
+    <RouterLink class="no-link-style" to="/">
       <h1>GBG Rentals</h1>
     </RouterLink>
     <nav v-if="!store.isLoggedIn" class="header-nav">
       <RouterLink to="/login">Logga in</RouterLink>
     </nav>
-    <nav v-if="store.isLoggedIn" class="header-nav">
-      <RouterLink @click="logOut" to="/login">Logga ut</RouterLink>
-      <RouterLink to="/kundvagn">Kundvagn</RouterLink>
+    <nav v-else class="header-nav">
+      <RouterLink @click="store.logOut" to="/login">Logga ut</RouterLink>
     </nav>
   </header>
   <DashboardView v-if="store.isLoggedIn" />
@@ -80,7 +76,7 @@ header nav a:hover {
 
 @media (max-width: 768px) {
   .header-content {
-    flex-direction: column;
+    display: flex;
     align-items: center;
   }
 
@@ -99,6 +95,11 @@ header nav a:hover {
   .header-nav a {
     font-size: 16px;
     /* Anpassa länkstorleken */
+  }
+
+  .logo-container img {
+    width: 50px;
+    height: 50px;
   }
 }
 </style>

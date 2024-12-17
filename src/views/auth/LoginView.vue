@@ -1,28 +1,18 @@
 <script setup>
 import { reactive } from "vue";
-import { useUsers } from "@/composables/useAuth";
-
-// const { logIn, errorMessage } = useUsers();
-
-const useAuth = useUsers();
-const { logIn } = useAuth;
+import { useAuth } from "@/composables/useAuth";
+const { logIn, errorMessage } = useAuth();
 
 const form = reactive({
   email: "",
   password: "",
 });
-
-const onLogin = () => {
-  // console.log("User logged in:", form);
-  // Lägg till logik för att hantera inloggning (ex. API-anrop)
-  logIn(form.email, form.password);
-};
 </script>
 
 <template>
   <div class="login-container">
     <h2>Logga in</h2>
-    <form @submit.prevent="onLogin">
+    <form @submit.prevent="logIn(form.email, form.password)">
       <div class="form-group">
         <label for="email"> E-postadress</label>
         <input
@@ -44,8 +34,8 @@ const onLogin = () => {
         />
       </div>
       <button type="submit">Logga in</button>
-      <p v-if="useAuth.errorMessage" class="error">
-        {{ useAuth.errorMessage }}
+      <p v-if="errorMessage" class="error">
+        {{ errorMessage }}
       </p>
       <p>
         Inget konto,

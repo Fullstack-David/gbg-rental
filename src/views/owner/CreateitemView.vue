@@ -1,94 +1,39 @@
 <script setup>
 import { ref, computed } from "vue";
-import { itemsApi } from "@/services/itemsApi";
-import { v4 as uuidv4 } from "uuid";
+import { useItems } from "@/composables/useItems";
 import { useModalStore } from "@/composables/useModal";
+import { useUser } from "@/composables/useUsers";
 
+const store = useUser();
 const modalStore = useModalStore();
 const { closeModal } = useModalStore();
+const { addItem } = useItems();
+const owner = computed(() => {
+  const id = localStorage.getItem('user');
+  const user = store.users.find(user => user.id === id)
+  return user.name
+});
 
-const productInfo = ref({
+const todayDate = new Date().toISOString().split("T")[0];
+const defaultProduct = {
   id: "",
   title: "",
   description: "",
   price: "",
-  rentalPeriod: {
-    startDate: "",
-    endDate: "",
-  },
-  owner: "",
+  owner,
+  available: true,
   image: {
     url: "",
     alt: "",
   },
-});
-
-const publishedProducts = ref([]);
-const todayDate = new Date().toISOString().split("T")[0];
-
-function differenceInTime(startDate, endDate) {
-  const start = new Date(startDate);
-  const end = new Date(endDate);
-
-  if (start && end && end >= start) {
-    const differenceInTime = end.getTime() - start.getTime();
-    return differenceInTime / (1000 * 3600 * 24);
-  }
-  return 0;
 }
+const productInfo = ref(defaultProduct);
 
-const rentalDays = ref(0);
-const calculateRentalDays = () => {
-  rentalDays.value = differenceInTime(
-    productInfo.value.rentalPeriod.startDate,
-    productInfo.value.rentalPeriod.endDate,
-  );
-};
 
-// pris gånger dag
-const totalSum = computed(() => {
-  return rentalDays.value * productInfo.value.price;
-});
-
-const getInputValue = async () => {
-  productInfo.value.id = uuidv4();
-
-  //skapa objektet och publicera till apit
-  const updatedItem = await itemsApi.createItem({ ...productInfo.value });
-
-  //lägg till publicerad produkt i listan
-  publishedProducts.value.push(updatedItem);
-
-  //loggar alla varor
-  console.log(
-    "Alla varor:",
-    JSON.parse(JSON.stringify(publishedProducts.value)),
-  );
-  // bara kontroll console, raderas sen
-  console.log(
-    "Publicerade varor:",
-    JSON.parse(JSON.stringify(publishedProducts.value)),
-    `Annonsid: ${productInfo.value.id} ${productInfo.value.owner} har hyrt ut ${productInfo.value.title} med beskrivningen: ${productInfo.value.description} för priset ${productInfo.value.price} under perioden: ${productInfo.value.rentalPeriod.startDate} - ${productInfo.value.rentalPeriod.endDate}bildurl: ${productInfo.value.image.url} alt-text: ${productInfo.value.image.url}`,
-  );
-
-  productInfo.value = {
-    id: "",
-    title: "",
-    description: "",
-    price: "",
-    rentalPeriod: {
-      startDate: "",
-      endDate: "",
-    },
-    owner: "",
-    image: {
-      url: "",
-      alt: "",
-    },
-  };
-
-  //återställer uthyrningsdagarna
-  rentalDays.value = 0;
+const submitItem = async () => {
+  addItem(productInfo.value)
+  // Reset REFS
+  productInfo.value = defaultProduct;
   modalStore.showModal = false;
 };
 </script>
@@ -104,13 +49,6 @@ const getInputValue = async () => {
     <div class="modal-content">
       <button class="close-btn" @click="closeModal">x</button>
       <div class="info-field">
-        <!-- owner -->
-        <input
-          class="prod-owner"
-          type="text"
-          placeholder="Uthyrarens namn"
-          v-model="productInfo.owner"
-        />
 
         <!-- titel -->
         <input
@@ -160,31 +98,32 @@ const getInputValue = async () => {
           />
         </div>
 
-        <div class="date-div">
-          <h4>Uthyrningsdatum</h4>
-          <!-- start datum för uthyrning -->
-          <p>Från:</p>
+        <!-- KANSKE VI ANVÄNDER OSS AV SEDAN NÄR OCH OM VIU UPPDATERAR DATABASEN -->
+        <!-- start datum för uthyrning -->
+        <!-- <div class="date-div"> -->
+          <!-- <h4>Uthyrningsdatum</h4> -->
+          <!-- <p>Från:</p>
           <input
             class="start-date"
             type="date"
             v-model="productInfo.rentalPeriod.startDate"
             :min="todayDate"
             @change="calculateRentalDays"
-          />
+          /> -->
 
           <!-- Slutdatum för uthyrning -->
-          <p>Till</p>
+          <!-- <p>Till</p>
           <input
             class="end-date"
             type="date"
             v-model="productInfo.rentalPeriod.endDate"
             :min="todayDate"
             @change="calculateRentalDays"
-          />
-        </div>
-        <button @click="getInputValue">Publicera vara</button>
-        <p>Antal dagar för uthyrning: {{ rentalDays }}</p>
-        <p>Totalt pris: {{ totalSum }} KR</p>
+          /> -->
+        <!-- </div> -->
+        <button @click="submitItem">Publicera vara</button>
+        <!-- <p>Antal dagar för uthyrning: {{ rentalDays }}</p> -->
+        <!-- <p>Totalt pris: {{ totalSum }} KR</p> -->
       </div>
     </div>
   </div>
