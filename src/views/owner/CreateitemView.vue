@@ -19,16 +19,15 @@ const owner = computed(() => {
 
 const todayDate = new Date().toISOString().split("T")[0];
 const defaultProduct = {
-  id: "",
   title: "",
   description: "",
   price: "",
   owner,
   available: true,
   image: {
-    url: "",
-    alt: "",
-  },
+    url: '/gbg-rentals-logo.png',
+    alt: 'default-image'
+  }
 }
 const productInfo = ref(defaultProduct);
 

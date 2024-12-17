@@ -24,11 +24,13 @@ export const useUser = defineStore("Users", () => {
   }
 
   async function addUser(user) {
+    const newUser = {
+      id: uuid(),
+      ...user
+    }
+    const newArray = [...users.value, newUser]
     try {
-      await binApi.postApi(url, bin, {
-        id: uuid(),
-        ...user
-      })
+      await binApi.postApi(url, bin, newArray)
       alert("Registration successful!");
     }
     catch (error) {
@@ -37,8 +39,6 @@ export const useUser = defineStore("Users", () => {
     }
   }
 
-  onMounted(() => {
-    getUsers();
-  })
+  onMounted(getUsers);
   return { addUser, getUsers, users };
 });

@@ -1,70 +1,67 @@
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, toRaw } from 'vue'
 import { binApi } from '@/services/binApi'
 import { v4 as uuid } from 'uuid'
 import { CONFIG } from "@/constants/config"
+import { watch } from 'vue'
+import { defineStore } from 'pinia'
 
 const url = CONFIG.ITEMS_API_URL;
 const bin = 'items'
 
-export function useItems() {
+export const useItems = defineStore("items", () => {
   const items = ref([])
   const isLoading = ref(false)
+  
 
   async function fetchItems() {
     isLoading.value = true
     try {
       items.value = await binApi.getApi(url, bin)
-      return items.value
     } catch (error) {
       console.error('Error fetching items:', error)
     } finally {
       isLoading.value = false
     }
   }
-
+  
   async function addItem(item) {
     const newItem = {
       id: uuid(),
       ...item,
-      image: {
-        url: '/gbg-rentals-logo.png',
-        alt: 'default-image'
-      }
     }
-
+    const newArray = [...items.value, newItem]
     try {
-      items.value = await binApi.postApi(url, bin, newItem)
+      items.value = await binApi.postApi(url, bin, newArray)
       return true
     } catch (error) {
       console.error('Error adding item:', error)
       return false
     }
   }
-
+  
   async function updateItem(id, newItem) {
+    const updatedItems = items.value.map((item) => item.id === id ? { ...item, ...newItem } : item)
     try {
-      items.value = await binApi.updateApi(url, bin, id, newItem)
+      items.value = await binApi.postApi(url, bin, id, updatedItems)
       return true
     } catch (error) {
       console.error('Error updating item:', error)
       return false
     }
   }
-
+  
   async function deleteItem(url, id) {
+    const filteredItems = items.value.filter((item) => item.id !== id)
     try {
-      items.value = await binApi.deleteApi(url, bin, id)
+      items.value = await binApi.postApi(url, bin, filteredItems)
       return true
     } catch (error) {
       console.error('Error deleting item:', error)
       return false
     }
   }
-
-  onMounted(() => {
-    fetchItems();
-  })
-
+  
+  onMounted(fetchItems)
   return {
     items,
     isLoading,
@@ -73,4 +70,4 @@ export function useItems() {
     updateItem,
     deleteItem,
   }
-}
+});

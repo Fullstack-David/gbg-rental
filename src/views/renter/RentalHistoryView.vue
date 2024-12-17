@@ -1,11 +1,8 @@
 <script setup>
 import { useOrder } from "@/composables/useOrder";
 import { onMounted } from "vue";
-const { orders, fetchOrders } = useOrder();
+const store = useOrder()
 
-onMounted(() => {
-  fetchOrders();
-});
 </script>
 
 <template>
@@ -15,7 +12,7 @@ onMounted(() => {
       {{
         console.log(orders)
       }}
-      <li v-for="(order, index) in orders" :key="index" class="booking-item">
+      <li v-for="(order, index) in store.orders" :key="index" class="booking-item">
         <span class="check-icon">✅</span>
         <div class="booking-details">
           <!-- DENNA strular för nu då i tydligen inte kommit överens om hur order.item ska se ut -->

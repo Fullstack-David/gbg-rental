@@ -7,6 +7,8 @@ import { useAuth } from "@/composables/useAuth";
 const { addUser } = useUser();
 const { logIn } = useAuth();
 
+// Här kan vi ha en ref istället då ingen annan view är beroende av denna state!
+// ///////////////////////////////////////////////////////////////////////
 const form = reactive({
   name: "",
   email: "",

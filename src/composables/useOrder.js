@@ -14,7 +14,7 @@ export function useOrder() {
   async function fetchOrders() {
     isLoading.value = true
     try {
-      orders.value = await binApi.getApi(url, bin)
+      orders.value = await binApi.getApi(url, bin);
     } catch (error) {
       console.error('Error fetching orders:', error)
     } finally {
@@ -27,8 +27,9 @@ export function useOrder() {
       id: uuid(),
       ...order,
     }
+    const newArray = [...orders.value, newOrder]
     try {
-      orders.value = await binApi.postApi(url, bin, newOrder)
+      orders.value = await binApi.postApi(url, bin, newArray)
       return true
     } catch (error) {
       console.error('Error adding order:', error)
@@ -36,9 +37,10 @@ export function useOrder() {
     }
   }
 
-  async function updateOrder(id, order) {
+  async function updateOrder(id, newOrder) {
+    const updatedOrders = orders.value.map((order) => order.id === id ? { ...order, ...newOrder } : order)
     try {
-      orders.value = await binApi.updateApi(url, bin, id, order)
+      orders.value = await binApi.updateApi(url, bin, updatedOrders)
       return true
     } catch (error) {
       console.error('Error updating order:', error)
@@ -47,8 +49,9 @@ export function useOrder() {
   }
 
   async function deleteOrder(id) {
+    const filteredOrders = orders.value.filter((order) => order.id !== id);
     try {
-      orders.value = await binApi.deleteApi(url, bin, id)
+      orders.value = await binApi.deleteApi(url, bin, filteredOrders)
       return true
     } catch (error) {
       console.error('Error deleting order:', error)

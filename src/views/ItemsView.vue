@@ -1,83 +1,25 @@
 <script setup>
 import { useItems } from "@/composables/useItems";
-import { useAuth } from "@/composables/useAuth";
-import { computed, ref, watch } from "vue";
+import { computed, ref } from "vue";
 import BookingFormView from "./renter/BookingFormView.vue";
 import moment from "moment";
 
 const store = useItems()
-const { isLoggedIn } = useAuth();
-
 const showBookingForm = ref(false);
 const selectedItem = ref(null);
-
 const user = ref([]);
-
-watch(store.items, async () => {
-  console.log('la till item med watch')
-})
-
-const newItems = computed(() => store.items.value)
-
-
-
-
-// if (isLoggedIn) {
-//   const userId = localStorage.getItem("user");
-//   async function getUserById(userId) {
-//     user.value = await userApi.fetchUserById(userId);
-//   }
-//   getUserById(userId);
-// }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // Funktion för att öppna bokningsformuläret
 const openBookingForm = async (item) => {
   selectedItem.value = await item;
   showBookingForm.value = true;
 };
-
-
-
-// FLYTTA DENNA TILL MY-ITEMS OCH ANVÄND USEITEM FÖR GUDS SKULL
-// Ta bort en annons
-// const deleteItem = async (id) => {
-//   try {
-//     const confirmed = confirm(
-//       "Är du säker på att du vill ta bort denna annons?",
-//     );
-//     if (!confirmed) return;
-
-//     const updatedItems = await itemsApi.deleteItem(id);
-
-//     items.value = updatedItems;
-
-//     alert("Annonsen har tagits bort");
-//   } catch (error) {
-//     console.error("kunde inte ta bort annonsen:", error);
-//     alert("Ett fel inträffade, försök igen senare");
-//   }
-// };
-
-
 </script>
 
 <template>
   <h2 class="welcome-message">
     Välkommen
-    {{ isLoggedIn ? user?.name : "" }}
+    {{ store.isLoggedIn ? user?.name : "" }}
     till din hyresprotal
   </h2>
   <RouterView />
@@ -85,7 +27,8 @@ const openBookingForm = async (item) => {
   <div v-else>
     <h2 class="header-title">Alla annonser</h2>
     <div class="item-container">
-      <div v-for="item in newItems" :key="item.id" class="item">
+      <!-- {{console.log(store.items)}} -->
+      <div v-for="item in store.items" :key="item.id" class="item">
         <h4>{{ item.title }}</h4>
         <img :src="item.image.url || '../../assets/icons/gbg-rentals-logo.png'" :alt="item.image.alt" />
         <p>{{ item.description }}...</p>
@@ -95,7 +38,7 @@ const openBookingForm = async (item) => {
         </p>
         <p><strong>Pris:</strong> {{ item.price }} kr</p>
         <p><strong>Postad av:</strong> {{ item.owner }}</p>
-        <div v-if="isLoggedIn" class="add-delete-btn">
+        <div v-if="store.isLoggedIn" class="add-delete-btn">
           <button class="add-btn" @click="openBookingForm(item)">Boka</button>
           <button class="dlt-btn" @click="deleteItem(item.id)">
             Ta bort annons
