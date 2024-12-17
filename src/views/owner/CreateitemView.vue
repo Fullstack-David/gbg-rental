@@ -4,6 +4,9 @@ import { itemsApi } from "@/services/itemsApi";
 import { v4 as uuidv4 } from "uuid";
 import { useModalStore } from "@/composables/useModal";
 
+// Get the currently logged in user's id from localStorage
+const userId = localStorage.getItem('user');
+
 const modalStore = useModalStore();
 const { closeModal } = useModalStore();
 
@@ -16,7 +19,7 @@ const productInfo = ref({
     startDate: "",
     endDate: "",
   },
-  owner: "",
+  owner: userId,
   image: {
     url: "",
     alt: "",
@@ -45,7 +48,6 @@ const calculateRentalDays = () => {
   );
 };
 
-// pris gånger dag
 const totalSum = computed(() => {
   return rentalDays.value * productInfo.value.price;
 });
@@ -53,24 +55,26 @@ const totalSum = computed(() => {
 const getInputValue = async () => {
   productInfo.value.id = uuidv4();
 
-  //skapa objektet och publicera till apit
-  const updatedItem = await itemsApi.createItem({ ...productInfo.value });
+  // Instead of asking user for owner's name, automatically set it to the logged-in user's ID.
+  // If you still want a name for UI, consider adding a separate field like `ownerName` if needed.
+  productInfo.value.owner = userId;
 
-  //lägg till publicerad produkt i listan
-  publishedProducts.value.push(updatedItem);
+  console.log("Creating new item with owner (userId):", userId);
 
-  //loggar alla varor
+  // Create item via API
+  const updatedItems = await itemsApi.createItem({ ...productInfo.value });
+
+  // updatedItems is the full array of items after insertion
+  // If you want to keep track of all published products locally:
+  publishedProducts.value = updatedItems;
+
+  console.log("All items after creation:", JSON.parse(JSON.stringify(updatedItems)));
   console.log(
-    "Alla varor:",
-    JSON.parse(JSON.stringify(publishedProducts.value)),
-  );
-  // bara kontroll console, raderas sen
-  console.log(
-    "Publicerade varor:",
-    JSON.parse(JSON.stringify(publishedProducts.value)),
-    `Annonsid: ${productInfo.value.id} ${productInfo.value.owner} har hyrt ut ${productInfo.value.title} med beskrivningen: ${productInfo.value.description} för priset ${productInfo.value.price} under perioden: ${productInfo.value.rentalPeriod.startDate} - ${productInfo.value.rentalPeriod.endDate}bildurl: ${productInfo.value.image.url} alt-text: ${productInfo.value.image.url}`,
+    "Just created item:",
+    `ID: ${productInfo.value.id}, Owner: ${productInfo.value.owner}, Title: ${productInfo.value.title}`
   );
 
+  // Reset form fields
   productInfo.value = {
     id: "",
     title: "",
@@ -80,22 +84,19 @@ const getInputValue = async () => {
       startDate: "",
       endDate: "",
     },
-    owner: "",
+    owner: userId,
     image: {
       url: "",
       alt: "",
     },
   };
 
-  //återställer uthyrningsdagarna
   rentalDays.value = 0;
   modalStore.showModal = false;
 };
 </script>
 
 <template>
-  <!-- <div class="pub-container"> -->
-  <!-- <button @click="openModal">Hyr ut något</button> -->
   <div
     class="modal-backdrop"
     v-if="modalStore.showModal"
@@ -104,15 +105,16 @@ const getInputValue = async () => {
     <div class="modal-content">
       <button class="close-btn" @click="closeModal">x</button>
       <div class="info-field">
-        <!-- owner -->
+        <!-- Owner field can be optional if you just rely on userId -->
+        <!-- Remove this if you don't want a manual input and rely solely on userId -->
         <input
           class="prod-owner"
           type="text"
-          placeholder="Uthyrarens namn"
+          placeholder="Uthyrarens namn (valfritt)"
           v-model="productInfo.owner"
+          readonly
         />
 
-        <!-- titel -->
         <input
           class="prod-title"
           type="text"
@@ -120,15 +122,13 @@ const getInputValue = async () => {
           v-model="productInfo.title"
         />
 
-        <!-- pris per dag -->
         <input
           class="prod-price"
-          type="text"
+          type="number"
           placeholder="Pris per dag"
           v-model="productInfo.price"
         />
 
-        <!--- description -->
         <input
           class="prod-desc"
           type="text"
@@ -137,7 +137,6 @@ const getInputValue = async () => {
           minlength="21"
         />
 
-        <!-- Bild uppladdning -->
         <h3>Ladda upp bild</h3>
         <input
           type="text"
@@ -145,7 +144,6 @@ const getInputValue = async () => {
           v-model="productInfo.image.url"
         />
 
-        <!-- Förhandsgranskninga av bild -->
         <div v-if="productInfo.image.url">
           <h4>Vald bild:</h4>
           <img
@@ -162,7 +160,6 @@ const getInputValue = async () => {
 
         <div class="date-div">
           <h4>Uthyrningsdatum</h4>
-          <!-- start datum för uthyrning -->
           <p>Från:</p>
           <input
             class="start-date"
@@ -171,8 +168,6 @@ const getInputValue = async () => {
             :min="todayDate"
             @change="calculateRentalDays"
           />
-
-          <!-- Slutdatum för uthyrning -->
           <p>Till</p>
           <input
             class="end-date"
@@ -182,14 +177,15 @@ const getInputValue = async () => {
             @change="calculateRentalDays"
           />
         </div>
+
         <button @click="getInputValue">Publicera vara</button>
         <p>Antal dagar för uthyrning: {{ rentalDays }}</p>
         <p>Totalt pris: {{ totalSum }} KR</p>
       </div>
     </div>
   </div>
-  <!-- </div> -->
 </template>
+
 
 <style scoped>
 .pub-container {
@@ -265,6 +261,7 @@ const getInputValue = async () => {
 
 input[type="text"],
 input[type="date"],
+input[type="number"],
 textarea {
   color: grey;
   border: 1px solid #ccc;
@@ -280,6 +277,7 @@ textarea {
 
 input[type="text"]:focus,
 input[type="date"]:focus,
+input[type="number"]:focus,
 textarea:focus {
   outline: none;
   border-color: #4caf50;

@@ -1,11 +1,10 @@
 <script setup>
-import { ref, onMounted } from 'vue';
-import { itemsApi } from '@/services/itemsApi';  // Importera itemsApi för att hämta data
+import { ref, onMounted, computed } from 'vue'
+import { useItems } from '@/composables/useItems'
 
-const items = ref([]);  // För att lagra de hämtade produkterna
-const showModal = ref(false);  // För att visa/hide modalen för redigering
-const showDeleteModal = ref(false);  // För att visa/hide bekräftelsemodal för borttagning
-const itemToDelete = ref(null);  // För att hålla reda på vilket item som ska tas bort
+const showModal = ref(false)
+const showDeleteModal = ref(false)
+const itemToDelete = ref(null)
 
 const productInfo = ref({
   id: "",
@@ -21,36 +20,55 @@ const productInfo = ref({
     url: "",
     alt: "",
   },
-});
+})
 
+const {
+  items,
+  userItems,
+  fetchItems,
+  updateItem,
+  deleteItem
+} = useItems()
+
+onMounted(async () => {
+  console.log("MyItemView mounted. Fetching items...")
+  await fetchItems()
+  console.log("Items after fetch:", items.value)
+})
+
+// Edit the selected item
 const editItem = (id) => {
-  const itemToEdit = items.value.find(item => item.id === id);
-  if (itemToEdit) {
-    productInfo.value = {
-      id: itemToEdit.id,
-      title: itemToEdit.title,
-      description: itemToEdit.description,
-      price: itemToEdit.price,
-      rentalPeriod: itemToEdit.rentalPeriod || { startDate: "", endDate: "" },
-      owner: itemToEdit.owner,
-      image: itemToEdit.image || { url: "", alt: "" },
-    };
-    showModal.value = true;  // visa modal när user vill redigera
+  const itemToEdit = items.value.find(item => item.id === id)
+  if (!itemToEdit) {
+    console.warn(`No item found with id: ${id}`)
+    return
   }
-};
 
-const updateItem = async () => {
-  try {
-    const updatedItems = await itemsApi.updateItem(productInfo.value.id, productInfo.value);
-    items.value = updatedItems;  // updatera items
-    closeModal();  // stäng modal efter updatering
-  } catch (error) {
-    console.error("Error updating item:", error);
+  productInfo.value = {
+    id: itemToEdit.id,
+    title: itemToEdit.title,
+    description: itemToEdit.description,
+    price: itemToEdit.price,
+    rentalPeriod: itemToEdit.rentalPeriod || { startDate: "", endDate: "" },
+    owner: itemToEdit.owner,
+    image: itemToEdit.image || { url: "", alt: "" }
   }
-};
+  showModal.value = true
+}
+
+const saveUpdatedItem = async () => {
+  try {
+    const success = await updateItem(productInfo.value.id, productInfo.value)
+    if (success) {
+      closeModal()
+    }
+  } catch (error) {
+    console.error("Error updating item:", error)
+  }
+}
 
 const closeModal = () => {
-  showModal.value = false;
+  showModal.value = false
   productInfo.value = {
     id: "",
     title: "",
@@ -65,50 +83,49 @@ const closeModal = () => {
       url: "",
       alt: "",
     },
-  };
-};
+  }
+}
 
 const confirmDeleteItem = (id) => {
-  itemToDelete.value = id;  // spara id på item som ska tas bort
-  showDeleteModal.value = true;  // visa bekräftelsemodal
-};
+  itemToDelete.value = id
+  showDeleteModal.value = true
+}
 
-const deleteItem = async () => {
+const removeItem = async () => {
   try {
-    await itemsApi.deleteItem(itemToDelete.value);  // ta bort item från backend
-    items.value = items.value.filter(item => item.id !== itemToDelete.value);  // ta bort item från listan
-    showDeleteModal.value = false;  // stäng bekräftelsemodal
+    const success = await deleteItem(itemToDelete.value)
+    if (success) {
+      showDeleteModal.value = false
+    }
   } catch (error) {
-    console.error("Error deleting item:", error);
+    console.error("Error deleting item:", error)
   }
-};
+}
 
-onMounted(async () => {
-  try {
-    const fetchedItems = await itemsApi.fetchItems();
-    items.value = fetchedItems;  // Fetcha items
-  } catch (error) {
-    console.error("Error fetching items:", error);
-  }
-});
+const noItems = computed(() => userItems.value.length === 0)
 </script>
 
 <template>
-  <div class="message">
-    <div v-for="item in items" :key="item.id" class="item">
+  <RouterView />
+  <!-- If no items are found for the user, show a message -->
+  <div v-if="noItems">
+    <p>Inga produkter hittades för denna användare.</p>
+    <p>Kontrollera att du är inloggad och att du har skapat produkter.</p>
+  </div>
+
+  <div v-else class="message">
+    <div v-for="item in userItems" :key="item.id" class="item">
       <h3>{{ item.title }}</h3>
       <img :src="item.image.url" :alt="item.image.alt" />
       <p>{{ item.description }}</p>
       <p><strong>Pris:</strong> {{ item.price }} kr</p>
       <p><strong>Postad av:</strong> {{ item.owner }}</p>
-      <!-- Redigeringsknapp -->
       <button class="editButton" @click="editItem(item.id)">Redigera</button>
-      <!-- Ta bort-knapp -->
       <button class="deleteButton" @click="confirmDeleteItem(item.id)">Ta bort</button>
     </div>
   </div>
 
-  <!-- Modal för att redigera item -->
+  <!-- Modal för redigering -->
   <div v-if="showModal" class="modal-backdrop" @click.self="closeModal">
     <div class="modal-content">
       <div class="info-field">
@@ -121,36 +138,25 @@ onMounted(async () => {
         <input v-model="productInfo.owner" type="text" placeholder="Ägarens namn" />
         <input v-model="productInfo.image.url" type="text" placeholder="Bild-URL" />
         <input v-model="productInfo.image.alt" type="text" placeholder="Alt-text för bild" />
-        <button @click="updateItem">Spara ändringar</button>
+        <button @click="saveUpdatedItem">Spara ändringar</button>
       </div>
     </div>
   </div>
 
-  <!-- Modal för att bekräfta borttagning -->
+  <!-- Modal för borttagning -->
   <div v-if="showDeleteModal" class="modal-backdrop" @click.self="showDeleteModal = false">
     <div class="modal-content">
       <p>Är du säker på att du vill ta bort denna produkt?</p>
       <div class="confirmation-buttons">
-        <button class="confirmation-yes" @click="deleteItem">Ja, ta bort</button>
+        <button class="confirmation-yes" @click="removeItem">Ja, ta bort</button>
         <button class="confirmation-no" @click="showDeleteModal = false">Nej, ångra</button>
       </div>
     </div>
   </div>
 </template>
 
-<style scoped>
-.item {
-  border: 2px solid #ccc;
-  border-radius: 1rem;
-  padding: 1rem;
-  margin: 10px;
-  width: 300px;
-  background-color: #f9f9f9;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
 
+<style scoped>
 h3 {
   font-size: 1.2rem;
   font-weight: bold;
@@ -176,10 +182,22 @@ button:hover {
 }
 
 .message {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px; /* Space between cards */
+  padding: 20px;
 }
+.item {
+  border: 2px solid #ccc;
+  border-radius: 1rem;
+  padding: 1rem;
+  background-color: #f9f9f9;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+
 
 .modal-backdrop {
   position: fixed;
@@ -187,7 +205,7 @@ button:hover {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0,0,0,0.5);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -196,9 +214,9 @@ button:hover {
 
 .modal-content {
   background: #fff;
-  padding: 2rem;
+  padding: 3rem;
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
   width: 90%;
   max-width: 500px;
   position: relative;
@@ -238,7 +256,7 @@ input[type="date"] {
   width: 100%;
 }
 
-/* Ta bort-knappen */
+/* Delete button */
 .deleteButton {
   background-color: #a82828;
   color: white;
@@ -251,7 +269,7 @@ input[type="date"] {
   background-color: darkred;
 }
 
-/* Edit-knappen */
+/* Edit button */
 .editButton {
   background-color: #4caf50;
   color: white;
@@ -264,7 +282,7 @@ input[type="date"] {
   background-color: darkgreen;
 }
 
-/* Bekräftelseknappar */
+/* Confirmation buttons */
 .confirmation-buttons {
   display: flex;
   justify-content: space-between;
