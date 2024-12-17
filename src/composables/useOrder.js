@@ -4,16 +4,17 @@ import { v4 as uuid } from 'uuid'
 import { CONFIG } from "@/constants/config"
 
 const url = CONFIG.ORDERS_API_URL;
+const bin = 'orders';
 
-export function useOrder(){
+
+export function useOrder() {
   const orders = ref([])
   const isLoading = ref(false)
 
   async function fetchOrders() {
     isLoading.value = true
     try {
-      const response = await binApi.getApi(url)
-      orders.value = response.orders
+      orders.value = await binApi.getApi(url, bin)
     } catch (error) {
       console.error('Error fetching orders:', error)
     } finally {
@@ -27,9 +28,7 @@ export function useOrder(){
       ...order,
     }
     try {
-      const response = await binApi.postApi(url, newOrder)
-      orders.value = response.orders
-
+      orders.value = await binApi.postApi(url, bin, newOrder)
       return true
     } catch (error) {
       console.error('Error adding order:', error)
@@ -39,8 +38,7 @@ export function useOrder(){
 
   async function updateOrder(id, order) {
     try {
-      const response = await binApi.updateApi(url, id, order)
-      orders.value = response.orders
+      orders.value = await binApi.updateApi(url, bin, id, order)
       return true
     } catch (error) {
       console.error('Error updating order:', error)
@@ -50,8 +48,7 @@ export function useOrder(){
 
   async function deleteOrder(id) {
     try {
-      const response = await binApi.deleteApi(url, id)
-      orders.value = response.orders
+      orders.value = await binApi.deleteApi(url, bin, id)
       return true
     } catch (error) {
       console.error('Error deleting order:', error)

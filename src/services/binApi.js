@@ -8,15 +8,15 @@ const headers = {
 
 export const binApi = {
   // GET
-  async getApi(url) {
+  async getApi(url, bin) {
     const response = await fetch(url, { headers })
     const data = await response.json()
-    return data.record
+    return data.record[bin]
   },
 
   // POST
-  async postApi(url, newItem) {
-    const currentItems = await this.fetchItems()
+  async postApi(url, bin, newItem) {
+    const currentItems = await this.getApi(url, bin)
     const response = await fetch(url, {
       method: 'PUT',
       headers,
@@ -25,12 +25,12 @@ export const binApi = {
       }),
     })
     const data = await response.json()
-    return data.record
+    return data.record[bin]
   },
 
   // PUT
-  async updateApi(url, id, updatedItem) {
-    const currentItems = await this.fetchItems()
+  async updateApi(url, bin, id, updatedItem) {
+    const currentItems = await this.getApi(url, bin)
     const updatedItems = currentItems.map((item) =>
       item.id === id ? { ...item, ...updatedItem } : item,
     )
@@ -43,12 +43,12 @@ export const binApi = {
       }),
     })
     const data = await response.json()
-    return data.record
+    return data.record[bin]
   },
 
   // DELETE
-  async deleteApi(url, id) {
-    const currentItems = await this.fetchItems()
+  async deleteApi(url, bin, id) {
+    const currentItems = await this.getApi(url, bin)
     const filteredItems = currentItems.filter((item) => item.id !== id)
 
     const response = await fetch(url, {
@@ -59,6 +59,6 @@ export const binApi = {
       }),
     })
     const data = await response.json()
-    return data.record
+    return data.record[bin]
   },
 }

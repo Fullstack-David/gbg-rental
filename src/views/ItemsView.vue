@@ -1,14 +1,11 @@
 <script setup>
 import { useItems } from "@/composables/useItems";
 import { useAuth } from "@/composables/useAuth";
-import { ref, onMounted } from "vue";
-// import { itemsApi } from "@/services/binApi";
+import { computed, ref, watch } from "vue";
 import BookingFormView from "./renter/BookingFormView.vue";
-import { useUser } from "@/composables/useUsers";
-
 import moment from "moment";
 
-const { items, isLoading, fetchItems } = useItems();
+const store = useItems()
 const { isLoggedIn } = useAuth();
 
 const showBookingForm = ref(false);
@@ -16,10 +13,11 @@ const selectedItem = ref(null);
 
 const user = ref([]);
 
+watch(store.items, async () => {
+  console.log('la till item med watch')
+})
 
-
-
-
+const newItems = computed(() => store.items.value)
 
 
 
@@ -73,9 +71,7 @@ const openBookingForm = async (item) => {
 //   }
 // };
 
-onMounted(() => {
-  fetchItems();
-});
+
 </script>
 
 <template>
@@ -85,13 +81,13 @@ onMounted(() => {
     till din hyresprotal
   </h2>
   <RouterView />
-  <h3 v-if="isLoading">Laddar...</h3>
+  <h3 v-if="store.isLoading.value">Laddar...</h3>
   <div v-else>
     <h2 class="header-title">Alla annonser</h2>
     <div class="item-container">
-      <div v-for="item in items" :key="item.id" class="item">
+      <div v-for="item in newItems" :key="item.id" class="item">
         <h4>{{ item.title }}</h4>
-        <img :src="item.image.url" :alt="item.image.alt" />
+        <img :src="item.image.url || '../../assets/icons/gbg-rentals-logo.png'" :alt="item.image.alt" />
         <p>{{ item.description }}...</p>
         <p>
           <strong>Skapad:</strong>
@@ -108,13 +104,7 @@ onMounted(() => {
       </div>
     </div>
   </div>
-  <BookingFormView
-    v-if="showBookingForm"
-    :selectedItem="selectedItem"
-    :showBookingForm="showBookingForm"
-    @showBookingForm="showBookingForm = $event"
-    @selectedItem="selectedItem = $event"
-  />
+  <BookingFormView v-if="showBookingForm" :selectedItem="selectedItem" :showBookingForm="showBookingForm" @showBookingForm="showBookingForm = $event" @selectedItem="selectedItem = $event" />
 </template>
 
 <style scoped>

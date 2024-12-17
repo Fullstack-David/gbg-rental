@@ -5,6 +5,8 @@ import { binApi } from "@/services/binApi";
 import { CONFIG } from "@/constants/config";
 
 const url = CONFIG.USER_API_URL;
+const bin = 'users'
+
 
 export const useUser = defineStore("Users", () => {
   const users = ref([])
@@ -15,19 +17,15 @@ export const useUser = defineStore("Users", () => {
 
   async function getUsers() {
     try{
-      const response = await binApi.getApi(url)
-      users.value = response.users
+      users.value = await binApi.getApi(url, bin)
     }catch(error) {
       console.log(error)
     }
   }
 
-
-
-
   async function addUser(user) {
     try {
-      await binApi.postApi(url, {
+      await binApi.postApi(url, bin, {
         id: uuid(),
         ...user
       })
@@ -42,5 +40,5 @@ export const useUser = defineStore("Users", () => {
   onMounted(() => {
     getUsers();
   })
-  return { addUser, getUsers };
+  return { addUser, getUsers, users };
 });
