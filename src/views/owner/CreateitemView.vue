@@ -8,11 +8,14 @@ const store = useUser();
 const modalStore = useModalStore();
 const { closeModal } = useModalStore();
 const { addItem } = useItems();
+
 const owner = computed(() => {
   const id = localStorage.getItem('user');
-  const user = store.users.find(user => user.id === id)
+  const user = store.users.find(user =>
+    user.id === id)
   return user.name
-});
+}
+);
 
 const todayDate = new Date().toISOString().split("T")[0];
 const defaultProduct = {
@@ -41,68 +44,36 @@ const submitItem = async () => {
 <template>
   <!-- <div class="pub-container"> -->
   <!-- <button @click="openModal">Hyr ut något</button> -->
-  <div
-    class="modal-backdrop"
-    v-if="modalStore.showModal"
-    @click.self="modalStore.closeModal"
-  >
+  <div class="modal-backdrop" v-if="modalStore.showModal" @click.self="modalStore.closeModal">
     <div class="modal-content">
       <button class="close-btn" @click="closeModal">x</button>
       <div class="info-field">
 
         <!-- titel -->
-        <input
-          class="prod-title"
-          type="text"
-          placeholder="Produktens namn"
-          v-model="productInfo.title"
-        />
+        <input class="prod-title" type="text" placeholder="Produktens namn" v-model="productInfo.title" />
 
         <!-- pris per dag -->
-        <input
-          class="prod-price"
-          type="text"
-          placeholder="Pris per dag"
-          v-model="productInfo.price"
-        />
+        <input class="prod-price" type="text" placeholder="Pris per dag" v-model="productInfo.price" />
 
         <!--- description -->
-        <input
-          class="prod-desc"
-          type="text"
-          placeholder="Produktens beskrivning"
-          v-model="productInfo.description"
-          minlength="21"
-        />
+        <input class="prod-desc" type="text" placeholder="Produktens beskrivning" v-model="productInfo.description" minlength="21" />
 
         <!-- Bild uppladdning -->
         <h3>Ladda upp bild</h3>
-        <input
-          type="text"
-          placeholder="Klistra in url för din bild"
-          v-model="productInfo.image.url"
-        />
+        <input type="text" placeholder="Klistra in url för din bild" v-model="productInfo.image.url" />
 
         <!-- Förhandsgranskninga av bild -->
         <div v-if="productInfo.image.url">
           <h4>Vald bild:</h4>
-          <img
-            :src="productInfo.image.url"
-            alt="Förhandsvisning"
-            style="max-width: 300px; max-height: 300px"
-          />
-          <input
-            type="text"
-            placeholder="Beskrivning av bild"
-            v-model="productInfo.image.alt"
-          />
+          <img :src="productInfo.image.url" alt="Förhandsvisning" style="max-width: 300px; max-height: 300px" />
+          <input type="text" placeholder="Beskrivning av bild" v-model="productInfo.image.alt" />
         </div>
 
         <!-- KANSKE VI ANVÄNDER OSS AV SEDAN NÄR OCH OM VIU UPPDATERAR DATABASEN -->
         <!-- start datum för uthyrning -->
         <!-- <div class="date-div"> -->
-          <!-- <h4>Uthyrningsdatum</h4> -->
-          <!-- <p>Från:</p>
+        <!-- <h4>Uthyrningsdatum</h4> -->
+        <!-- <p>Från:</p>
           <input
             class="start-date"
             type="date"
@@ -111,8 +82,8 @@ const submitItem = async () => {
             @change="calculateRentalDays"
           /> -->
 
-          <!-- Slutdatum för uthyrning -->
-          <!-- <p>Till</p>
+        <!-- Slutdatum för uthyrning -->
+        <!-- <p>Till</p>
           <input
             class="end-date"
             type="date"

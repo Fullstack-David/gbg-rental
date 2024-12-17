@@ -6,6 +6,8 @@ import { ref, onMounted } from "vue";
 import { CONFIG } from "@/constants/config"
 
 const url = CONFIG.USER_API_URL;
+const bin = 'users'
+
 
 export const useAuth = defineStore("logInOut", () => {
   const isLoggedIn = ref(false);
@@ -15,8 +17,8 @@ export const useAuth = defineStore("logInOut", () => {
   async function logIn(email, password) {
     errorMessage.value = "";
     try{
-      const response = await binApi.getApi(url);
-      const user = response.users.find((user) => user.email === email);
+      const response = await binApi.getApi(url, bin);
+      const user = response.find((user) => user.email === email);
       if (!user) {
         errorMessage.value = "Ingen användare hittades med detta e-post.";
         return;
