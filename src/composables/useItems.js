@@ -6,7 +6,7 @@ export function useItems() {
   const items = ref([]);
   const isLoading = ref(false);
 
-  
+
   // Hämta den inloggade användarens ID från localStorage
   const userId = localStorage.getItem('user');
 

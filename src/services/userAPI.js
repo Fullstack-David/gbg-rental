@@ -10,9 +10,13 @@ const headers = {
 export const userApi = {
   // GET
   async fetchUsers() {
-    const response = await fetch(CONFIG.USER_API_URL, { headers });
-    const data = await response.json();
-    return data.record.users;
+    try{
+      const response = await fetch(CONFIG.USER_API_URL, { headers });
+      const data = await response.json();
+      return data.record.users;
+    } catch(error) {
+      console.log(error)
+    }
   },
 
   // get user by id
@@ -24,11 +28,13 @@ export const userApi = {
 
   // POST
   async createUser(newUser) {
+    
     const salt = bcryptjs.genSaltSync(10);
     const cryptPW = bcryptjs.hashSync(newUser.password, salt);
+    newUser.name = newUser.name.charAt(0).toUpperCase() + newUser.name.slice(1);
     const cryptUser = { ...newUser, password: cryptPW };
-
     const currentUsers = await this.fetchUsers();
+
     const response = await fetch(CONFIG.USER_API_URL, {
       method: "PUT",
       headers,

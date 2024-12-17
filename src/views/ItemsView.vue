@@ -2,12 +2,29 @@
 import { useItems } from "@/composables/useItems";
 import { ref, onMounted } from "vue";
 import { itemsApi } from "@/services/itemsApi";
+import BookingFormView from "./renter/BookingFormView.vue";
+import { authStore } from "@/stores/authStore";
+import { userApi } from "@/services/userAPI";
+
 import moment from "moment";
 
+const store = authStore();
 const { items, isLoading, fetchItems } = useItems();
 
 const showBookingForm = ref(false);
 const selectedItem = ref(null);
+
+// HomeView.vue
+const user = ref([]);
+
+if (store.isLoggedIn) {
+  const userId = localStorage.getItem("user");
+  async function getUserById(userId) {
+    user.value = await userApi.fetchUserById(userId);
+  }
+  getUserById(userId);
+}
+// end HomeView.vue
 
 // function formatDate(date) {
 //   return new Date(date).toLocaleString();
@@ -44,43 +61,34 @@ onMounted(() => {
 </script>
 
 <template>
+  <h2 class="welcome-message">
+    Välkommen
+    {{ store.isLoggedIn ? user?.name : "" }}
+    till din hyresprotal
+  </h2>
   <RouterView />
-  <h2 v-if="isLoading">Laddar...</h2>
-  <div v-if="!isLoading">
+  <h3 v-if="isLoading">Laddar...</h3>
+  <div v-else>
     <h2 class="header-title">Alla annonser</h2>
     <div class="item-container">
       <div v-for="item in items" :key="item.id" class="item">
-        <h3>{{ item.title }}</h3>
+        <h4>{{ item.title }}</h4>
         <img :src="item.image.url" :alt="item.image.alt" />
-        <p>{{ item.description }}</p>
+        <p>{{ item.description }}...</p>
         <p>
           <strong>Skapad:</strong>
           {{ moment(item.createdAt).format("YYYY-MM-DD") }}
         </p>
         <p><strong>Pris:</strong> {{ item.price }} kr</p>
         <p><strong>Postad av:</strong> {{ item.owner }}</p>
-
-        <!-- ######################################################### -->
-        <!-- En v-if på denna knappen, som kollar om man är inloggad?  -->
-        <!-- ######################################################### -->
-
-        <div class="add-delete-btn">
+        <div v-if="store.isLoggedIn" class="add-delete-btn">
           <button class="add-btn" @click="openBookingForm(item)">Boka</button>
-
-          <!-- Booking Button -->
           <button class="dlt-btn" @click="deleteItem(item.id)">
             Ta bort annons
           </button>
         </div>
       </div>
     </div>
-    <BookingFormView
-      v-if="showBookingForm"
-      :selectedItem="selectedItem"
-      :showBookingForm="showBookingForm"
-      @showBookingForm="showBookingForm = $event"
-      @selectedItem="selectedItem = $event"
-    />
   </div>
   <BookingFormView
     v-if="showBookingForm"
@@ -92,6 +100,11 @@ onMounted(() => {
 </template>
 
 <style scoped>
+.welcome-message {
+  text-align: center;
+  margin: 1rem;
+}
+
 .item-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -119,12 +132,16 @@ li {
   padding: 10px;
   gap: 10px;
 }
+
 p {
   padding: 8px 0;
 }
+
 img {
-  width: 100%; /* Adjust as needed */
-  height: auto; /* Maintains aspect ratio */
+  width: 100%;
+  /* Adjust as needed */
+  height: auto;
+  /* Maintains aspect ratio */
   /* Adjust as needed */
   height: auto;
   /* Maintains aspect ratio */

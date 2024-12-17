@@ -1,7 +1,8 @@
 <script setup>
-import { useBookings } from '@/composables/useBooking';
-import { defineProps, defineEmits, ref } from 'vue';
+import { useOrder } from '@/composables/useOrder';
+import { ref } from 'vue';
 
+// Denna rad ger varningar i konsolen, vänligen fixa :-)
 const emit = defineEmits(['update:showBookingForm', 'update:selectedItem']);
 
 const props = defineProps({
@@ -9,20 +10,18 @@ const props = defineProps({
   showBookingForm: Boolean
 });
 
-const { bookedItems } = useBookings();
+const { addOrder } = useOrder();
 const bookingDate = ref("");
 const bookingTime = ref("");
 
 // Funktion för att boka ett objekt med dag och tid
 const bookItem = () => {
-  const bookingDetails = {
+  const newOrder = {
     item: props.selectedItem,
     date: bookingDate.value,
     time: bookingTime.value,
   };
-  bookedItems.value.push(bookingDetails);
-
-  console.log(bookingDetails);
+  addOrder(newOrder)
   alert(
     `Du har bokat: ${props.selectedItem.title} den ${bookingDate.value} kl. ${bookingTime.value}`,
   );
