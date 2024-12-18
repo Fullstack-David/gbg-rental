@@ -41,9 +41,11 @@ const submitItem = async () => {
 </script>
 
 <template>
-  <!-- <div class="pub-container"> -->
-  <!-- <button @click="openModal">Hyr ut något</button> -->
-  <div class="modal-backdrop" v-if="modalStore.showModal" @click.self="modalStore.closeModal">
+  <div
+    class="modal-backdrop"
+    v-if="modalStore.showModal"
+    @click.self="modalStore.closeModal"
+  >
     <div class="modal-content">
       <button class="close-btn" @click="closeModal">x</button>
       <div class="info-field">
@@ -57,11 +59,9 @@ const submitItem = async () => {
         <!--- description -->
         <input class="prod-desc" type="text" placeholder="Produktens beskrivning" v-model="productInfo.description" minlength="21" />
 
-        <!-- Bild uppladdning -->
         <h3>Ladda upp bild</h3>
         <input type="text" placeholder="Klistra in url för din bild" v-model="productInfo.image.url" />
 
-        <!-- Förhandsgranskninga av bild -->
         <div v-if="productInfo.image.url">
           <h4>Vald bild:</h4>
           <img :src="productInfo.image.url" alt="Förhandsvisning" style="max-width: 300px; max-height: 300px" />
@@ -97,8 +97,8 @@ const submitItem = async () => {
       </div>
     </div>
   </div>
-  <!-- </div> -->
 </template>
+
 
 <style scoped>
 .pub-container {
@@ -174,6 +174,7 @@ const submitItem = async () => {
 
 input[type="text"],
 input[type="date"],
+input[type="number"],
 textarea {
   color: grey;
   border: 1px solid #ccc;
@@ -189,6 +190,7 @@ textarea {
 
 input[type="text"]:focus,
 input[type="date"]:focus,
+input[type="number"]:focus,
 textarea:focus {
   outline: none;
   border-color: #4caf50;

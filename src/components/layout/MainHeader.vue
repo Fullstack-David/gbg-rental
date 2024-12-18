@@ -7,6 +7,7 @@ const store = useAuth();
 
 <template>
   <header class="header-content">
+    <!-- Logo -->
     <div class="logo-container">
       <RouterLink to="/">
         <img
@@ -16,8 +17,10 @@ const store = useAuth();
         />
       </RouterLink>
     </div>
+
+    <!-- Titel -->
     <RouterLink class="no-link-style" to="/">
-      <h1>GBG Rentals</h1>
+      <h1 class="no-link-style">GBG Rentals</h1>
     </RouterLink>
     <nav v-if="!store.isLoggedIn" class="header-nav">
       <RouterLink to="/login">Logga in</RouterLink>
@@ -26,6 +29,8 @@ const store = useAuth();
       <RouterLink @click="store.logOut" to="/login">Logga ut</RouterLink>
     </nav>
   </header>
+
+  <!-- Dashboard visas endast när användaren är inloggad -->
   <DashboardView v-if="store.isLoggedIn" />
 </template>
 
@@ -35,71 +40,91 @@ const store = useAuth();
 }
 
 header {
-  background-color: black;
+  background: #2f2f2f;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 15px 40px;
 }
 
-header img {
-  height: 100px;
-  width: 100px;
-  border-radius: 10%;
+header .logo-container img {
+  height: 70px;
+  width: 70px;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+}
+
+header .logo-container img:hover {
+  transform: scale(1.1);
+}
+
+/* Titel */
+header h1 {
+  color: #f0f0f0;
+  font-size: 32px;
+  font-weight: bold;
+  margin: 0;
+  letter-spacing: 1px;
+}
+
+/* Navigation */
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: 15px;
 }
 
 .no-link-style {
   text-decoration: none;
-  color: #fff;
 }
 
-header .header-nav {
-  display: flex;
-  flex-direction: start;
-  flex-wrap: wrap;
-  padding: 20px;
-}
-
-header nav a {
-  margin-left: 20px;
+.header-nav a {
+  background-color: #ff7b00;
+  color: white;
+  padding: 8px 15px;
+  border-radius: 6px;
   text-decoration: none;
-  color: #fff;
-  transition: color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    transform 0.2s ease;
 }
 
-.logo-container {
-  padding: 20px;
+.header-nav a:hover {
+  background-color: #e59400;
+  transform: translateY(-3px);
 }
 
-header nav a:hover {
-  color: #f0a500;
+/* Särskilda knappar */
+.button-primary {
+  background-color: #4caf50;
+  color: white;
 }
 
+.button-primary:hover {
+  background-color: #3d8b40;
+}
+
+/* Anpassning för små skärmar */
 @media (max-width: 768px) {
-  .header-content {
-    display: flex;
-    align-items: center;
-  }
-
-  .header-content h1 {
-    font-size: 20px;
-    /* Minska textstorlek */
-    margin: 10px 0;
+  header {
+    flex-direction: column;
+    padding: 20px;
   }
 
   .header-nav {
-    flex-direction: row;
-    /* Placera länkar i en vertikal lista */
+    flex-direction: column;
     gap: 10px;
+    margin-top: 10px;
   }
 
-  .header-nav a {
-    font-size: 16px;
-    /* Anpassa länkstorleken */
+  header h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
   }
 
-  .logo-container img {
-    width: 50px;
-    height: 50px;
+  header .logo-container img {
+    height: 60px;
+    width: 60px;
   }
 }
 </style>

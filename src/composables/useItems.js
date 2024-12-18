@@ -13,13 +13,13 @@ export const useItems = defineStore("items", () => {
   const isLoading = ref(false)
   
   async function fetchItems() {
-    isLoading.value = true
+    isLoading.value = true;
     try {
       items.value = await binApi.getApi(url, bin)
     } catch (error) {
-      console.error('Error fetching items:', error)
+      console.error('Error fetching items:', error);
     } finally {
-      isLoading.value = false
+      isLoading.value = false;
     }
   }
   
@@ -33,8 +33,8 @@ export const useItems = defineStore("items", () => {
       items.value = await binApi.postApi(url, bin, newArray)
       return true
     } catch (error) {
-      console.error('Error adding item:', error)
-      return false
+      console.error('Error adding item:', error);
+      return false;
     }
   }
   
@@ -44,8 +44,8 @@ export const useItems = defineStore("items", () => {
       items.value = await binApi.postApi(url, bin, updatedItems)
       return true
     } catch (error) {
-      console.error('Error updating item:', error)
-      return false
+      console.error('Error updating item:', error);
+      return false;
     }
   }
   
@@ -55,14 +55,15 @@ export const useItems = defineStore("items", () => {
       items.value = await binApi.postApi(url, bin, filteredItems)
       return true
     } catch (error) {
-      console.error('Error deleting item:', error)
-      return false
+      console.error('Error deleting item:', error);
+      return false;
     }
   }
   
   onMounted(fetchItems)
   return {
     items,
+    userItems,
     isLoading,
     fetchItems,
     addItem,
