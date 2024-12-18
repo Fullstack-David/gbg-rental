@@ -1,21 +1,14 @@
 <script setup>
 import { useOrder } from "@/composables/useOrder";
-import { onMounted } from "vue";
-const { orders, fetchOrders } = useOrder();
 
-onMounted(() => {
-  fetchOrders();
-});
+const store = useOrder();
 </script>
 
 <template>
-  <div v-if="orders.length > 0" class="booking-container">
+  <div v-if="store.orders.length > 0" class="booking-container">
     <h3 class="header">Dina bokningar</h3>
     <ul class="booking-list">
-      {{
-        console.log(orders)
-      }}
-      <li v-for="(order, index) in orders" :key="index" class="booking-item">
+      <li v-for="(order, index) in store.orders" :key="index" class="booking-item">
         <span class="check-icon">✅</span>
         <div class="booking-details">
           <!-- DENNA strular för nu då i tydligen inte kommit överens om hur order.item ska se ut -->

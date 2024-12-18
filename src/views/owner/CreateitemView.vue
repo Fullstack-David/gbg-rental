@@ -1,97 +1,41 @@
 <script setup>
 import { ref, computed } from "vue";
-import { itemsApi } from "@/services/itemsApi";
-import { v4 as uuidv4 } from "uuid";
+import { useItems } from "@/composables/useItems";
 import { useModalStore } from "@/composables/useModal";
+import { useAuth } from "@/composables/useAuth";
 
-// Get the currently logged in user's id from localStorage
-const userId = localStorage.getItem('user');
-
+const store = useAuth();
 const modalStore = useModalStore();
 const { closeModal } = useModalStore();
+const { addItem } = useItems();
 
-const productInfo = ref({
-  id: "",
+const owner = computed(() => {
+  const id = localStorage.getItem('user');
+  const user = store.users.find(user =>
+    user.id === id)
+  return user.name
+}
+);
+
+const todayDate = new Date().toISOString().split("T")[0];
+const defaultProduct = {
   title: "",
   description: "",
   price: "",
-  rentalPeriod: {
-    startDate: "",
-    endDate: "",
-  },
-  owner: userId,
+  owner,
+  available: true,
   image: {
-    url: "",
-    alt: "",
-  },
-});
-
-const publishedProducts = ref([]);
-const todayDate = new Date().toISOString().split("T")[0];
-
-function differenceInTime(startDate, endDate) {
-  const start = new Date(startDate);
-  const end = new Date(endDate);
-
-  if (start && end && end >= start) {
-    const differenceInTime = end.getTime() - start.getTime();
-    return differenceInTime / (1000 * 3600 * 24);
+    url: '/gbg-rentals-logo.png',
+    alt: 'default-image'
   }
-  return 0;
 }
+const productInfo = ref(defaultProduct);
 
-const rentalDays = ref(0);
-const calculateRentalDays = () => {
-  rentalDays.value = differenceInTime(
-    productInfo.value.rentalPeriod.startDate,
-    productInfo.value.rentalPeriod.endDate,
-  );
-};
 
-const totalSum = computed(() => {
-  return rentalDays.value * productInfo.value.price;
-});
-
-const getInputValue = async () => {
-  productInfo.value.id = uuidv4();
-
-  // Instead of asking user for owner's name, automatically set it to the logged-in user's ID.
-  // If you still want a name for UI, consider adding a separate field like `ownerName` if needed.
-  productInfo.value.owner = userId;
-
-  console.log("Creating new item with owner (userId):", userId);
-
-  // Create item via API
-  const updatedItems = await itemsApi.createItem({ ...productInfo.value });
-
-  // updatedItems is the full array of items after insertion
-  // If you want to keep track of all published products locally:
-  publishedProducts.value = updatedItems;
-
-  console.log("All items after creation:", JSON.parse(JSON.stringify(updatedItems)));
-  console.log(
-    "Just created item:",
-    `ID: ${productInfo.value.id}, Owner: ${productInfo.value.owner}, Title: ${productInfo.value.title}`
-  );
-
-  // Reset form fields
-  productInfo.value = {
-    id: "",
-    title: "",
-    description: "",
-    price: "",
-    rentalPeriod: {
-      startDate: "",
-      endDate: "",
-    },
-    owner: userId,
-    image: {
-      url: "",
-      alt: "",
-    },
-  };
-
-  rentalDays.value = 0;
+const submitItem = async () => {
+  addItem(productInfo.value)
+  // Reset REFS
+  productInfo.value = defaultProduct;
   modalStore.showModal = false;
 };
 </script>
@@ -105,82 +49,51 @@ const getInputValue = async () => {
     <div class="modal-content">
       <button class="close-btn" @click="closeModal">x</button>
       <div class="info-field">
-        <!-- Owner field can be optional if you just rely on userId -->
-        <!-- Remove this if you don't want a manual input and rely solely on userId -->
-        <input
-          class="prod-owner"
-          type="text"
-          placeholder="Uthyrarens namn (valfritt)"
-          v-model="productInfo.owner"
-          readonly
-        />
 
-        <input
-          class="prod-title"
-          type="text"
-          placeholder="Produktens namn"
-          v-model="productInfo.title"
-        />
+        <!-- titel -->
+        <input class="prod-title" type="text" placeholder="Produktens namn" v-model="productInfo.title" />
 
-        <input
-          class="prod-price"
-          type="number"
-          placeholder="Pris per dag"
-          v-model="productInfo.price"
-        />
+        <!-- pris per dag -->
+        <input class="prod-price" type="text" placeholder="Pris per dag" v-model="productInfo.price" />
 
-        <input
-          class="prod-desc"
-          type="text"
-          placeholder="Produktens beskrivning"
-          v-model="productInfo.description"
-          minlength="21"
-        />
+        <!--- description -->
+        <input class="prod-desc" type="text" placeholder="Produktens beskrivning" v-model="productInfo.description" minlength="21" />
 
         <h3>Ladda upp bild</h3>
-        <input
-          type="text"
-          placeholder="Klistra in url för din bild"
-          v-model="productInfo.image.url"
-        />
+        <input type="text" placeholder="Klistra in url för din bild" v-model="productInfo.image.url" />
 
         <div v-if="productInfo.image.url">
           <h4>Vald bild:</h4>
-          <img
-            :src="productInfo.image.url"
-            alt="Förhandsvisning"
-            style="max-width: 300px; max-height: 300px"
-          />
-          <input
-            type="text"
-            placeholder="Beskrivning av bild"
-            v-model="productInfo.image.alt"
-          />
+          <img :src="productInfo.image.url" alt="Förhandsvisning" style="max-width: 300px; max-height: 300px" />
+          <input type="text" placeholder="Beskrivning av bild" v-model="productInfo.image.alt" />
         </div>
 
-        <div class="date-div">
-          <h4>Uthyrningsdatum</h4>
-          <p>Från:</p>
+        <!-- KANSKE VI ANVÄNDER OSS AV SEDAN NÄR OCH OM VIU UPPDATERAR DATABASEN -->
+        <!-- start datum för uthyrning -->
+        <!-- <div class="date-div"> -->
+        <!-- <h4>Uthyrningsdatum</h4> -->
+        <!-- <p>Från:</p>
           <input
             class="start-date"
             type="date"
             v-model="productInfo.rentalPeriod.startDate"
             :min="todayDate"
             @change="calculateRentalDays"
-          />
-          <p>Till</p>
+          /> -->
+
+        <!-- Slutdatum för uthyrning -->
+        <!-- <p>Till</p>
           <input
             class="end-date"
             type="date"
             v-model="productInfo.rentalPeriod.endDate"
             :min="todayDate"
             @change="calculateRentalDays"
-          />
-        </div>
-
-        <button @click="getInputValue">Publicera vara</button>
-        <p>Antal dagar för uthyrning: {{ rentalDays }}</p>
-        <p>Totalt pris: {{ totalSum }} KR</p>
+          /> -->
+        <!-- </div> -->
+        <button @click="submitItem">Publicera vara</button>
+        <!-- <p>Antal dagar för uthyrning: {{ rentalDays }}</p> -->
+        <!-- <p>Totalt pris: {{ totalSum }} KR</p> -->
       </div>
     </div>
   </div>

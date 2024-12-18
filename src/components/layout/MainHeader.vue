@@ -1,11 +1,8 @@
 <script setup>
-import { useUsers } from "@/composables/useAuth";
 import { RouterLink } from "vue-router";
 import DashboardView from "@/views/owner/DashboardView.vue";
-
-import { authStore } from "@/stores/authStore";
-const store = authStore();
-const { logOut } = useUsers();
+import { useAuth } from "@/composables/useAuth";
+const store = useAuth();
 </script>
 
 <template>
@@ -25,18 +22,11 @@ const { logOut } = useUsers();
     <RouterLink class="no-link-style" to="/">
       <h1 class="no-link-style">GBG Rentals</h1>
     </RouterLink>
-
-    <!-- Navigation -->
-    <nav class="header-nav">
-      <!-- Knappar för när användaren INTE är inloggad -->
-      <template v-if="!store.isLoggedIn">
-        <RouterLink to="/login">Logga in</RouterLink>
-      </template>
-
-      <!-- Knappar för när användaren ÄR inloggad -->
-      <template v-else>
-        <RouterLink @click="logOut" to="/login">Logga ut</RouterLink>
-      </template>
+    <nav v-if="!store.isLoggedIn" class="header-nav">
+      <RouterLink to="/login">Logga in</RouterLink>
+    </nav>
+    <nav v-else class="header-nav">
+      <RouterLink @click="store.logOut" to="/login">Logga ut</RouterLink>
     </nav>
   </header>
 

@@ -1,79 +1,39 @@
 <script setup>
 import { useItems } from "@/composables/useItems";
-import { ref, onMounted } from "vue";
-import { itemsApi } from "@/services/itemsApi";
+import { computed, ref } from "vue";
 import BookingFormView from "./renter/BookingFormView.vue";
-import { authStore } from "@/stores/authStore";
-import { userApi } from "@/services/userAPI";
-
 import moment from "moment";
+import { useAuth } from "@/composables/useAuth";
 
-const store = authStore();
-const { items, isLoading, fetchItems } = useItems();
-
+const store = useItems()
+const authStore = useAuth();
 const showBookingForm = ref(false);
 const selectedItem = ref(null);
 
-// HomeView.vue
 const user = ref([]);
 
-if (store.isLoggedIn) {
-  const userId = localStorage.getItem("user");
-  async function getUserById(userId) {
-    user.value = await userApi.fetchUserById(userId);
-  }
-  getUserById(userId);
-}
-// end HomeView.vue
-
-// function formatDate(date) {
-//   return new Date(date).toLocaleString();
-// }
 
 // Funktion för att öppna bokningsformuläret
 const openBookingForm = async (item) => {
   selectedItem.value = await item;
   showBookingForm.value = true;
 };
-
-// Ta bort en annons
-const deleteItem = async (id) => {
-  try {
-    const confirmed = confirm(
-      "Är du säker på att du vill ta bort denna annons?",
-    );
-    if (!confirmed) return;
-
-    const updatedItems = await itemsApi.deleteItem(id);
-
-    items.value = updatedItems;
-
-    alert("Annonsen har tagits bort");
-  } catch (error) {
-    console.error("kunde inte ta bort annonsen:", error);
-    alert("Ett fel inträffade, försök igen senare");
-  }
-};
-
-onMounted(() => {
-  fetchItems();
-});
 </script>
 
 <template>
   <h2 class="welcome-message">
     Välkommen
-    {{ store.isLoggedIn ? user?.name : "" }}
+    {{ authStore.isLoggedIn ? user?.name : "" }}
     till din hyresprotal
   </h2>
   <RouterView />
-  <h3 v-if="isLoading">Laddar...</h3>
+  <h3 v-if="authStore.isLoading">Laddar...</h3>
   <div v-else>
     <h2 class="header-title">Alla annonser</h2>
     <div class="item-container">
-      <div v-for="item in items" :key="item.id" class="item">
+      <div v-for="item in store.items" :key="item.id" class="item">
         <h4>{{ item.title }}</h4>
-        <img :src="item.image.url" :alt="item.image.alt" />
+        <img :src="item.image.url || '../../assets/icons/gbg-rentals-logo.png'" :alt="item.image.alt" />
         <p>{{ item.description }}...</p>
         <p>
           <strong>Skapad:</strong>
@@ -81,22 +41,16 @@ onMounted(() => {
         </p>
         <p><strong>Pris:</strong> {{ item.price }} kr</p>
         <p><strong>Postad av:</strong> {{ item.owner }}</p>
-        <div v-if="store.isLoggedIn" class="add-delete-btn">
+        <div v-if="authStore.isLoggedIn" class="add-delete-btn">
           <button class="add-btn" @click="openBookingForm(item)">Boka</button>
-          <button class="dlt-btn" @click="deleteItem(item.id)">
+          <button class="dlt-btn" @click="store.deleteItem(item.id)">
             Ta bort annons
           </button>
         </div>
       </div>
     </div>
   </div>
-  <BookingFormView
-    v-if="showBookingForm"
-    :selectedItem="selectedItem"
-    :showBookingForm="showBookingForm"
-    @showBookingForm="showBookingForm = $event"
-    @selectedItem="selectedItem = $event"
-  />
+  <BookingFormView v-if="showBookingForm" :selectedItem="selectedItem" :showBookingForm="showBookingForm" @showBookingForm="showBookingForm = $event" @selectedItem="selectedItem = $event" />
 </template>
 
 <style scoped>

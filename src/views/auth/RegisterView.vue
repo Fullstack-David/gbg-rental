@@ -1,41 +1,30 @@
 <script setup>
-import { reactive } from "vue";
-import { userApi } from '@/services/userAPI'
-import { useUsers } from "@/composables/useAuth";
-import { v4 as uuid } from 'uuid'
+import { ref } from "vue";
+// import { userApi } from '@/services/userAPI'
+import { useAuth } from "@/composables/useAuth";
 
-const { logIn } = useUsers();
+const { logIn, addUser } = useAuth();
 
-const form = reactive({
-  fullName: "",
+// Här kan vi ha en ref istället då ingen annan view är beroende av denna state!
+// ///////////////////////////////////////////////////////////////////////
+const form = ref({
+  name: "",
   email: "",
   password: "",
-  confirmPassword: "",
 });
+const confirmPassword = ref("")
+
 
 const onRegister = async () => {
   // Simpla valideringar
-  if (form.password !== form.confirmPassword) {
+  if (form.value.password !== confirmPassword.value) {
     alert("Passwords do not match!");
     return;
   }
-
-  try {
-    await userApi.createUser({
-      id: uuid(),
-      name: form.fullName,
-      email: form.email,
-      password: form.password
-    })
-    await logIn(form.email, form.password)
-    alert("Registration successful!");
-  }
-
-  catch (error) {
-    console.error("Registration error:", error);
-    alert("Registration failed!");
-  }
+  addUser(form.value)
 };
+
+
 </script>
 
 <template>
@@ -45,7 +34,7 @@ const onRegister = async () => {
       <!-- Full Name -->
       <div class="form-group">
         <label for="fullName">Namn</label>
-        <input type="text" id="fullName" v-model="form.fullName" placeholder="Ange ditt fullständiga namn" required />
+        <input type="text" id="fullName" v-model="form.name" placeholder="Ange ditt fullständiga namn" required />
       </div>
 
       <!-- Email -->
@@ -63,7 +52,7 @@ const onRegister = async () => {
       <!-- Confirm Password -->
       <div class="form-group">
         <label for="confirmPassword">Bekräfta lösenord</label>
-        <input type="password" id="confirmPassword" v-model="form.confirmPassword" placeholder="Bekräfta lösenord" required />
+        <input type="password" id="confirmPassword" v-model="confirmPassword" placeholder="Bekräfta lösenord" required />
       </div>
 
       <!-- Submit Button -->
