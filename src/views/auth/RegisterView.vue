@@ -1,30 +1,30 @@
 <script setup>
-import { reactive } from "vue";
+import { ref } from "vue";
 // import { userApi } from '@/services/userAPI'
-import { useUser } from "@/composables/useUsers";
 import { useAuth } from "@/composables/useAuth";
 
-const { addUser } = useUser();
-const { logIn } = useAuth();
+const { logIn, addUser } = useAuth();
 
 // Här kan vi ha en ref istället då ingen annan view är beroende av denna state!
 // ///////////////////////////////////////////////////////////////////////
-const form = reactive({
+const form = ref({
   name: "",
   email: "",
   password: "",
 });
 const confirmPassword = ref("")
 
+
 const onRegister = async () => {
   // Simpla valideringar
-  if (form.password !== confirmPassword.value) {
+  if (form.value.password !== confirmPassword.value) {
     alert("Passwords do not match!");
     return;
   }
   addUser(form.value)
-  logIn(form.email, form.password)
 };
+
+
 </script>
 
 <template>

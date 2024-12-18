@@ -20,7 +20,7 @@ export const binApi = {
       method: 'PUT',
       headers,
       body: JSON.stringify({
-        items: newArray,
+        [bin]: newArray,
       }),
     })
     const data = await response.json();

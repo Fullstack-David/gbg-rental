@@ -23,8 +23,9 @@ export const useOrder = defineStore("orders", () => {
       isLoading.value = false
     }
   }
-
+  
   async function addOrder(order) {
+    console.log(bin)
     const newOrder = {
       id: uuid(),
       ...order,

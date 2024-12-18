@@ -2,9 +2,9 @@
 import { ref, computed } from "vue";
 import { useItems } from "@/composables/useItems";
 import { useModalStore } from "@/composables/useModal";
-import { useUser } from "@/composables/useUsers";
+import { useAuth } from "@/composables/useAuth";
 
-const store = useUser();
+const store = useAuth();
 const modalStore = useModalStore();
 const { closeModal } = useModalStore();
 const { addItem } = useItems();

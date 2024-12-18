@@ -1,19 +1,13 @@
 <script setup>
 import { useOrder } from "@/composables/useOrder";
-import { onMounted } from "vue";
 
 const store = useOrder();
-console.log(store.orders)
-
 </script>
 
 <template>
   <div v-if="store.orders.length > 0" class="booking-container">
     <h3 class="header">Dina bokningar</h3>
     <ul class="booking-list">
-      {{
-        console.log(orders)
-      }}
       <li v-for="(order, index) in store.orders" :key="index" class="booking-item">
         <span class="check-icon">✅</span>
         <div class="booking-details">
