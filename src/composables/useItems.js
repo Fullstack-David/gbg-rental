@@ -12,7 +12,6 @@ export const useItems = defineStore("items", () => {
   const items = ref([])
   const isLoading = ref(false)
   
-
   async function fetchItems() {
     isLoading.value = true
     try {

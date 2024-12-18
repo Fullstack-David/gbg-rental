@@ -11,6 +11,7 @@ const bin = 'orders';
 export const useOrder = defineStore("orders", () => {
   const orders = ref([])
   const isLoading = ref(false)
+  onMounted(fetchOrders)
 
   async function fetchOrders() {
     isLoading.value = true
@@ -59,7 +60,6 @@ export const useOrder = defineStore("orders", () => {
       return false
     }
   }
-  onMounted(fetchOrders)
   return {
     orders,
     isLoading,

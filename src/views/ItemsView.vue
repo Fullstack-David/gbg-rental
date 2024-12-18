@@ -31,9 +31,7 @@ const openBookingForm = async (item) => {
   <div v-else>
     <h2 class="header-title">Alla annonser</h2>
     <div class="item-container">
-      {{ console.log(store.items) }}
       <div v-for="item in store.items" :key="item.id" class="item">
-        {{console.log(item.item)}}
         <h4>{{ item.title }}</h4>
         <img :src="item.image.url || '../../assets/icons/gbg-rentals-logo.png'" :alt="item.image.alt" />
         <p>{{ item.description }}...</p>
