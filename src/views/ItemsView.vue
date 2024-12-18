@@ -3,11 +3,15 @@ import { useItems } from "@/composables/useItems";
 import { computed, ref } from "vue";
 import BookingFormView from "./renter/BookingFormView.vue";
 import moment from "moment";
+import { useAuth } from "@/composables/useAuth";
 
 const store = useItems()
+const authStore = useAuth();
 const showBookingForm = ref(false);
 const selectedItem = ref(null);
+
 const user = ref([]);
+
 
 // Funktion för att öppna bokningsformuläret
 const openBookingForm = async (item) => {
@@ -19,16 +23,17 @@ const openBookingForm = async (item) => {
 <template>
   <h2 class="welcome-message">
     Välkommen
-    {{ store.isLoggedIn ? user?.name : "" }}
+    {{ authStore.isLoggedIn ? user?.name : "" }}
     till din hyresprotal
   </h2>
   <RouterView />
-  <h3 v-if="store.isLoading.value">Laddar...</h3>
+  <h3 v-if="authStore.isLoading">Laddar...</h3>
   <div v-else>
     <h2 class="header-title">Alla annonser</h2>
     <div class="item-container">
-      <!-- {{console.log(store.items)}} -->
+      {{ console.log(store.items) }}
       <div v-for="item in store.items" :key="item.id" class="item">
+        {{console.log(item.item)}}
         <h4>{{ item.title }}</h4>
         <img :src="item.image.url || '../../assets/icons/gbg-rentals-logo.png'" :alt="item.image.alt" />
         <p>{{ item.description }}...</p>
@@ -38,9 +43,9 @@ const openBookingForm = async (item) => {
         </p>
         <p><strong>Pris:</strong> {{ item.price }} kr</p>
         <p><strong>Postad av:</strong> {{ item.owner }}</p>
-        <div v-if="store.isLoggedIn" class="add-delete-btn">
+        <div v-if="authStore.isLoggedIn" class="add-delete-btn">
           <button class="add-btn" @click="openBookingForm(item)">Boka</button>
-          <button class="dlt-btn" @click="deleteItem(item.id)">
+          <button class="dlt-btn" @click="store.deleteItem(item.id)">
             Ta bort annons
           </button>
         </div>

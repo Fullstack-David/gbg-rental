@@ -42,7 +42,7 @@ export const useItems = defineStore("items", () => {
   async function updateItem(id, newItem) {
     const updatedItems = items.value.map((item) => item.id === id ? { ...item, ...newItem } : item)
     try {
-      items.value = await binApi.postApi(url, bin, id, updatedItems)
+      items.value = await binApi.postApi(url, bin, updatedItems)
       return true
     } catch (error) {
       console.error('Error updating item:', error)
@@ -50,7 +50,7 @@ export const useItems = defineStore("items", () => {
     }
   }
   
-  async function deleteItem(url, id) {
+  async function deleteItem(id) {
     const filteredItems = items.value.filter((item) => item.id !== id)
     try {
       items.value = await binApi.postApi(url, bin, filteredItems)

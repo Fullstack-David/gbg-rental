@@ -1,13 +1,14 @@
-import { ref } from 'vue'
-import { binApi } from '@/services/binApi';
+import { onMounted, ref } from 'vue'
+import { binApi } from '@/services/binApi'; 
 import { v4 as uuid } from 'uuid'
 import { CONFIG } from "@/constants/config"
+import { defineStore } from 'pinia';
 
 const url = CONFIG.ORDERS_API_URL;
 const bin = 'orders';
 
 
-export function useOrder() {
+export const useOrder = defineStore("orders", () => {
   const orders = ref([])
   const isLoading = ref(false)
 
@@ -58,7 +59,7 @@ export function useOrder() {
       return false
     }
   }
-
+  onMounted(fetchOrders)
   return {
     orders,
     isLoading,
@@ -67,4 +68,4 @@ export function useOrder() {
     updateOrder,
     deleteOrder,
   }
-}
+}) 

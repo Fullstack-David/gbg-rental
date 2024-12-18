@@ -10,7 +10,7 @@ const props = defineProps({
   showBookingForm: Boolean
 });
 
-const { addOrder } = useOrder();
+const store = useOrder();
 const bookingDate = ref("");
 const bookingTime = ref("");
 
@@ -25,7 +25,7 @@ const bookItem = () => {
       endDate: "",
     },
   };
-  addOrder(newOrder)
+  store.addOrder(newOrder)
   alert(
     `Du har bokat: ${props.selectedItem.title} den ${bookingDate.value} kl. ${bookingTime.value}`,
   );

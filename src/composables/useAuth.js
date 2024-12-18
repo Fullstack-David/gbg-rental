@@ -46,6 +46,7 @@ export const useAuth = defineStore("logInOut", () => {
   }
 
   // Körs onMount() för att se om man tidigare vart inloggad, fungerar som att man spara sin session så att man slipper logga in helatiden
+  // Går denna att ha i en computed så att den uppdateras så snart localstorage uppdateras?
   function checkLogin() {
     localStorage.getItem("user")
       ? (isLoggedIn.value = true)
