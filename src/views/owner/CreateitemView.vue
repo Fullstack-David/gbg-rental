@@ -10,10 +10,8 @@ const { closeModal } = useModalStore();
 const { addItem } = useItems();
 
 const owner = computed(() => {
-  const id = localStorage.getItem('user');
-  const user = store.users.find(user =>
-    user.id === id)
-  return user.name
+  const user = JSON.parse(localStorage.getItem('user'));
+  return user
 }
 );
 
@@ -29,8 +27,8 @@ const defaultProduct = {
     alt: 'default-image'
   }
 }
-const productInfo = ref(defaultProduct);
 
+const productInfo = ref(defaultProduct);
 
 const submitItem = async () => {
   addItem(productInfo.value)
@@ -41,11 +39,7 @@ const submitItem = async () => {
 </script>
 
 <template>
-  <div
-    class="modal-backdrop"
-    v-if="modalStore.showModal"
-    @click.self="modalStore.closeModal"
-  >
+  <div class="modal-backdrop" v-if="modalStore.showModal" @click.self="modalStore.closeModal">
     <div class="modal-content">
       <button class="close-btn" @click="closeModal">x</button>
       <div class="info-field">
@@ -68,6 +62,15 @@ const submitItem = async () => {
           <input type="text" placeholder="Beskrivning av bild" v-model="productInfo.image.alt" />
         </div>
 
+        <button @click="submitItem">Publicera vara</button>
+        <!-- KANSKE NÄR VI UPPDATERAR CODEN -->
+        <!-- <p>Antal dagar för uthyrning: {{ rentalDays }}</p>
+        <p>Totalt pris: {{ totalSum }} KR</p> -->
+      </div>
+    </div>
+  </div>
+</template>
+
         <!-- KANSKE VI ANVÄNDER OSS AV SEDAN NÄR OCH OM VIU UPPDATERAR DATABASEN -->
         <!-- start datum för uthyrning -->
         <!-- <div class="date-div"> -->
@@ -89,15 +92,8 @@ const submitItem = async () => {
             v-model="productInfo.rentalPeriod.endDate"
             :min="todayDate"
             @change="calculateRentalDays"
-          /> -->
-        <!-- </div> -->
-        <button @click="submitItem">Publicera vara</button>
-        <!-- <p>Antal dagar för uthyrning: {{ rentalDays }}</p> -->
-        <!-- <p>Totalt pris: {{ totalSum }} KR</p> -->
-      </div>
-    </div>
-  </div>
-</template>
+          /> 
+          </div> -->
 
 
 <style scoped>

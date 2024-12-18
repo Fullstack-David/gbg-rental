@@ -40,7 +40,7 @@ const openBookingForm = async (item) => {
           {{ moment(item.createdAt).format("YYYY-MM-DD") }}
         </p>
         <p><strong>Pris:</strong> {{ item.price }} kr</p>
-        <p><strong>Postad av:</strong> {{ item.owner }}</p>
+        <p><strong>Postad av:</strong> {{ item.owner.name }}</p>
         <div v-if="authStore.isLoggedIn" class="add-delete-btn">
           <button class="add-btn" @click="openBookingForm(item)">Boka</button>
           <button class="dlt-btn" @click="store.deleteItem(item.id)">

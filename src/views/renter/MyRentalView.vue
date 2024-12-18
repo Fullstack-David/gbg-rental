@@ -5,8 +5,10 @@ import { useItems } from '@/composables/useItems'
 const showModal = ref(false)
 const showDeleteModal = ref(false)
 const itemToDelete = ref(null)
+const { fetchItems, updateItem, deleteItem } = useItems()
+const store = useItems()
 
-const productInfo = ref({
+const productInfoDefault = {
   id: "",
   title: "",
   description: "",
@@ -20,39 +22,25 @@ const productInfo = ref({
     url: "",
     alt: "",
   },
-})
+}
 
-const {
-  items,
-  userItems,
-  fetchItems,
-  updateItem,
-  deleteItem
-} = useItems()
+const productInfo = ref(productInfoDefault)
 
-onMounted(async () => {
-  console.log("MyItemView mounted. Fetching items...")
-  await fetchItems()
-  console.log("Items after fetch:", items.value)
+const noItems = computed(() => store.items.length === 0)
+const userItems = computed(() => {
+  const user = JSON.parse(localStorage.getItem('user'))
+  return store.items.filter((item) => item.owner.id === user.id )
 })
 
 // Edit the selected item
 const editItem = (id) => {
-  const itemToEdit = items.value.find(item => item.id === id)
+  const itemToEdit = store.items.value.find(item => item.id === id)
   if (!itemToEdit) {
     console.warn(`No item found with id: ${id}`)
     return
   }
 
-  productInfo.value = {
-    id: itemToEdit.id,
-    title: itemToEdit.title,
-    description: itemToEdit.description,
-    price: itemToEdit.price,
-    rentalPeriod: itemToEdit.rentalPeriod || { startDate: "", endDate: "" },
-    owner: itemToEdit.owner,
-    image: itemToEdit.image || { url: "", alt: "" }
-  }
+  productInfo.value = { ...itemToEdit }
   showModal.value = true
 }
 
@@ -69,21 +57,7 @@ const saveUpdatedItem = async () => {
 
 const closeModal = () => {
   showModal.value = false
-  productInfo.value = {
-    id: "",
-    title: "",
-    description: "",
-    price: "",
-    rentalPeriod: {
-      startDate: "",
-      endDate: "",
-    },
-    owner: "",
-    image: {
-      url: "",
-      alt: "",
-    },
-  }
+  productInfo.value = productInfoDefault
 }
 
 const confirmDeleteItem = (id) => {
@@ -102,7 +76,6 @@ const removeItem = async () => {
   }
 }
 
-const noItems = computed(() => userItems.value.length === 0)
 </script>
 
 <template>
@@ -119,7 +92,7 @@ const noItems = computed(() => userItems.value.length === 0)
       <img :src="item.image.url" :alt="item.image.alt" />
       <p>{{ item.description }}</p>
       <p><strong>Pris:</strong> {{ item.price }} kr</p>
-      <p><strong>Postad av:</strong> {{ item.owner }}</p>
+      <p><strong>Postad av:</strong> {{ item.owner.name }}</p>
       <button class="editButton" @click="editItem(item.id)">Redigera</button>
       <button class="deleteButton" @click="confirmDeleteItem(item.id)">Ta bort</button>
     </div>
@@ -184,9 +157,11 @@ button:hover {
 .message {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px; /* Space between cards */
+  gap: 20px;
+  /* Space between cards */
   padding: 20px;
 }
+
 .item {
   border: 2px solid #ccc;
   border-radius: 1rem;
@@ -205,7 +180,7 @@ button:hover {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0,0,0,0.5);
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -216,7 +191,7 @@ button:hover {
   background: #fff;
   padding: 3rem;
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   width: 90%;
   max-width: 500px;
   position: relative;

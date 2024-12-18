@@ -26,7 +26,7 @@ export const useAuth = defineStore("logInOut", () => {
       }
       bcryptjs.compare(password, user.password, (error, result) => {
         if (result) {
-          localStorage.setItem("user", user.id);
+          localStorage.setItem("user", JSON.stringify({id: user.id, name: user.name}));
           router.push("/");
           isLoggedIn.value = true;
         } else {
