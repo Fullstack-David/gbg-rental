@@ -2,7 +2,6 @@ import { onMounted, ref, toRaw } from 'vue'
 import { binApi } from '@/services/binApi'
 import { v4 as uuid } from 'uuid'
 import { CONFIG } from "@/constants/config"
-import { watch } from 'vue'
 import { defineStore } from 'pinia'
 
 const url = CONFIG.ITEMS_API_URL;
@@ -63,7 +62,6 @@ export const useItems = defineStore("items", () => {
   onMounted(fetchItems)
   return {
     items,
-    userItems,
     isLoading,
     fetchItems,
     addItem,

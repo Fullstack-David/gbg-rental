@@ -69,7 +69,7 @@ export const useAuth = defineStore("logInOut", () => {
     const salt = bcryptjs.genSaltSync(10);
     const hash = bcryptjs.hashSync(user.password, salt)
     const cryptUser = {
-      is: uuid(),
+      id: uuid(),
       ...user,
       password: hash
     }
