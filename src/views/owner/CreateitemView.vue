@@ -2,9 +2,7 @@
 import { ref, computed } from "vue";
 import { useItems } from "@/composables/useItems";
 import { useModalStore } from "@/composables/useModal";
-import { useAuth } from "@/composables/useAuth";
 
-const store = useAuth();
 const modalStore = useModalStore();
 const { closeModal } = useModalStore();
 const { addItem } = useItems();
@@ -14,8 +12,6 @@ const owner = computed(() => {
   return user
 }
 );
-
-const todayDate = new Date().toISOString().split("T")[0];
 const defaultProduct = {
   title: "",
   description: "",
@@ -27,12 +23,10 @@ const defaultProduct = {
     alt: 'default-image'
   }
 }
-
 const productInfo = ref(defaultProduct);
 
 const submitItem = async () => {
   addItem(productInfo.value)
-  // Reset REFS
   productInfo.value = defaultProduct;
   modalStore.showModal = false;
 };
@@ -44,13 +38,10 @@ const submitItem = async () => {
       <button class="close-btn" @click="closeModal">x</button>
       <div class="info-field">
 
-        <!-- titel -->
         <input class="prod-title" type="text" placeholder="Produktens namn" v-model="productInfo.title" />
 
-        <!-- pris per dag -->
         <input class="prod-price" type="text" placeholder="Pris per dag" v-model="productInfo.price" />
 
-        <!--- description -->
         <input class="prod-desc" type="text" placeholder="Produktens beskrivning" v-model="productInfo.description" minlength="21" />
 
         <h3>Ladda upp bild</h3>
@@ -63,38 +54,10 @@ const submitItem = async () => {
         </div>
 
         <button @click="submitItem">Publicera vara</button>
-        <!-- KANSKE NÄR VI UPPDATERAR CODEN -->
-        <!-- <p>Antal dagar för uthyrning: {{ rentalDays }}</p>
-        <p>Totalt pris: {{ totalSum }} KR</p> -->
       </div>
     </div>
   </div>
 </template>
-
-        <!-- KANSKE VI ANVÄNDER OSS AV SEDAN NÄR OCH OM VIU UPPDATERAR DATABASEN -->
-        <!-- start datum för uthyrning -->
-        <!-- <div class="date-div"> -->
-        <!-- <h4>Uthyrningsdatum</h4> -->
-        <!-- <p>Från:</p>
-          <input
-            class="start-date"
-            type="date"
-            v-model="productInfo.rentalPeriod.startDate"
-            :min="todayDate"
-            @change="calculateRentalDays"
-          /> -->
-
-        <!-- Slutdatum för uthyrning -->
-        <!-- <p>Till</p>
-          <input
-            class="end-date"
-            type="date"
-            v-model="productInfo.rentalPeriod.endDate"
-            :min="todayDate"
-            @change="calculateRentalDays"
-          /> 
-          </div> -->
-
 
 <style scoped>
 .pub-container {
@@ -108,7 +71,6 @@ const submitItem = async () => {
   font-family: Arial, sans-serif;
   color: #333;
   text-align: center;
-  /* Centrerar innehållet */
 }
 
 .modal-backdrop {

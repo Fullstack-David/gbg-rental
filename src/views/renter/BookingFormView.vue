@@ -2,8 +2,7 @@
 import { useOrder } from '@/composables/useOrder';
 import { ref } from 'vue';
 
-// Denna rad ger varningar i konsolen, vänligen fixa :-)
-const emit = defineEmits(['update:showBookingForm', 'update:selectedItem']);
+const emit = defineEmits(['showBookingForm', 'selectedItem']);
 
 const props = defineProps({
   selectedItem: Object,
@@ -11,10 +10,10 @@ const props = defineProps({
 });
 
 const store = useOrder();
-const bookingDate = ref("");
+const todaysDate = new Date().toLocaleDateString();
+const bookingDate = ref(todaysDate);
 const bookingTime = ref("");
 
-// Funktion för att boka ett objekt med dag och tid
 const bookItem = () => {
   const newOrder = {
     item: props.selectedItem,
@@ -32,7 +31,6 @@ const bookItem = () => {
   closeBookingForm();
 };
 
-// Funktion för att stänga bokningsformuläret
 const closeBookingForm = () => {
   emit('showBookingForm', false);
   emit('selectedItem', null);
@@ -48,7 +46,7 @@ const closeBookingForm = () => {
       <form @submit.prevent="bookItem">
         <div class="form-group">
           <label for="date">Välj datum:</label>
-          <input type="date" id="date" v-model="bookingDate" required />
+          <input type="date" id="date" v-model="bookingDate" :min="todaysDate" required />
         </div>
         <div class="form-group">
           <label for="time">Välj tid:</label>

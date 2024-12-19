@@ -3,6 +3,7 @@ import { useModalStore } from "@/composables/useModal";
 const { openModal } = useModalStore();
 </script>
 
+<!-- Local Nav -->
 <template>
   <nav class="local-nav">
     <ul class="local-nav__list">

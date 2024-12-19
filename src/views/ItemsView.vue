@@ -12,10 +12,8 @@ const selectedItem = ref(null);
 
 const user = ref([]);
 
-
-// Funktion för att öppna bokningsformuläret
-const openBookingForm = async (item) => {
-  selectedItem.value = await item;
+const openBookingForm = (item) => {
+  selectedItem.value = item;
   showBookingForm.value = true;
 };
 </script>

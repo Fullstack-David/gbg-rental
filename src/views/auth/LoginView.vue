@@ -1,9 +1,10 @@
 <script setup>
-import { reactive } from "vue";
+import { ref } from "vue";
 import { useAuth } from "@/composables/useAuth";
-const { logIn, errorMessage } = useAuth();
+const store = useAuth();
+const { logIn } = useAuth();
 
-const form = reactive({
+const form = ref({
   email: "",
   password: "",
 });
@@ -34,8 +35,8 @@ const form = reactive({
         />
       </div>
       <button type="submit">Logga in</button>
-      <p v-if="errorMessage" class="error">
-        {{ errorMessage }}
+      <p v-if="store.errorMessage" class="error">
+        {{ store.errorMessage }}
       </p>
       <p>
         Inget konto,

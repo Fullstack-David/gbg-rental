@@ -1,12 +1,9 @@
 <script setup>
 import { ref } from "vue";
-// import { userApi } from '@/services/userAPI'
 import { useAuth } from "@/composables/useAuth";
 
-const { logIn, addUser } = useAuth();
+const { addUser } = useAuth();
 
-// Här kan vi ha en ref istället då ingen annan view är beroende av denna state!
-// ///////////////////////////////////////////////////////////////////////
 const form = ref({
   name: "",
   email: "",
@@ -14,9 +11,7 @@ const form = ref({
 });
 const confirmPassword = ref("")
 
-
 const onRegister = async () => {
-  // Simpla valideringar
   if (form.value.password !== confirmPassword.value) {
     alert("Passwords do not match!");
     return;
@@ -24,43 +19,36 @@ const onRegister = async () => {
   addUser(form.value)
 };
 
-
 </script>
 
 <template>
   <div class="register-container">
     <h2>Registrera</h2>
     <form @submit.prevent="onRegister">
-      <!-- Full Name -->
       <div class="form-group">
         <label for="fullName">Namn</label>
         <input type="text" id="fullName" v-model="form.name" placeholder="Ange ditt fullständiga namn" required />
       </div>
 
-      <!-- Email -->
       <div class="form-group">
         <label for="email">E-postadress</label>
         <input type="email" id="email" v-model="form.email" placeholder="Ange din e-postadress" required />
       </div>
 
-      <!-- Password -->
       <div class="form-group">
         <label for="password">Lösenord</label>
         <input type="password" id="password" v-model="form.password" placeholder="Ange ett lösenord" required />
       </div>
 
-      <!-- Confirm Password -->
       <div class="form-group">
         <label for="confirmPassword">Bekräfta lösenord</label>
         <input type="password" id="confirmPassword" v-model="confirmPassword" placeholder="Bekräfta lösenord" required />
       </div>
 
-      <!-- Submit Button -->
       <button type="submit">Registrera</button>
     </form>
   </div>
 </template>
-
 
 <style scoped>
 .register-container {
