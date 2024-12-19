@@ -1,6 +1,6 @@
 <script setup>
 import { useOrder } from '@/composables/useOrder';
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 
 const emit = defineEmits(['showBookingForm', 'selectedItem']);
 
@@ -11,23 +11,25 @@ const props = defineProps({
 
 const store = useOrder();
 const todaysDate = new Date().toLocaleDateString();
-const bookingDate = ref(todaysDate);
-const bookingTime = ref("");
+const startDate = ref(todaysDate);
+const endDate = ref(todaysDate);
+const totalSum = computed(() => rentalDays.value * props.selectedItem.price);
+const rentalDays = computed(()=> differenceInDays(startDate.value, endDate.value));
 
 const bookItem = () => {
   const newOrder = {
     item: props.selectedItem,
     userId: JSON.parse(localStorage.getItem('user')).id,
-    date: bookingDate.value,
-    time: bookingTime.value,
+    date: todaysDate,
     rentalPeriod: {
-      startDate: "",
-      endDate: "",
+      startDate: startDate.value,
+      endDate: endDate.value,
     },
+    totalPrice: totalSum.value
   };
   store.addOrder(newOrder)
   alert(
-    `Du har bokat: ${props.selectedItem.title} den ${bookingDate.value} kl. ${bookingTime.value}`,
+    `Du har bokat: ${props.selectedItem.title} den ${startDate.value} till den ${endDate.value} `,
   );
   closeBookingForm();
 };
@@ -35,9 +37,20 @@ const bookItem = () => {
 const closeBookingForm = () => {
   emit('showBookingForm', false);
   emit('selectedItem', null);
-  bookingDate.value = "";
-  bookingTime.value = "";
+  startDate.value = todaysDate;
+  endDate.value = todaysDate;
 };
+
+// räknar ut hur många dagar man hyr
+function differenceInDays(startDate, endDate) {
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+  if (start && end && end >= start) {
+    const differenceInTime = end.getTime() - start.getTime();
+    return differenceInTime / (1000 * 3600 * 24);
+  }
+  return 0;
+}
 </script>
 
 <template>
@@ -45,14 +58,18 @@ const closeBookingForm = () => {
     <div class="booking-form-container">
       <h3>Boka {{ selectedItem?.title }}</h3>
       <form @submit.prevent="bookItem">
-        <div class="form-group">
-          <label for="date">Välj datum:</label>
-          <input type="date" id="date" v-model="bookingDate" :min="todaysDate" required />
-        </div>
-        <div class="form-group">
-          <label for="time">Välj tid:</label>
-          <input type="time" id="time" v-model="bookingTime" required />
-        </div>
+          <div class="form-group">
+            <label for="date">startdatum:</label>
+            <input type="date" id="date" v-model="startDate" :min="todaysDate" required />
+          </div>
+          <div class="form-group">
+            <label for="date">slutdatum:</label>
+            <input type="date" id="date" v-model="endDate" :min="startDate" required />
+          </div>
+          <div>
+            <p>antal dagar: {{ rentalDays }}</p>
+            <p>total pris: {{ totalSum }}:-</p>
+          </div>
         <div class="form-actions">
           <button type="submit">Bekräfta bokning</button>
           <button type="button" @click="closeBookingForm">Avbryt</button>
