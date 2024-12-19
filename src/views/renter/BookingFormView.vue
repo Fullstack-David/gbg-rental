@@ -12,7 +12,7 @@ const props = defineProps({
 const store = useOrder();
 const todaysDate = new Date().toLocaleDateString();
 const startDate = ref(todaysDate);
-const endDate = ref(todaysDate);
+const endDate = ref('');
 const totalSum = computed(() => rentalDays.value * props.selectedItem.price);
 const rentalDays = computed(()=> differenceInDays(startDate.value, endDate.value));
 
@@ -38,7 +38,7 @@ const closeBookingForm = () => {
   emit('showBookingForm', false);
   emit('selectedItem', null);
   startDate.value = todaysDate;
-  endDate.value = todaysDate;
+  endDate.value = '';
 };
 
 // räknar ut hur många dagar man hyr
