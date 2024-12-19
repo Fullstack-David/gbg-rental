@@ -17,6 +17,7 @@ const bookingTime = ref("");
 const bookItem = () => {
   const newOrder = {
     item: props.selectedItem,
+    userId: JSON.parse(localStorage.getItem('user')).id,
     date: bookingDate.value,
     time: bookingTime.value,
     rentalPeriod: {

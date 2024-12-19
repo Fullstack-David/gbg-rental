@@ -1,13 +1,19 @@
 <script setup>
 import { useOrder } from "@/composables/useOrder";
+import { computed } from "vue";
 const store = useOrder();
+
+const userOrders = computed(() => {
+  const user = JSON.parse(localStorage.getItem('user'))
+  return store.orders.filter((order) => order.userId === user.id )
+})
 </script>
 
 <template>
   <div v-if="store.orders.length > 0" class="booking-container">
     <h3 class="header">Dina bokningar</h3>
     <ul class="booking-list">
-      <li v-for="(order, index) in store.orders" :key="index" class="booking-item">
+      <li v-for="(order, index) in userOrders" :key="index" class="booking-item">
         <span class="check-icon">✅</span>
         <div class="booking-details">
           <p class="booking-title">{{ order.item.title }}</p>
