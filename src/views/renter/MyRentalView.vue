@@ -2,27 +2,24 @@
 import { ref, onMounted, computed } from 'vue'
 import { useItems } from '@/composables/useItems'
 
-const showModal = ref(false)
-const showDeleteModal = ref(false)
-const itemToDelete = ref(null)
-const { fetchItems, updateItem, deleteItem } = useItems()
-const store = useItems()
+const showModal = ref(false);
+const showDeleteModal = ref(false);
+const itemToDelete = ref(null);
+const { fetchItems, updateItem, deleteItem } = useItems();
+const store = useItems();
 
 const productInfoDefault = {
-  id: "",
   title: "",
   description: "",
   price: "",
-  rentalPeriod: {
-    startDate: "",
-    endDate: "",
-  },
   owner: "",
+  available: true,
   image: {
-    url: "",
-    alt: "",
-  },
+    url: '/gbg-rentals-logo.png',
+    alt: 'default-image'
+  }
 }
+
 
 const productInfo = ref(productInfoDefault)
 
@@ -34,7 +31,7 @@ const userItems = computed(() => {
 
 // Edit the selected item
 const editItem = (id) => {
-  const itemToEdit = store.items.value.find(item => item.id === id)
+  const itemToEdit = store.items.find(item => item.id === id)
   if (!itemToEdit) {
     console.warn(`No item found with id: ${id}`)
     return
@@ -46,6 +43,7 @@ const editItem = (id) => {
 
 const saveUpdatedItem = async () => {
   try {
+    console.log(productInfo.value)
     const success = await updateItem(productInfo.value.id, productInfo.value)
     if (success) {
       closeModal()
@@ -106,11 +104,16 @@ const removeItem = async () => {
         <input v-model="productInfo.title" type="text" placeholder="Produktens namn" />
         <input v-model="productInfo.description" type="text" placeholder="Produktens beskrivning" />
         <input v-model="productInfo.price" type="number" placeholder="Pris" />
-        <input v-model="productInfo.rentalPeriod.startDate" type="date" />
-        <input v-model="productInfo.rentalPeriod.endDate" type="date" />
-        <input v-model="productInfo.owner" type="text" placeholder="Ägarens namn" />
         <input v-model="productInfo.image.url" type="text" placeholder="Bild-URL" />
         <input v-model="productInfo.image.alt" type="text" placeholder="Alt-text för bild" />
+        <div>
+          <label for="available">Tillgänglig </label>
+          <input type="radio" id="available" value="true" name="available" v-model="productInfo.available">
+        </div>
+        <div>
+          <label for="available">Otillgänglig </label>
+          <input type="radio" id="unavailable" value="false" name="available" v-model="productInfo.available">
+        </div>
         <button @click="saveUpdatedItem">Spara ändringar</button>
       </div>
     </div>
