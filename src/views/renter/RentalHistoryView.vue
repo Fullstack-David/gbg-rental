@@ -18,7 +18,7 @@ const userOrders = computed(() => {
         <div class="booking-details">
           <p class="booking-title">{{ order.item.title }}</p>
           <p class="booking-date-time">
-            Bokad datum: {{ order.date }} klockan: {{ order.time }}
+            Bokad datum: {{ order.date }} klockan 12:00
           </p>
         </div>
       </li>
