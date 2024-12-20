@@ -76,16 +76,14 @@ li {
 }
 
 .item {
+  display: flex;
+  flex-direction: column;
   border: 2px solid;
   border-radius: 1rem;
   width: 1fr;
   margin: 10px;
   padding: 10px;
   gap: 10px;
-}
-
-p {
-  padding: 8px 0;
 }
 
 .img-container {
@@ -109,6 +107,7 @@ img {
 .add-btn-container {
   display: flex;
   justify-content: end;
+  margin-top: auto;
 }
 
 .add-btn {

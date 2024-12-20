@@ -89,8 +89,10 @@ const removeItem = async () => {
       <p>{{ item.description }}</p>
       <p><strong>Pris:</strong> {{ item.price }} kr</p>
       <p><strong>Postad av:</strong> {{ item.owner.name }}</p>
-      <button class="editButton" @click="editItem(item.id)">Redigera</button>
-      <button class="deleteButton" @click="confirmDeleteItem(item.id)">Ta bort</button>
+      <div class="btn-container">
+        <button class="editButton" @click="editItem(item.id)">Redigera</button>
+        <button class="deleteButton" @click="confirmDeleteItem(item.id)">Ta bort</button>
+      </div>
     </div>
   </div>
 
@@ -192,6 +194,12 @@ button:hover {
   width: 90%;
   max-width: 500px;
   position: relative;
+}
+
+.btn-container {
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: auto;
 }
 
 .close-btn {
