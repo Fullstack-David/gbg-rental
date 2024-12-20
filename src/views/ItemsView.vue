@@ -31,7 +31,9 @@ const openBookingForm = (item) => {
     <div class="item-container">
       <div v-for="item in store.items" :key="item.id" class="item">
         <h4>{{ item.title }}</h4>
-        <img :src="item.image.url || '../../assets/icons/gbg-rentals-logo.png'" :alt="item.image.alt" />
+        <div class="img-container">
+          <img :src="item.image.url" :alt="item.image.alt" />
+        </div>
         <p>{{ item.description }}...</p>
         <p>
           <strong>Skapad:</strong>
@@ -39,11 +41,8 @@ const openBookingForm = (item) => {
         </p>
         <p><strong>Pris:</strong> {{ item.price }} kr</p>
         <p><strong>Postad av:</strong> {{ item.owner.name }}</p>
-        <div v-if="authStore.isLoggedIn" class="add-delete-btn">
+        <div v-if="authStore.isLoggedIn" class="add-btn-container">
           <button class="add-btn" @click="openBookingForm(item)">Boka</button>
-          <button class="dlt-btn" @click="store.deleteItem(item.id)">
-            Ta bort annons
-          </button>
         </div>
       </div>
     </div>
@@ -89,23 +88,27 @@ p {
   padding: 8px 0;
 }
 
-img {
-  width: 100%;
-  /* Adjust as needed */
-  height: auto;
-  /* Maintains aspect ratio */
-  /* Adjust as needed */
-  height: auto;
-  /* Maintains aspect ratio */
-  border-radius: 10px;
-  margin: 10px 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.img-container {
+  width: 100%; 
+  height: 10rem;
+  overflow: hidden; 
+  position: relative;
+  border-radius: 1rem;
 }
 
-.add-delete-btn button {
-  margin-left: 5px;
+img {
+  width: 100%; 
+  height: 100%; 
+  /* object-fit:fill; */
+  /* object-fit: cover;  */
+  position: absolute;
+  border-radius: 1rem;
+  margin: 10px 0;
+}
+
+.add-btn-container {
+  display: flex;
+  justify-content: end;
 }
 
 .add-btn {
