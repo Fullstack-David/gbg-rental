@@ -10,7 +10,7 @@ const authStore = useAuth();
 const showBookingForm = ref(false);
 const selectedItem = ref(null);
 
-const user = ref([]);
+const user = computed(() =>  JSON.parse(localStorage.getItem('user')))
 
 const openBookingForm = (item) => {
   selectedItem.value = item;

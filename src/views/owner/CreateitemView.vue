@@ -11,6 +11,7 @@ const owner = computed(() => {
   const user = JSON.parse(localStorage.getItem('user'));
   return user
 }
+
 );
 const defaultProduct = {
   title: "",
